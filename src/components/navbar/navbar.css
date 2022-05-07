@@ -1,0 +1,12 @@
+.navbar-logo {
+  text-align: left;
+  color: var(--primary);
+}
+.header-custom {
+  background-color: white;
+}
+.navbar-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+}

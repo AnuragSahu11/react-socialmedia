@@ -1,5 +1,3 @@
-const LoginPage = () => {
+const LoginPage = () => {};
 
-}
-
-export {LoginPage}
+export { LoginPage };

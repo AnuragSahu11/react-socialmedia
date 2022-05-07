@@ -1,3 +1,5 @@
-const Footer = () => {};
+const Footer = () => {
+  return <>Footer</>;
+};
 
 export { Footer };
