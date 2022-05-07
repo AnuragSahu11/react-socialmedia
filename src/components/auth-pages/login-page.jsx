@@ -1,0 +1,5 @@
+const LoginPage = () => {
+
+}
+
+export {LoginPage}

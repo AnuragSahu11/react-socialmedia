@@ -1,0 +1,3 @@
+const LandingPage = () => {};
+
+export { LandingPage };
