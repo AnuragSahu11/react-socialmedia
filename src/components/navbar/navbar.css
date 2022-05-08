@@ -1,12 +1,40 @@
 .navbar-logo {
-  text-align: left;
   color: var(--primary);
+  width: 100%;
 }
 .header-custom {
   background-color: white;
+  /* padding-left: 0px; */
 }
 .navbar-heading {
-  font-size: 2rem;
+  text-align: left;
+  font-size: 3.5rem;
   font-weight: bold;
   color: var(--primary);
+}
+.navbar-logo-img {
+  width: 45px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.navbar-search-wrapper {
+  display: flex;
+  align-items: center;
+}
+.navbar-btn {
+  margin-left: 10px;
+}
+@media only screen and (max-width: 768px) {
+  .navbar-heading {
+    display: none;
+  }
+  .header-custom {
+    padding-left: 10px;
+  }
+  .navbar-search {
+    width: 100%;
+  }
+  .navbar-buttons {
+    display: none;
+  }
 }
