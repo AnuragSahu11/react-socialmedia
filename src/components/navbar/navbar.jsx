@@ -18,7 +18,7 @@ const Navbar = () => {
               />
             </Col>
             <Col className="navbar-heading" md={4} lg={3} xl={2}>
-              <span className="navbar-heading">TradeMate</span>
+              <span className="navbar-heading">TradePeer</span>
             </Col>
           </Row>
         </Col>
