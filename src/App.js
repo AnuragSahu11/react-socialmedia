@@ -5,7 +5,7 @@ import "./design system/primary-styles.css";
 import "./App.css";
 import {
   Feed,
-  Footer,
+  FooterComponent,
   LandingPage,
   LoginPage,
   Navbar,
@@ -27,7 +27,7 @@ function App() {
           <Route path="/feed" element={<Feed />} />
           <Route path="/user/:userId" element={<ProfilePage />} />
         </Routes>
-        <Footer />
+        <FooterComponent />
       </Layout>
     </div>
   );
