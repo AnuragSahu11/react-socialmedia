@@ -1,20 +1,19 @@
-.site-card-border-less-wrapper {
+.site_card_border_less_wrapper {
   padding: 30px;
   background: #ececec;
 }
-.card-post {
+.card_post {
   margin-left: auto;
   margin-right: auto;
   width: 400px;
 }
-.ant-card-head-title {
+.ant_card_head_title {
   font-weight: 600;
   font-size: 1.8rem;
 }
-.button-new-post {
+.button_new_post {
   cursor: pointer;
   margin-left: 20px;
-  /* margin-right: 10px; */
   border-radius: 40px;
   width: 100%;
   background-color: white;
@@ -23,18 +22,21 @@
   font-weight: 600;
   font-size: 1.6rem;
 }
-.button-new-post:hover {
+.button_new_post:hover {
   background-color: #f6f6f6;
 }
-.new-post-contents {
+.new_post_contents {
   display: flex;
   flex-direction: row;
 }
-.new-post-icon-wrapper {
+.new_post_icon_wrapper {
   margin: 8px 0px;
   font-size: 2.2rem;
   height: 15px;
 }
-.new-post-icon {
+.new_post_icon {
   margin-right: 10px;
+}
+.ant_menu {
+  font-size: 1.5rem;
 }

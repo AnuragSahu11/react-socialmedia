@@ -8,7 +8,7 @@ const UserPage = () => {
   return (
     <Layout>
       <Sidebar />
-      <Content>
+      <Content className="content">
         <Outlet />
       </Content>
       <SidebarRecommendations />

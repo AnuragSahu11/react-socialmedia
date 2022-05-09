@@ -6,12 +6,9 @@ import "./App.css";
 import {
   Feed,
   FooterComponent,
-  LandingPage,
   LoginPage,
   Navbar,
   ProfilePage,
-  Sidebar,
-  SignUpPage,
   UserPage,
 } from "./components";
 
@@ -21,9 +18,7 @@ function App() {
       <Layout>
         <Navbar />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user" element={<UserPage />}>
             <Route path="/user/feed" element={<Feed />} />
             <Route path="/user/profile" element={<ProfilePage />} />

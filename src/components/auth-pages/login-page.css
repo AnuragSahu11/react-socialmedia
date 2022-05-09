@@ -1,4 +1,4 @@
-.login-hero-text {
+.login_hero_text {
   margin-top: 40px;
   text-align: center;
   font-weight: 700;
@@ -6,37 +6,37 @@
   padding-left: 30px;
   padding-right: 30px;
 }
-.text-primary-color {
+.text_primary_color {
   color: var(--primary);
   font-size: 4.5rem;
   font-weight: 900;
 }
 
-.login-image-wrapper {
+.login_image_wrapper {
   margin-top: -30px;
   height: min-content;
   width: 500px;
   margin-left: auto;
   margin-right: auto;
 }
-.login-wrapper {
+.login_wrapper {
   margin-top: 60px;
   width: 100%;
 }
-.auth-card {
+.auth_card {
   width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
-.login-button {
+.login_button {
   margin-top: 24px;
 }
-.demo-login-button {
+.demo_login_button {
   margin-top: 10px;
 }
-.remember-me {
+.remember_me {
   margin-top: 18px;
 }
-.login-label:not(:first-child) {
+.login_label:not(:first-child) {
   margin-top: 24px;
 }

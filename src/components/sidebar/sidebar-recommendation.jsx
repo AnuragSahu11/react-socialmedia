@@ -1,4 +1,4 @@
-import { Layout, List, Avatar } from "antd";
+import { Layout, List, Avatar, Divider } from "antd";
 import "./sidebar.css";
 
 const SidebarRecommendations = () => {
@@ -25,10 +25,13 @@ const SidebarRecommendations = () => {
       collapsible={true}
       width={250}
       theme="light"
-      className="sidebar-recommendation"
+      className="sidebar_recommendation"
     >
+      <p className="sidebar_recommendation_text">Who to follow?</p>
+      <Divider className="divider_recommendation" />
       <List
         itemLayout="horizontal"
+        className="list_recommendation"
         dataSource={data}
         renderItem={(item) => (
           <List.Item>

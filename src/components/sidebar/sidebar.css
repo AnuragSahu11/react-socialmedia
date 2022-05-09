@@ -1,9 +1,22 @@
-.sidebar-feed {
+.sidebar_feed {
   height: 92vh;
   position: fixed;
+  z-index: 1;
 }
-.sidebar-recommendation {
+.sidebar_recommendation {
+  padding-top: 15px;
+  padding-bottom: 15px;
   position: fixed;
-  right: 0;
-  margin-top: 10px;
+  right: 0px;
+  margin-top: 10vh;
+}
+.sidebar_recommendation_text {
+  font-size: 1.7rem;
+  margin-left: 10px;
+}
+.divider_recommendation {
+  margin: 0px 10px;
+}
+.list_recommendation {
+  margin: 10px;
 }

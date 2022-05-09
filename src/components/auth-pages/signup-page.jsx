@@ -1,3 +1,0 @@
-const SignUpPage = () => {};
-
-export { SignUpPage };
