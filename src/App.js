@@ -12,6 +12,7 @@ import {
   ProfilePage,
   Sidebar,
   SignUpPage,
+  UserPage,
 } from "./components";
 
 function App() {
@@ -19,13 +20,14 @@ function App() {
     <div className="App">
       <Layout>
         <Navbar />
-        <Sidebar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/user/:userId" element={<ProfilePage />} />
+          <Route path="/user" element={<UserPage />}>
+            <Route path="/user/feed" element={<Feed />} />
+            <Route path="/user/profile" element={<ProfilePage />} />
+          </Route>
         </Routes>
         <FooterComponent />
       </Layout>

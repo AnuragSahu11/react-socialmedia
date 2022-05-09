@@ -4,7 +4,7 @@
 }
 .header-custom {
   background-color: white;
-  /* padding-left: 0px; */
+  position: relative;
 }
 .navbar-heading {
   text-align: left;
