@@ -8,8 +8,10 @@ import {
 } from "@ant-design/icons";
 import "./sidebar.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [showTrigger, setShowTrigger] = useState(false);
   const { Sider } = Layout;
   const triggerSwitch = () => {
@@ -21,28 +23,40 @@ const Sidebar = () => {
       icon: <HomeOutlined />,
       label: "Home",
       onClick: () => {
-        console.log("hey");
+        navigate("/user/feed");
       },
     },
     {
       key: "2",
       icon: <RocketOutlined />,
       label: "Explore",
+      onClick: () => {
+        navigate("/user/explore");
+      },
     },
     {
       key: "3",
       icon: <TagsOutlined />,
       label: "Bookmarks",
+      onClick: () => {
+        navigate("/user/bookmark");
+      },
     },
     {
       key: "4",
       icon: <NotificationOutlined />,
       label: "Notifications",
+      onClick: () => {
+        navigate("/user/notifications");
+      },
     },
     {
       key: "5",
       icon: <UserOutlined />,
       label: "Profile",
+      onClick: () => {
+        navigate("/user/profile");
+      },
     },
   ];
   return (

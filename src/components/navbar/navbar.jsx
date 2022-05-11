@@ -1,19 +1,29 @@
 import "./navbar.css";
 import { Layout, Menu, Input, Row, Col, Button } from "antd";
+import { useState } from "react";
+import { LogoutModal } from "../modals";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { Header } = Layout;
   const { Search } = Input;
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const showLogout = () => setShowLogoutModal((prevState) => !prevState);
   const onSearch = (value) => console.log(value);
   return (
     <Header className="header header_custom">
+      <LogoutModal
+        showLogoutModal={showLogoutModal}
+        setShowLogoutModal={setShowLogoutModal}
+      />
       <Row align="middle">
         <Col flex={"auto"}>
           <Row>
             <Col className="logo navbar_logo" md={4} lg={3} xl={2}>
               <img
                 className="navbar_logo_img"
-                src="/images/logo_social.svg"
+                src="/images/logo-social.svg"
                 alt=""
               />
             </Col>
@@ -32,11 +42,12 @@ const Navbar = () => {
         </Col>
         <Col span={"auto"} className="navbar_buttons">
           <Row>
-            <Button className="navbar_btn" type="primary">
-              Login
-            </Button>
-            <Button className="navbar_btn" type="primary">
-              Sign up
+            <Button
+              onClick={() => navigate("/login")}
+              className="navbar_btn"
+              type="primary"
+            >
+              Login / Signup
             </Button>
           </Row>
         </Col>

@@ -1,10 +1,18 @@
 import { Avatar, Button, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./profile-page.css";
+import { EditProfileModal } from "../modals/edit-profile-modal";
+import { useState } from "react";
 
 const ProfilePage = () => {
+  const [editProfileModal, setEditProfileModal] = useState(false);
+
   return (
     <div className="user_profile">
+      <EditProfileModal
+        editProfileModal={editProfileModal}
+        setEditProfileModal={setEditProfileModal}
+      />
       <div className="user_profile_avatar_wrapper">
         <Avatar size={84} icon={<UserOutlined />} />
       </div>
@@ -12,7 +20,12 @@ const ProfilePage = () => {
         <p className="profile_name">Anurag Sahu</p>
         <p className="profile_id">@Anuragsahu</p>
       </div>
-      <Button type="primary">Follow</Button>
+      <Button
+        onClick={() => setEditProfileModal((prevState) => !prevState)}
+        type="primary"
+      >
+        Follow
+      </Button>
       <div className="profile_disc">
         <p className="">
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque vel

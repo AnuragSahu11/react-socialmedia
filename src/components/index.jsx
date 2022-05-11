@@ -6,3 +6,7 @@ export { ProfilePage } from "./profile-page/profile-page";
 export { Feed } from "./feed-page/feed-page";
 export { UserPage } from "./user-page/user-page";
 export { SidebarRecommendations } from "./sidebar/sidebar-recommendation";
+export { NewPostModal } from "./modals/create-post-modal";
+export { BookmarkPage } from "./bookmark-page/bookmark";
+export { ExplorePage } from "./explore-page/explore";
+export { ErrorPage } from "./error-page/error-page";
