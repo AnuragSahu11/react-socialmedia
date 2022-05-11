@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
-import "antd/dist/antd.css";
+import "../node_modules/antd/dist/antd.css";
 import "./design system/primary-styles.css";
 import "./App.css";
 import {
