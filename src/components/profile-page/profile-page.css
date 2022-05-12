@@ -1,0 +1,62 @@
+.user_profile {
+  margin-top: 30px;
+  text-align: center;
+  width: 50vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+.user_profile_avatar_wrapper {
+  width: min-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.profile_name {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  font-weight: 900;
+  font-size: 3rem;
+}
+.profile_id {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.profile_disc {
+  margin-top: 20px;
+  font-size: 1.6rem;
+}
+.profile_card {
+  margin-top: 24px;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.profile_card_div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+.profile_card_info {
+  font-size: 2rem;
+}
+.profile_card_text {
+  margin-bottom: 0px;
+  font-weight: 600;
+}
+.profile_card_number {
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+@media only screen and (max-width: 992px) {
+  .user_profile {
+    width: 70vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .user_profile {
+    width: 90vw;
+  }
+}

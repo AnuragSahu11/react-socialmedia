@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;0,900;1,300&display=swap");
+* {
+  box-sizing: Border-box;
+  font-family: "Source Sans Pro", sans-serif;
+}
+a {
+  text-decoration: none;
+}
+:root {
+  font-size: 62.5%;
+}
+
+:root {
+  --primary: #1678f2;
+  --white: white;
+}

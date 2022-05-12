@@ -1,0 +1,18 @@
+.error_page_wrapper {
+  height: 83vh;
+}
+.error_image_wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 45vw;
+}
+@media only screen and (max-width: 768px) {
+  .error_image_wrapper {
+    width: 65vw;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .error_image_wrapper {
+    width: 95vw;
+  }
+}
