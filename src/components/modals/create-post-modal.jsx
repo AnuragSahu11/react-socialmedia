@@ -3,7 +3,7 @@ import "./modals.css";
 import { useState } from "react";
 
 const NewPostModal = () => {
-  const [showNewPostModal, setNewPostModal] = useState(true);
+  const [showNewPostModal, setNewPostModal] = useState(false);
   const { TextArea } = Input;
 
   const showModal = () => {
