@@ -10,3 +10,4 @@ export { NewPostModal } from "./modals/create-post-modal";
 export { BookmarkPage } from "./bookmark-page/bookmark";
 export { ExplorePage } from "./explore-page/explore";
 export { ErrorPage } from "./error-page/error-page";
+export { NotificationPage } from "./notification-page/notification-page";

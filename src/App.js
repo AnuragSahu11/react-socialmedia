@@ -14,8 +14,8 @@ import {
   NewPostModal,
   ProfilePage,
   UserPage,
+  NotificationPage,
 } from "./components";
-import { NotificationPage } from "./components/notification-page/notification-page";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         <Navbar />
         <NewPostModal />
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/user" element={<UserPage />}>
             <Route path="/user/explore" element={<ExplorePage />} />
             <Route path="/user/bookmark" element={<BookmarkPage />} />
