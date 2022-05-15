@@ -43,7 +43,7 @@ const Navbar = () => {
         <Col span={"auto"} className="navbar_buttons">
           <Row>
             <Button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/")}
               className="navbar_btn"
               type="primary"
             >

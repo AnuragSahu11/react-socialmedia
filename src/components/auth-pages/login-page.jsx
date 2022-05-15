@@ -2,22 +2,40 @@ import { Col, Row, Card, Input, Button, Checkbox } from "antd";
 import { UserOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import "./login-page.css";
-import { signUp } from "../../firebase/firebase-auth";
+import { loginUser, signUp } from "../../firebase/firebase-auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const LoginPage = () => {
+  const { token, status, error } = useSelector((store) => store.token);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [activeTabKey1, setActiveTabKey1] = useState("login");
+
   const [signUpInput, setSignUpInput] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
   });
+
   const [loginInput, setloginInput] = useState({ email: "", password: "" });
+
   const { firstName, lastName, email, password } = signUpInput;
 
   const signUpClick = () => {
-    console.log(signUpInput);
     signUp(firstName, lastName, email, password);
+  };
+
+  const loginClick = async (demoLogin = false) => {
+    if (demoLogin) {
+      setloginInput({ email: "anurag@gmail.com", password: "123456" });
+      dispatch(loginUser({ email: "anurag@gmail.com", password: "123456" }));
+    } else {
+      dispatch(loginUser(loginInput));
+    }
+    navigate("/user/feed");
   };
 
   const onTab1Change = (key) => {
@@ -42,17 +60,35 @@ const LoginPage = () => {
           className="login_input"
           placeholder="Email Id"
           prefix={<MailOutlined />}
+          onChange={(e) =>
+            setloginInput({ ...loginInput, email: e.target.value })
+          }
+          value={loginInput.email}
         />
         <p className="login_label">Password</p>
         <Input
+          type={"password"}
           className="login_input"
           placeholder="Password"
           prefix={<KeyOutlined />}
+          onChange={(e) =>
+            setloginInput({ ...loginInput, password: e.target.value })
+          }
+          value={loginInput.password}
         />
-        <Button className="login_button" block={true} type="primary">
+        <Button
+          onClick={loginClick}
+          className="login_button"
+          block={true}
+          type="primary"
+        >
           Login
         </Button>
-        <Button className="demo_login_button" block={true}>
+        <Button
+          onClick={() => loginClick(true)}
+          className="demo_login_button"
+          block={true}
+        >
           Login with demo credentials
         </Button>
       </div>
