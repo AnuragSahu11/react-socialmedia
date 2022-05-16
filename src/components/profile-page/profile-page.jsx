@@ -15,7 +15,6 @@ const ProfilePage = () => {
   useEffect(() => {
     if (token) {
       dispatch(getUserData(token));
-      
     }
   }, []);
 
