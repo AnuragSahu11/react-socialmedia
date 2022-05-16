@@ -1,0 +1,44 @@
+.post_container {
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 6rem;
+}
+.ant-space-item .post_image_wrapper {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.post_image_wrapper_outer {
+  background-color: #f5f5f4;
+}
+.add_comment_avatar {
+  margin-right: 10px;
+}
+.comment_row {
+  margin-top: 8px;
+}
+.add_comment_button {
+  margin-left: 8px;
+}
+
+@media only screen and (max-width: 1600px) {
+  .post_container {
+    width: 55vw;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .post_container {
+    width: 48vw;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .post_container {
+    width: 80vw;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .post_container {
+    width: 90vw;
+  }
+}

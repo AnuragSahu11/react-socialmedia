@@ -38,7 +38,7 @@ const createUser = async (firstName, lastName, email, userID) => {
   }
 };
 
-const newPost = async (postTitle, postContent, postImg, userID) => {
+const newPost = async (postTitle, postContent, postImg, userID, userHandle) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
       title: postTitle,
@@ -47,6 +47,8 @@ const newPost = async (postTitle, postContent, postImg, userID) => {
       time: serverTimestamp(),
       comments: {},
       likes: 0,
+      postBy: userHandle,
+      postByID: userID,
     });
     const userPostRef = doc(db, userID, "posts");
     await updateDoc(userPostRef, { posts: arrayUnion(docRef.id) });

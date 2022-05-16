@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment, getPosts } from "../../firebase/firestore-methods";
+import { PostContainer } from "../post/post-container";
 import { CreatePost } from "./components/create-post";
 
 const Feed = () => {
@@ -21,6 +22,7 @@ const Feed = () => {
   return (
     <div className="">
       <CreatePost />
+      <PostContainer />
     </div>
   );
 };
