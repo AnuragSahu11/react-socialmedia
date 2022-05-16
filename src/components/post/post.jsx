@@ -17,7 +17,7 @@ const Post = ({ postData }) => {
   const { Meta } = Card;
   const { Text } = Typography;
 
-  //   const { title, content, time, likes, postBy } = postData;
+  const { caption, content } = postData;
 
   const toggleComments = () => setShowComments((prevState) => !prevState);
 
@@ -33,7 +33,7 @@ const Post = ({ postData }) => {
         />
         <Divider plain></Divider>
         <Space className="post_content" direction="vertical">
-          <Text>My First Post</Text>
+          <Text>{caption}</Text>
           <div className="post_image_wrapper_outer">
             <div className="post_image_wrapper">
               <Image
@@ -42,14 +42,7 @@ const Post = ({ postData }) => {
               />
             </div>
           </div>
-
-          <Text>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-            laudantium deleniti debitis rerum repellendus cum sint a. Tenetur
-            aliquam, quia tempore repudiandae totam saepe laboriosam at
-            reiciendis? Itaque voluptas id natus fuga quisquam hic quam possimus
-            quas eveniet, esse architecto.
-          </Text>
+          <Text>{content}</Text>
         </Space>
         <Divider plain></Divider>
         <Space>

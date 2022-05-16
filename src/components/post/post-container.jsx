@@ -4,7 +4,6 @@ import { Post } from "..";
 import { getPosts } from "../../firebase/firestore-methods";
 import "./post-container.css";
 import { Skeleton } from "antd";
-import { async } from "@firebase/util";
 
 const PostContainer = () => {
   const { posts, status } = useSelector((store) => store.posts);
@@ -13,18 +12,14 @@ const PostContainer = () => {
   const [postsArray, setPostsArray] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      await dispatch(getPosts());
-    })();
+    dispatch(getPosts());
   }, []);
 
   useEffect(() => {
-    console.log(posts, status);
     status === "fulfilled" &&
       setPostsArray(
         Object.keys(posts).map((postID) => {
-          const { caption, content } = posts[postID];
-          return <Post />;
+          return <Post postData={posts[postID]} />;
         })
       );
   }, [status]);

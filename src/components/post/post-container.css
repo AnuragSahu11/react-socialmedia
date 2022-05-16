@@ -21,6 +21,9 @@
 .add_comment_button {
   margin-left: 8px;
 }
+.post_content {
+  width: 100%;
+}
 
 @media only screen and (max-width: 1600px) {
   .post_container {
