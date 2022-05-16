@@ -1,13 +1,11 @@
 import { Card, Avatar } from "antd";
 import { PictureTwoTone, SmileTwoTone, EditTwoTone } from "@ant-design/icons";
-import {
-  getPosts,
-  getUserPost,
-  newPost,
-} from "../../../firebase/firestore-methods";
 import "./feed-page-components.css";
+import { useDispatch, useSelector } from "react-redux";
+import { showNewPostModal } from "../../../redux/slice/operation-slice";
 
 const CreatePost = () => {
+  const dispatch = useDispatch();
   const data = [
     "First POst",
     " lorem  ",
@@ -21,7 +19,7 @@ const CreatePost = () => {
           {" "}
           <Avatar size={55} src="https://joeschmoe.io/api/v1/random" />
           <button
-            onClick={() => getUserPost("MpSyr9PMbnedKtQ09DOaQah32k03")}
+            onClick={() => dispatch(showNewPostModal())}
             className="button_new_post"
           >
             Start a Post

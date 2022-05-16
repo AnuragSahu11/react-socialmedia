@@ -38,10 +38,16 @@ const createUser = async (firstName, lastName, email, userID) => {
   }
 };
 
-const newPost = async (postTitle, postContent, postImg, userID, userHandle) => {
+const newPost = async (
+  postCaption,
+  postContent,
+  userID,
+  userHandle,
+  postImg = "hmm"
+) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
-      title: postTitle,
+      caption: postCaption,
       content: postContent,
       img: postImg,
       time: serverTimestamp(),
@@ -53,7 +59,7 @@ const newPost = async (postTitle, postContent, postImg, userID, userHandle) => {
     const userPostRef = doc(db, userID, "posts");
     await updateDoc(userPostRef, { posts: arrayUnion(docRef.id) });
   } catch (error) {
-    console.error(error);
+    throw error.message;
   }
 };
 

@@ -12,14 +12,16 @@ const loginUser = createAsyncThunk("login", async (loginCredentials) => {
     } = await signInWithEmailAndPassword(auth, email, password);
     console.log(uid);
     return uid;
-  } catch {}
+  } catch (err) {
+    throw err.message;
+  }
 });
 
 const signUp = async (firstName, lastName, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     createUser(firstName, lastName, email, res.user.uid);
-  } catch {
+  } catch (err) {
     const errCode = err.code;
     const errorMessage = err.message;
     console.log(errCode, errorMessage);

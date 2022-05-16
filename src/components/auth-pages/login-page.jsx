@@ -31,9 +31,11 @@ const LoginPage = () => {
   const loginClick = async (demoLogin = false) => {
     if (demoLogin) {
       setloginInput({ email: "anurag@gmail.com", password: "123456" });
-      dispatch(loginUser({ email: "anurag@gmail.com", password: "123456" }));
+      await dispatch(
+        loginUser({ email: "anurag@gmail.com", password: "123456" })
+      );
     } else {
-      dispatch(loginUser(loginInput));
+      await dispatch(loginUser(loginInput));
     }
     navigate("/user/feed");
   };
@@ -81,6 +83,7 @@ const LoginPage = () => {
           className="login_button"
           block={true}
           type="primary"
+          loading={status === "loading"}
         >
           Login
         </Button>
@@ -88,6 +91,7 @@ const LoginPage = () => {
           onClick={() => loginClick(true)}
           className="demo_login_button"
           block={true}
+          loading={status === "loading"}
         >
           Login with demo credentials
         </Button>
