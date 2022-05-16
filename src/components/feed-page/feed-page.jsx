@@ -21,9 +21,6 @@ const Feed = () => {
   return (
     <div className="">
       <CreatePost />
-      <button onClick={demo}>
-        hellosdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-      </button>
     </div>
   );
 };
