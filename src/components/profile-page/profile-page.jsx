@@ -2,10 +2,21 @@ import { Avatar, Button, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./profile-page.css";
 import { EditProfileModal } from "../modals/edit-profile-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserData } from "../../firebase/firestore-methods";
 
 const ProfilePage = () => {
   const [editProfileModal, setEditProfileModal] = useState(false);
+  const { token } = useSelector((store) => store.token);
+  const { userData } = useSelector((store) => store.userData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserData(token));
+    }
+  }, []);
 
   return (
     <div className="user_profile">
@@ -13,7 +24,10 @@ const ProfilePage = () => {
         editProfileModal={editProfileModal}
         setEditProfileModal={setEditProfileModal}
       />
-      <div className="user_profile_avatar_wrapper">
+      <div
+        onClick={() => console.log(userData)}
+        className="user_profile_avatar_wrapper"
+      >
         <Avatar size={84} icon={<UserOutlined />} />
       </div>
       <div className="profile_name_id">
