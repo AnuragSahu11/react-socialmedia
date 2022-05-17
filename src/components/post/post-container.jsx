@@ -19,7 +19,7 @@ const PostContainer = () => {
     status === "fulfilled" &&
       setPostsArray(
         Object.keys(posts).map((postID) => {
-          return <Post postData={posts[postID]} />;
+          return <Post key={postID} postData={posts[postID]} postID={postID} />;
         })
       );
   }, [status]);

@@ -3,8 +3,7 @@ import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hideNewPostModal } from "../../redux/slice/operation-slice";
-import { newPost } from "../../firebase/firestore-methods";
-import { async } from "@firebase/util";
+import { getPosts, newPost } from "../../firebase/firestore-methods";
 
 const NewPostModal = () => {
   const { newPostModal } = useSelector((store) => store.operationData);
@@ -19,6 +18,7 @@ const NewPostModal = () => {
     setConfirmLoading(true);
     try {
       await newPost(inputField.caption, inputField.content, token, "anurg");
+      dispatch(getPosts());
       dispatch(hideNewPostModal());
     } catch (err) {
       console.error(err);

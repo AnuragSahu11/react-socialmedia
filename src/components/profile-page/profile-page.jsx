@@ -12,12 +12,6 @@ const ProfilePage = () => {
   const { userData } = useSelector((store) => store.userData);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (token) {
-      dispatch(getUserData(token));
-    }
-  }, []);
-
   return (
     <div className="user_profile">
       <EditProfileModal

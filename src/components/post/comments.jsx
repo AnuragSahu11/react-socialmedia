@@ -14,10 +14,28 @@ import {
   List,
 } from "antd";
 import { MessageTwoTone } from "@ant-design/icons";
+import { useState } from "react";
+import { addComment, getPosts } from "../../firebase/firestore-methods";
+import { useDispatch, useSelector } from "react-redux";
 
-const Comments = () => {
+const Comments = ({ commentData, postID }) => {
+  const { userData } = useSelector((store) => store.userData);
+  const dispatch = useDispatch();
   const { Title, Text } = Typography;
   const { TextArea } = Input;
+
+  const [textField, setTextField] = useState("");
+  const [addLoading, setLoading] = useState(false);
+
+  const commentList = Object.keys(commentData).map((commentID) => {
+    const { commentText, commentName } = commentData[commentID];
+    return {
+      author: commentName,
+      avatar: "https://joeschmoe.io/api/v1/random",
+      content: <p>{commentText}</p>,
+    };
+  });
+
   const data = [
     {
       author: "Anurag Sahu",
@@ -30,6 +48,14 @@ const Comments = () => {
       ),
     },
   ];
+
+  const addCommentClick = async () => {
+    setLoading(true);
+    await addComment(postID, textField, "anurag");
+    setLoading(false);
+    dispatch(getPosts());
+  };
+
   return (
     <>
       <Divider plain />
@@ -39,20 +65,27 @@ const Comments = () => {
           <Avatar src="https://joeschmoe.io/api/v1/random" />
         </Col>
         <Col flex="auto">
-          <TextArea size="" placeholder="Add Comment" autoSize />
+          <TextArea
+            size=""
+            onChange={(e) => setTextField(e.target.value)}
+            placeholder="Add Comment"
+            autoSize
+          />
         </Col>
         <Button
           className="add_comment_button"
           type="primary"
           shape="circle"
           icon={<MessageTwoTone />}
+          onClick={addCommentClick}
+          loading={addLoading}
         />
       </Row>
       <List
         className="comment-list"
-        header={`${data.length} comments`}
+        header={`${commentList.length} comments`}
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={commentList}
         renderItem={(item) => (
           <li>
             <Comment

@@ -9,17 +9,42 @@ import {
   Tooltip,
 } from "antd";
 import { LikeTwoTone, LikeOutlined, CommentOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Comments } from "./comments";
+import {
+  dislikePost,
+  getPosts,
+  getUserData,
+  likePost,
+} from "../../firebase/firestore-methods";
+import { useDispatch, useSelector } from "react-redux";
 
-const Post = ({ postData }) => {
-  const [showComments, setShowComments] = useState(false);
+const Post = ({ postData, postID }) => {
+  const { token } = useSelector((store) => store.token);
+  const { userData } = useSelector((store) => store.userData);
+  const dispatch = useDispatch();
+  const [isLiked, setIsLiked] = useState(false);
+
   const { Meta } = Card;
   const { Text } = Typography;
 
-  const { caption, content } = postData;
+  const [showComments, setShowComments] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
+
+  const { caption, content, comments } = postData;
+
+  useEffect(() => {
+    setIsLiked(userData?.likedPost?.likedPost?.includes(postID));
+  }, [userData]);
 
   const toggleComments = () => setShowComments((prevState) => !prevState);
+
+  const clickLike = async () => {
+    setLikeLoading(true);
+    isLiked ? await dislikePost(postID, token) : await likePost(postID, token);
+    setLikeLoading(false);
+    dispatch(getUserData(token));
+  };
 
   return (
     <div className="post_wrapper">
@@ -47,7 +72,13 @@ const Post = ({ postData }) => {
         <Divider plain></Divider>
         <Space>
           <Tooltip title="Like post">
-            <Button size="large" shape="circle" icon={<LikeTwoTone />} />
+            <Button
+              onClick={clickLike}
+              size="large"
+              shape="circle"
+              icon={isLiked ? <LikeTwoTone /> : <LikeOutlined />}
+              loading={likeLoading}
+            />
           </Tooltip>
           <Tooltip title="Comments">
             <Button
@@ -58,7 +89,7 @@ const Post = ({ postData }) => {
             />
           </Tooltip>
         </Space>
-        {showComments && <Comments />}
+        {showComments && <Comments commentData={comments} postID={postID} />}
       </Card>
     </div>
   );

@@ -4,7 +4,7 @@ import { loginUser } from "../../firebase/firebase-auth";
 const initialState = {
   status: "idle",
   error: null,
-  token: null,
+  token: "MpSyr9PMbnedKtQ09DOaQah32k03",
 };
 
 const authSlice = createSlice({

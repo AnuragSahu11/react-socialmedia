@@ -8,7 +8,7 @@ const Feed = () => {
   const { token } = useSelector((store) => store.token);
   const { posts } = useSelector((store) => store.posts);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     if (token) {
       dispatch(getPosts());
