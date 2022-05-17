@@ -1,13 +1,9 @@
 import {
-  Card,
   Avatar,
   Divider,
   Typography,
-  Space,
-  Image,
   Button,
   Input,
-  Tooltip,
   Row,
   Col,
   Comment,

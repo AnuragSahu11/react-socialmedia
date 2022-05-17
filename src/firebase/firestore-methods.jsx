@@ -12,7 +12,6 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
-  onSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 const short = require("short-uuid");

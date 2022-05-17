@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Post } from "..";
-import { getPosts } from "../../firebase/firestore-methods";
 import "./post-container.css";
 import { Skeleton } from "antd";
 
 const PostContainer = () => {
   const { posts, status } = useSelector((store) => store.posts);
-  const dispatch = useDispatch();
-
   const [postsArray, setPostsArray] = useState([]);
-
-  useEffect(() => {
-    dispatch(getPosts());
-  }, []);
 
   useEffect(() => {
     status === "fulfilled" &&
@@ -26,7 +19,13 @@ const PostContainer = () => {
 
   return (
     <div className="post_container">
-      {status === "fulfilled" ? postsArray : <Skeleton />}
+      {status === "fulfilled" ? (
+        postsArray
+      ) : (
+        <>
+          <Skeleton active={true} /> <Skeleton active={true} />
+        </>
+      )}
     </div>
   );
 };

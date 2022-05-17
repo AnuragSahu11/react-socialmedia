@@ -1,17 +1,11 @@
 import { Card, Avatar } from "antd";
 import { PictureTwoTone, SmileTwoTone, EditTwoTone } from "@ant-design/icons";
 import "./feed-page-components.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { showNewPostModal } from "../../../redux/slice/operation-slice";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
-  const data = [
-    "First POst",
-    " lorem  ",
-    "hello",
-    "MpSyr9PMbnedKtQ09DOaQah32k03",
-  ];
   return (
     <div className="site_card_border_less_wrapper">
       <Card className="card_post" title="New Post" bordered={false}>

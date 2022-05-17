@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const LoginPage = () => {
-  const { token, status, error } = useSelector((store) => store.token);
+  const { status } = useSelector((store) => store.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

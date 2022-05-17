@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { Sidebar } from "../sidebar/sidebar";
 import { SidebarRecommendations } from "../sidebar/sidebar-recommendation";
 import { useEffect } from "react";
-import { getUserData } from "../../firebase/firestore-methods";
+import { getPosts, getUserData } from "../../firebase/firestore-methods";
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,12 @@ const UserPage = () => {
       dispatch(getUserData(token));
     }
   }, [posts]);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getPosts());
+    }
+  }, []);
 
   return (
     <Layout>
