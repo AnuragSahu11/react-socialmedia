@@ -8,16 +8,12 @@ const Feed = () => {
   const { token } = useSelector((store) => store.token);
   const { posts } = useSelector((store) => store.posts);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     if (token) {
       dispatch(getPosts());
     }
   }, []);
-
-  const demo = () => {
-    addComment("cKiUYeDXc0RegNnE5vQw", "this is a comment", "anurag");
-  };
 
   return (
     <div className="">

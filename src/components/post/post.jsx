@@ -13,21 +13,20 @@ import { useEffect, useState } from "react";
 import { Comments } from "./comments";
 import {
   dislikePost,
-  getPosts,
   getUserData,
   likePost,
 } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 
 const Post = ({ postData, postID }) => {
-  const { token } = useSelector((store) => store.token);
-  const { userData } = useSelector((store) => store.userData);
-  const dispatch = useDispatch();
-  const [isLiked, setIsLiked] = useState(false);
-
   const { Meta } = Card;
   const { Text } = Typography;
+  const dispatch = useDispatch();
 
+  const { token } = useSelector((store) => store.token);
+  const { userData } = useSelector((store) => store.userData);
+
+  const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
 
