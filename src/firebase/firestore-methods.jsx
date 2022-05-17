@@ -123,7 +123,11 @@ const addComment = async (postID, commentText, commentName) => {
   try {
     const commentDoc = doc(db, "Posts", postID);
     await updateDoc(commentDoc, {
-      [newComment]: { commentName, commentText },
+      [newComment]: {
+        commentName,
+        commentText,
+        commentTime: serverTimestamp(),
+      },
     });
   } catch (err) {}
 };

@@ -23,27 +23,17 @@ const Comments = ({ commentData, postID }) => {
   const [textField, setTextField] = useState("");
   const [addLoading, setLoading] = useState(false);
 
-  const commentList = Object.keys(commentData).map((commentID) => {
-    const { commentText, commentName } = commentData[commentID];
-    return {
-      author: commentName,
-      avatar: "https://joeschmoe.io/api/v1/random",
-      content: <p>{commentText}</p>,
-    };
-  });
-
-  const data = [
-    {
-      author: "Anurag Sahu",
-      avatar: "https://joeschmoe.io/api/v1/random",
-      content: (
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus,
-          atque.
-        </p>
-      ),
-    },
-  ];
+  const commentList = Object.keys(commentData)
+    .map((commentID) => {
+      const { commentText, commentName, commentTime } = commentData[commentID];
+      return {
+        author: commentName,
+        avatar: "https://joeschmoe.io/api/v1/random",
+        content: <p>{commentText}</p>,
+        commentTime: commentTime,
+      };
+    })
+    .sort((a, b) => a.commentTime - b.commentTime);
 
   const addCommentClick = async () => {
     setLoading(true);
