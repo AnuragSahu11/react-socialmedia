@@ -5,8 +5,7 @@ const initialState = {
   error: null,
   newPostModal: false,
   darkmode: false,
-  filterPost: null,
-  sortPost: null,
+  sortPost: "recent",
 };
 
 const operationSlice = createSlice({
@@ -19,11 +18,12 @@ const operationSlice = createSlice({
     hideNewPostModal: (state) => {
       state.newPostModal = false;
     },
-    changeFilter: (state, action) => {
-      state.filterPost = action.payload;
+    changeSort: (state, action) => {
+      state.sortPost = action.payload;
     },
   },
 });
 
-export const { showNewPostModal, hideNewPostModal } = operationSlice.actions;
+export const { showNewPostModal, hideNewPostModal, changeSort } =
+  operationSlice.actions;
 export default operationSlice.reducer;

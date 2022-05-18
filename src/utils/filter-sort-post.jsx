@@ -2,7 +2,7 @@ import { filterConstants } from "./constants";
 
 const filterAndSort = (
   postObj,
-  sort = filterConstants.latest,
+  sort = filterConstants.recent,
   userID = null
 ) => {
   const postArr = Object.keys(postObj).map((postID) => {
@@ -19,8 +19,8 @@ const filterPost = (arr, { userID }) => {
 };
 
 const sortPost = (arr, { sort }) => {
-  if (sort === filterConstants.latest)
-    return arr.sort((a, b) => a.time - b.time);
+  if (sort === filterConstants.recent)
+    return arr.sort((a, b) => b.time - a.time);
   else return arr.sort((a, b) => b.likes - a.likes);
 };
 
