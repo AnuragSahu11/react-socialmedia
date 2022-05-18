@@ -8,7 +8,13 @@ import {
   Button,
   Tooltip,
 } from "antd";
-import { LikeTwoTone, LikeOutlined, CommentOutlined } from "@ant-design/icons";
+import {
+  LikeTwoTone,
+  LikeOutlined,
+  CommentOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Comments } from "./comments";
 import {
@@ -17,8 +23,10 @@ import {
   likePost,
 } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
+import { EditPostModal } from "../modals/edit-post-modal";
+import { DeletePostModal } from "../modals";
 
-const Post = ({ postData, postID }) => {
+const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
   const { Text } = Typography;
   const dispatch = useDispatch();
@@ -28,7 +36,9 @@ const Post = ({ postData, postID }) => {
 
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [likeLoading, setLikeLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [editPostModal, setEditPostModal] = useState(false);
+  const [deletePostModal, setDeletePostModal] = useState(false);
 
   const { caption, content, comments } = postData;
 
@@ -36,17 +46,35 @@ const Post = ({ postData, postID }) => {
     setIsLiked(userData?.likedPost?.likedPost?.includes(postID));
   }, [userData]);
 
+  const toggleEditPostModal = () => {
+    setEditPostModal((prevState) => !prevState);
+  };
+
+  const toggleDeletePostModal = () => {
+    setDeletePostModal((prevState) => !prevState);
+  };
+
   const toggleComments = () => setShowComments((prevState) => !prevState);
 
   const clickLike = async () => {
-    setLikeLoading(true);
+    setIsLoading(true);
     isLiked ? await dislikePost(postID, token) : await likePost(postID, token);
-    setLikeLoading(false);
+    setIsLoading(false);
     dispatch(getUserData(token));
   };
 
   return (
     <div className="post_wrapper">
+      <EditPostModal
+        isVisible={editPostModal}
+        toggleModal={toggleEditPostModal}
+        postData={postData}
+      />
+      <DeletePostModal
+        isVisible={deletePostModal}
+        toggleModal={toggleDeletePostModal}
+        postID={postID}
+      />
       <Card>
         <Meta
           title="Card title"
@@ -70,15 +98,39 @@ const Post = ({ postData, postID }) => {
         </Space>
         <Divider plain></Divider>
         <Space>
-          <Tooltip title="Like post">
-            <Button
-              onClick={clickLike}
-              size="large"
-              shape="circle"
-              icon={isLiked ? <LikeTwoTone /> : <LikeOutlined />}
-              loading={likeLoading}
-            />
-          </Tooltip>
+          {editPost ? (
+            <>
+              <Tooltip title="Edit post">
+                <Button
+                  onClick={toggleEditPostModal}
+                  size="large"
+                  shape="circle"
+                  icon={<EditOutlined />}
+                  loading={isLoading}
+                />
+              </Tooltip>
+              <Tooltip title="Delete post">
+                <Button
+                  onClick={toggleDeletePostModal}
+                  size="large"
+                  shape="circle"
+                  icon={<DeleteOutlined />}
+                  loading={isLoading}
+                />
+              </Tooltip>
+            </>
+          ) : (
+            <Tooltip title="Like post">
+              <Button
+                onClick={clickLike}
+                size="large"
+                shape="circle"
+                icon={isLiked ? <LikeTwoTone /> : <LikeOutlined />}
+                loading={isLoading}
+              />
+            </Tooltip>
+          )}
+
           <Tooltip title="Comments">
             <Button
               onClick={toggleComments}

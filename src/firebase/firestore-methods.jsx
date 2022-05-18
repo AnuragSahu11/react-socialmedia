@@ -65,18 +65,21 @@ const newPost = async (
   }
 };
 
-const deletePost = async (postID) => {
+const deletePost = async (postID, userID) => {
   try {
-    updateDoc(userPostRef, { posts: arrayRemove(docRef.id) });
+    const userPostRef = doc(db, userID, "posts");
+    updateDoc(userPostRef, { posts: arrayRemove(postID) });
     await deleteDoc(doc(db, "Posts", postID));
   } catch (err) {}
 };
 
 const updatePost = async (postID, updatedPost) => {
+  const { caption, content } = updatedPost;
   try {
     const postRef = doc(db, "Posts", postID);
     await updateDoc(postRef, {
-      updatedPost,
+      caption,
+      content,
     });
   } catch (err) {}
 };

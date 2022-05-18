@@ -3,18 +3,28 @@ import { useSelector } from "react-redux";
 import { Post } from "..";
 import "./post-container.css";
 import { Skeleton } from "antd";
+import { filterAndSort } from "../../utils";
 
-const PostContainer = () => {
+const PostContainer = ({ userID, editPost }) => {
   const { posts, status } = useSelector((store) => store.posts);
+  const { sortPost } = useSelector((store) => store.operationData);
   const [postsArray, setPostsArray] = useState([]);
 
   useEffect(() => {
-    status === "fulfilled" &&
+    if (status === "fulfilled") {
       setPostsArray(
-        Object.keys(posts).map((postID) => {
-          return <Post key={postID} postData={posts[postID]} postID={postID} />;
+        filterAndSort(posts, sortPost, userID).map((postData) => {
+          return (
+            <Post
+              key={postData.postID}
+              postData={postData}
+              postID={postData.postID}
+              editPost={editPost || false}
+            />
+          );
         })
       );
+    }
   }, [status]);
 
   return (

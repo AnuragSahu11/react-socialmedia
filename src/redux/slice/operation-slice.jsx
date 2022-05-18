@@ -5,6 +5,8 @@ const initialState = {
   error: null,
   newPostModal: false,
   darkmode: false,
+  filterPost: null,
+  sortPost: null,
 };
 
 const operationSlice = createSlice({
@@ -16,6 +18,9 @@ const operationSlice = createSlice({
     },
     hideNewPostModal: (state) => {
       state.newPostModal = false;
+    },
+    changeFilter: (state, action) => {
+      state.filterPost = action.payload;
     },
   },
 });
