@@ -9,6 +9,8 @@
   position: fixed;
   right: 0px;
   margin-top: 10vh;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .sidebar_recommendation_text {
   font-size: 1.7rem;

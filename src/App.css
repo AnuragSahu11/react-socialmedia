@@ -4,6 +4,8 @@
   z-index: 0;
 }
 .content {
-  height: 90vh;
+  height: fit-content;
+  min-height: 90vh;
   background: #ececec;
+  z-index: 0;
 }

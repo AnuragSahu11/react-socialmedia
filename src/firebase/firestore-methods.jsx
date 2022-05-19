@@ -29,29 +29,39 @@ const createUser = async (firstName, lastName, email, userID) => {
       website: "",
     });
     const postRef = doc(db, userID, "posts");
-    batch.set(postRef, { posts: [] });
+    const likedPostRef = doc(db, userID, "likedPost");
     const followRef = doc(db, userID, "follow");
+    batch.set(postRef, { posts: [] });
     batch.set(followRef, { following: [], followers: [] });
+    batch.set(likedPostRef, { likedPost: [] });
     await batch.commit();
   } catch {
     console.error("Error adding document: ", err);
   }
 };
 
-const newPost = async (postTitle, postContent, postImg, userID) => {
+const newPost = async (
+  postCaption,
+  postContent,
+  userID,
+  userHandle,
+  postImg = "hmm"
+) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
-      title: postTitle,
+      caption: postCaption,
       content: postContent,
       img: postImg,
       time: serverTimestamp(),
-      comments: {},
+      comments: [],
       likes: 0,
+      postBy: userHandle,
+      postByID: userID,
     });
     const userPostRef = doc(db, userID, "posts");
     await updateDoc(userPostRef, { posts: arrayUnion(docRef.id) });
   } catch (error) {
-    console.error(error);
+    throw error.message;
   }
 };
 
@@ -78,7 +88,6 @@ const getPosts = createAsyncThunk("get/allPost", async () => {
     querySnapshot.forEach((doc) => {
       postData[doc.id] = doc.data();
     });
-    console.log(postData);
     return postData;
   } catch (err) {
     console.error("Error during fetching data: ", err);
@@ -108,29 +117,43 @@ const getUserData = createAsyncThunk("get/userdata", async (userID) => {
   }
 });
 
-const addComment = async (postID, commentData, commentName) => {
+const addComment = async (postID, commentText, commentName) => {
   const newID = short.generate();
   const newComment = `comments.${newID}`;
   try {
     const commentDoc = doc(db, "Posts", postID);
     await updateDoc(commentDoc, {
-      [newComment]: { commentData, commentName },
+      [newComment]: {
+        commentName,
+        commentText,
+        commentTime: serverTimestamp(),
+      },
     });
   } catch (err) {}
 };
 
-const likePost = async (postID) => {
+const likePost = async (postID, userID) => {
   try {
     const commentDoc = doc(db, "Posts", postID);
+    const userDoc = doc(db, userID, "likedPost");
+
+    updateDoc(userDoc, {
+      likedPost: arrayUnion(postID),
+    });
     await updateDoc(commentDoc, {
       likes: increment(1),
     });
   } catch (err) {}
 };
 
-const dislikePost = async (postID) => {
+const dislikePost = async (postID, userID) => {
   try {
     const commentDoc = doc(db, "Posts", postID);
+    const userDoc = doc(db, userID, "likedPost");
+
+    updateDoc(userDoc, {
+      likedPost: arrayRemove(postID),
+    });
     await updateDoc(commentDoc, {
       likes: increment(-1),
     });

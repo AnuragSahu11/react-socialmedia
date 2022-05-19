@@ -11,3 +11,5 @@ export { BookmarkPage } from "./bookmark-page/bookmark";
 export { ExplorePage } from "./explore-page/explore";
 export { ErrorPage } from "./error-page/error-page";
 export { NotificationPage } from "./notification-page/notification-page";
+export { Post } from "./post/post";
+export { PostContainer } from "./post/post-container";
