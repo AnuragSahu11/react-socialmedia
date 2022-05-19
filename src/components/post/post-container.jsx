@@ -6,30 +6,33 @@ import { Skeleton, Input, Select } from "antd";
 import { filterAndSort } from "../../utils";
 import { changeSort } from "../../redux/slice/operation-slice";
 
-const PostContainer = ({ userID, editPost }) => {
+const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
   const dispatch = useDispatch();
   const Option = Select.Option;
 
   const { posts, status } = useSelector((store) => store.posts);
+  const { userData } = useSelector((store) => store.userData);
   const { sortPost } = useSelector((store) => store.operationData);
   const [postsArray, setPostsArray] = useState([]);
 
   useEffect(() => {
     if (status === "fulfilled") {
       setPostsArray(
-        filterAndSort(posts, sortPost, userID).map((postData) => {
-          return (
-            <Post
-              key={postData.postID}
-              postData={postData}
-              postID={postData.postID}
-              editPost={editPost || false}
-            />
-          );
-        })
+        filterAndSort(posts, userID, bookmarks, feed, sortPost).map(
+          (postData) => {
+            return (
+              <Post
+                key={postData.postID}
+                postData={postData}
+                postID={postData.postID}
+                editPost={editPost || false}
+              />
+            );
+          }
+        )
       );
     }
-  }, [status, sortPost]);
+  }, [sortPost, userData]);
 
   return (
     <div className="post_container">

@@ -2,18 +2,31 @@ import { filterConstants } from "./constants";
 
 const filterAndSort = (
   postObj,
-  sort = filterConstants.recent,
-  userID = null
+  userID = null,
+  bookmark = null,
+  feed = null,
+  sort = filterConstants.recent
 ) => {
   const postArr = Object.keys(postObj).map((postID) => {
     return { ...postObj[postID], postID };
   });
-  return curryFunc(postArr, { sort, userID })(filterPost, sortPost);
+  return curryFunc(postArr, { sort, userID, bookmark, feed })(
+    filterPost,
+    sortPost
+  );
 };
 
-const filterPost = (arr, { userID }) => {
-  if (userID) {
+const filterPost = (arr, { userID, bookmark, feed }) => {
+  if (userID && !feed) {
     return arr.filter((post) => post.postByID === userID);
+  }
+  if (bookmark) {
+    return arr.filter((post) => bookmark.includes(post.postID));
+  }
+  if (feed) {
+    return arr.filter(
+      (post) => feed.includes(post.postByID) || post.postByID === userID
+    );
   }
   return arr;
 };

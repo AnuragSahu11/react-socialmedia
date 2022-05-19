@@ -14,18 +14,23 @@ import {
   CommentOutlined,
   EditOutlined,
   DeleteOutlined,
+  BookOutlined,
+  BookTwoTone,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Comments } from "./comments";
 import {
+  bookmarkPost,
   dislikePost,
   getUserData,
   likePost,
+  removeBookmark,
 } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 import { EditPostModal } from "../modals/edit-post-modal";
 import { DeletePostModal } from "../modals";
 import { useNavigate } from "react-router-dom";
+import { changeSort } from "../../redux/slice/operation-slice";
 
 const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
@@ -38,14 +43,17 @@ const Post = ({ postData, postID, editPost }) => {
 
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [editPostModal, setEditPostModal] = useState(false);
   const [deletePostModal, setDeletePostModal] = useState(false);
+  const [inBookmark, setInBookmark] = useState(false);
 
   const { caption, content, comments, postByID } = postData;
 
   useEffect(() => {
     setIsLiked(userData?.likedPost?.likedPost?.includes(postID));
+    setInBookmark(userData?.bookmarks?.bookmarks?.includes(postID));
   }, [userData]);
 
   const toggleEditPostModal = () => {
@@ -59,10 +67,21 @@ const Post = ({ postData, postID, editPost }) => {
   const toggleComments = () => setShowComments((prevState) => !prevState);
 
   const clickLike = async () => {
-    setIsLoading(true);
+    setLikeLoading(true);
     isLiked ? await dislikePost(postID, token) : await likePost(postID, token);
-    setIsLoading(false);
+    setLikeLoading(false);
     dispatch(getUserData(token));
+  };
+
+  const clickBookmark = async () => {
+    setBookmarkLoading(true);
+    inBookmark
+      ? await removeBookmark(postID, token)
+      : await bookmarkPost(postID, token);
+
+    setBookmarkLoading(false);
+    dispatch(getUserData(token));
+    dispatch(changeSort("recent"));
   };
 
   const clickProfile = () => {
@@ -114,7 +133,6 @@ const Post = ({ postData, postID, editPost }) => {
                   size="large"
                   shape="circle"
                   icon={<EditOutlined />}
-                  loading={isLoading}
                 />
               </Tooltip>
               <Tooltip title="Delete post">
@@ -123,20 +141,30 @@ const Post = ({ postData, postID, editPost }) => {
                   size="large"
                   shape="circle"
                   icon={<DeleteOutlined />}
-                  loading={isLoading}
                 />
               </Tooltip>
             </>
           ) : (
-            <Tooltip title="Like post">
-              <Button
-                onClick={clickLike}
-                size="large"
-                shape="circle"
-                icon={isLiked ? <LikeTwoTone /> : <LikeOutlined />}
-                loading={isLoading}
-              />
-            </Tooltip>
+            <>
+              <Tooltip title="Like post">
+                <Button
+                  onClick={clickLike}
+                  size="large"
+                  shape="circle"
+                  icon={isLiked ? <LikeTwoTone /> : <LikeOutlined />}
+                  loading={likeLoading}
+                />
+              </Tooltip>
+              <Tooltip title="Bookmark post">
+                <Button
+                  onClick={clickBookmark}
+                  size="large"
+                  shape="circle"
+                  icon={inBookmark ? <BookTwoTone /> : <BookOutlined />}
+                  loading={bookmarkLoading}
+                />
+              </Tooltip>
+            </>
           )}
 
           <Tooltip title="Comments">

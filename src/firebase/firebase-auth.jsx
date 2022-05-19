@@ -10,7 +10,6 @@ const loginUser = createAsyncThunk("login", async (loginCredentials) => {
     const {
       user: { uid },
     } = await signInWithEmailAndPassword(auth, email, password);
-    console.error(uid);
     return uid;
   } catch (err) {
     throw err.message;

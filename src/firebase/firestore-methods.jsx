@@ -206,14 +206,14 @@ const unFollow = async (currentUserID, userToUnFollowID) => {
   }
 };
 
-const bookmarkPost = async (userID, postID) => {
+const bookmarkPost = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
     updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
   } catch (err) {}
 };
 
-const removeBookmark = async (userID, postID) => {
+const removeBookmark = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
     updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
