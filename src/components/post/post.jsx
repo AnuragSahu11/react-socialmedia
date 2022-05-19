@@ -25,11 +25,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { EditPostModal } from "../modals/edit-post-modal";
 import { DeletePostModal } from "../modals";
+import { useNavigate } from "react-router-dom";
 
 const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
   const { Text } = Typography;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { token } = useSelector((store) => store.token);
   const { userData } = useSelector((store) => store.userData);
@@ -40,7 +42,7 @@ const Post = ({ postData, postID, editPost }) => {
   const [editPostModal, setEditPostModal] = useState(false);
   const [deletePostModal, setDeletePostModal] = useState(false);
 
-  const { caption, content, comments } = postData;
+  const { caption, content, comments, postByID } = postData;
 
   useEffect(() => {
     setIsLiked(userData?.likedPost?.likedPost?.includes(postID));
@@ -63,6 +65,10 @@ const Post = ({ postData, postID, editPost }) => {
     dispatch(getUserData(token));
   };
 
+  const clickProfile = () => {
+    navigate(`/user/${postByID}`);
+  };
+
   return (
     <div className="post_wrapper">
       <EditPostModal
@@ -77,6 +83,8 @@ const Post = ({ postData, postID, editPost }) => {
       />
       <Card>
         <Meta
+          className="hover"
+          onClick={clickProfile}
           title="Card title"
           description="This is the description"
           avatar={

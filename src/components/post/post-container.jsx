@@ -33,14 +33,19 @@ const PostContainer = ({ userID, editPost }) => {
 
   return (
     <div className="post_container">
-      <Input.Group compact>
-        <Select onChange={(e) => dispatch(changeSort(e))} defaultValue="recent">
-          <Option value="recent">Recent</Option>
-          <Option value="trending">Trending</Option>
-        </Select>
-      </Input.Group>
       {status === "fulfilled" ? (
-        postsArray
+        <>
+          <Input.Group compact>
+            <Select
+              onChange={(e) => dispatch(changeSort(e))}
+              defaultValue="recent"
+            >
+              <Option value="recent">Recent</Option>
+              <Option value="trending">Trending</Option>
+            </Select>
+          </Input.Group>
+          {postsArray}
+        </>
       ) : (
         <>
           <Skeleton active={true} /> <Skeleton active={true} />

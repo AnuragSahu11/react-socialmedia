@@ -31,9 +31,13 @@ const createUser = async (firstName, lastName, email, userID) => {
     const postRef = doc(db, userID, "posts");
     const likedPostRef = doc(db, userID, "likedPost");
     const followRef = doc(db, userID, "follow");
+    const bookmarkRef = doc(db, userID, "bookmarks");
+
     batch.set(postRef, { posts: [] });
     batch.set(followRef, { following: [], followers: [] });
     batch.set(likedPostRef, { likedPost: [] });
+    batch.set(bookmarkRef, { bookmarks: [] });
+
     await batch.commit();
   } catch {
     console.error("Error adding document: ", err);
@@ -100,7 +104,6 @@ const getPosts = createAsyncThunk("get/allPost", async () => {
 const getUserPost = createAsyncThunk("get/userPost", async (userID) => {
   try {
     const docSnapshot = await getDoc(doc(db, userID, "posts"));
-    console.log(docSnapshot);
     return docSnapshot.data();
   } catch (err) {
     console.error("Error during fetching data: ", err);
@@ -119,6 +122,20 @@ const getUserData = createAsyncThunk("get/userdata", async (userID) => {
     console.error("Error during fetching data: ", err);
   }
 });
+
+const getOtherUserData = async (userID, setState) => {
+  const userData = {};
+  try {
+    const docSnapshot = await getDocs(collection(db, userID));
+    docSnapshot.forEach((doc) => {
+      userData[doc.id] = doc.data();
+    });
+    setState(userData);
+  } catch (err) {
+    console.error("Error during fetching data: ", err);
+  }
+  9;
+};
 
 const addComment = async (postID, commentText, commentName) => {
   const newID = short.generate();
@@ -171,17 +188,35 @@ const follow = async (currentUserID, userToFollowID) => {
       following: arrayUnion(userToFollowID),
     });
     updateDoc(followerRef, { followers: arrayUnion(currentUserID) });
+  } catch (err) {
+    throw err.message;
+  }
+};
+
+const unFollow = async (currentUserID, userToUnFollowID) => {
+  try {
+    const followingRef = doc(db, currentUserID, "follow");
+    const followerRef = doc(db, userToUnFollowID, "follow");
+    updateDoc(followingRef, {
+      following: arrayRemove(userToUnFollowID),
+    });
+    updateDoc(followerRef, { followers: arrayRemove(currentUserID) });
+  } catch (err) {
+    throw err.message;
+  }
+};
+
+const bookmarkPost = async (userID, postID) => {
+  try {
+    const bookmarkRef = doc(db, userID, "bookmarks");
+    updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
   } catch (err) {}
 };
 
-const unFollow = async (currentUserID, userToFollowID) => {
+const removeBookmark = async (userID, postID) => {
   try {
-    const followingRef = doc(db, currentUserID, "follow");
-    const followerRef = doc(db, userToFollowID, "follow");
-    updateDoc(followingRef, {
-      following: arrayRemove(userToFollowID),
-    });
-    updateDoc(followerRef, { followers: arrayRemove(currentUserID) });
+    const bookmarkRef = doc(db, userID, "bookmarks");
+    updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
   } catch (err) {}
 };
 
@@ -198,4 +233,7 @@ export {
   updatePost,
   follow,
   unFollow,
+  bookmarkPost,
+  removeBookmark,
+  getOtherUserData,
 };

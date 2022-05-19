@@ -15,6 +15,7 @@ import {
   ProfilePage,
   UserPage,
   NotificationPage,
+  OtherUserPage,
 } from "./components";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/user/feed" element={<Feed />} />
             <Route path="/user/profile" element={<ProfilePage />} />
             <Route path="/user/notifications" element={<NotificationPage />} />
+            <Route path="/user/:userID" element={<OtherUserPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />

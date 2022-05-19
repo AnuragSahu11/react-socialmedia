@@ -31,7 +31,7 @@ const ProfilePage = () => {
           onClick={() => setEditProfileModal((prevState) => !prevState)}
           type="primary"
         >
-          Follow
+          Edit Profile
         </Button>
         <div className="profile_disc">
           <p className="">
