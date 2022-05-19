@@ -11,7 +11,6 @@ import {
 } from "../../firebase/firestore-methods";
 import { PostContainer } from "..";
 import { useParams } from "react-router-dom";
-import { async } from "@firebase/util";
 
 const OtherUserPage = () => {
   const dispatch = useDispatch();

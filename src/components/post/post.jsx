@@ -85,6 +85,7 @@ const Post = ({ postData, postID, editPost }) => {
   };
 
   const clickProfile = () => {
+    postByID === token?navigate('/user/profile'):
     navigate(`/user/${postByID}`);
   };
 
