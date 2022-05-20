@@ -3,3 +3,9 @@ export const filterConstants = {
   userPost: "user-posts",
   recent: "recent",
 };
+
+export const statusConstants = {
+  idle: "idle",
+  loading: "loading",
+  fulfilled: "fulfilled",
+};

@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { filterConstants } from "../../utils";
+import { statusConstants } from "../../utils/constants";
 
 const initialState = {
-  status: "idle",
+  status: statusConstants.idle,
   error: null,
   newPostModal: false,
   darkmode: false,
-  sortPost: "recent",
+  sortPost: filterConstants.recent,
 };
 
 const operationSlice = createSlice({
