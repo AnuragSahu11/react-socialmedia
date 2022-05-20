@@ -5,7 +5,6 @@ import "./modals.css";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { cloudinaryLink, uploadImage } from "../../utils";
-import { async } from "@firebase/util";
 import { updateUserData } from "../../firebase/firestore-methods";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
@@ -14,13 +13,13 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { userData } = useSelector((store) => store.userData);
   const { token } = useSelector((store) => store.token);
 
-  const [inputFields, setInputFields] = useState(userData?.userData);
+  const [inputFields, setInputFields] = useState(userData.userData);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOk = async () => {
     setIsLoading(true);
     console.log(inputFields);
-    updateUserData(token, inputFields);
+    await updateUserData(token, inputFields);
     setIsLoading(false);
     setEditProfileModal(false);
   };

@@ -49,7 +49,7 @@ const createUser = async (firstName, lastName, email, userID) => {
 const updateUserData = async (userID, userData) => {
   try {
     const userDocRef = doc(db, userID, "userData");
-    await updateDoc(userDocRef, { userData });
+    await updateDoc(userDocRef, userData);
   } catch (err) {}
 };
 
