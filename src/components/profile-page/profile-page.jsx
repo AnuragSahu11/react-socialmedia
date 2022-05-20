@@ -42,6 +42,15 @@ const ProfilePage = () => {
           <div className="profile_disc">
             <p className="">{userData?.userData?.bio}</p>
           </div>
+          <div className="profile_disc">
+            <a
+              onClick={() =>
+                window.open(`https://${userData?.userData?.website}`, "_blank")
+              }
+            >
+              {userData?.userData?.website}
+            </a>
+          </div>
           <Card className="profile_card">
             <div className="profile_card_div">
               <div className="profile_card_info">

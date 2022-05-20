@@ -85,8 +85,9 @@ const Post = ({ postData, postID, editPost }) => {
   };
 
   const clickProfile = () => {
-    postByID === token?navigate('/user/profile'):
-    navigate(`/user/${postByID}`);
+    postByID === token
+      ? navigate("/user/profile")
+      : navigate(`/user/${postByID}`);
   };
 
   return (
@@ -108,7 +109,7 @@ const Post = ({ postData, postID, editPost }) => {
           title="Card title"
           description="This is the description"
           avatar={
-            <Avatar size="large" src="https://joeschmoe.io/api/v1/random" />
+            <Avatar size="large" src="https://joeschmoe.io/api/v1/rando" />
           }
         />
         <Divider plain></Divider>
@@ -116,10 +117,9 @@ const Post = ({ postData, postID, editPost }) => {
           <Text>{caption}</Text>
           <div className="post_image_wrapper_outer">
             <div className="post_image_wrapper">
-              <Image
-                className="post_image"
-                src="https://picsum.photos/300/500"
-              />
+              {postData?.img && (
+                <Image className="post_image" src={postData?.img} />
+              )}
             </div>
           </div>
           <Text>{content}</Text>

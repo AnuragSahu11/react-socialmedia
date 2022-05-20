@@ -1,9 +1,10 @@
-import { Modal, Input } from "antd";
+import { Modal, Input, Upload } from "antd";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hideNewPostModal } from "../../redux/slice/operation-slice";
 import { getPosts, newPost } from "../../firebase/firestore-methods";
+import { cloudinaryLink } from "../../utils";
 
 const NewPostModal = () => {
   const { newPostModal } = useSelector((store) => store.operationData);
@@ -17,7 +18,13 @@ const NewPostModal = () => {
   const handleOk = async () => {
     setConfirmLoading(true);
     try {
-      await newPost(inputField.caption, inputField.content, token, "anurg");
+      console.log(inputField);
+      await newPost(
+        inputField.caption,
+        inputField.content,
+        token,
+        inputField.img
+      );
       dispatch(getPosts());
       dispatch(hideNewPostModal());
     } catch (err) {
@@ -28,6 +35,16 @@ const NewPostModal = () => {
 
   const handleCancel = () => {
     dispatch(hideNewPostModal());
+  };
+
+  const [fileList, setFileList] = useState([]);
+
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    setInputField({
+      ...inputField,
+      img: newFileList[0]?.response?.secure_url,
+    });
   };
 
   return (
@@ -46,6 +63,16 @@ const NewPostModal = () => {
         }
       />
       <p className="edit_profile_text">Add Image to the Post</p>
+      <Upload
+        action={cloudinaryLink}
+        data={{ upload_preset: "erwyc7ba" }}
+        listType="picture-card"
+        fileList={fileList}
+        onChange={onChange}
+        maxCount={1}
+      >
+        {"Add Image to the Post"}
+      </Upload>
       <p className="edit_profile_text">Post Content</p>
       <TextArea
         onChange={(e) =>

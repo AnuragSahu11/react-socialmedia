@@ -53,13 +53,7 @@ const updateUserData = async (userID, userData) => {
   } catch (err) {}
 };
 
-const newPost = async (
-  postCaption,
-  postContent,
-  userID,
-  userHandle,
-  postImg = "hmm"
-) => {
+const newPost = async (postCaption, postContent, userID, postImg) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
       caption: postCaption,
@@ -68,7 +62,6 @@ const newPost = async (
       time: serverTimestamp(),
       comments: [],
       likes: 0,
-      postBy: userHandle,
       postByID: userID,
     });
     const userPostRef = doc(db, userID, "posts");
@@ -87,12 +80,13 @@ const deletePost = async (postID, userID) => {
 };
 
 const updatePost = async (postID, updatedPost) => {
-  const { caption, content } = updatedPost;
+  const { caption, content, img } = updatedPost;
   try {
     const postRef = doc(db, "Posts", postID);
     await updateDoc(postRef, {
       caption,
       content,
+      img,
     });
   } catch (err) {}
 };

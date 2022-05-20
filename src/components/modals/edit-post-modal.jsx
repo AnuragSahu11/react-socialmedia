@@ -1,11 +1,9 @@
-import { Modal, Input } from "antd";
+import { Modal, Input, Upload } from "antd";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getPosts,
-  updatePost,
-} from "../../firebase/firestore-methods";
+import { getPosts, updatePost } from "../../firebase/firestore-methods";
+import { cloudinaryLink } from "../../utils";
 
 const EditPostModal = ({ isVisible, toggleModal, postData }) => {
   const { token } = useSelector((store) => store.token);
@@ -16,6 +14,7 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
   const [inputField, setInputField] = useState({
     caption: postData.caption,
     content: postData.content,
+    img: postData.img,
   });
 
   const handleOk = async () => {
@@ -32,6 +31,16 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
 
   const handleCancel = () => {
     toggleModal();
+  };
+
+  const [fileList, setFileList] = useState([]);
+
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    setInputField({
+      ...inputField,
+      img: newFileList[0]?.response?.secure_url,
+    });
   };
 
   return (
@@ -51,6 +60,16 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
         }
       />
       <p className="edit_profile_text">Add Image to the Post</p>
+      <Upload
+        action={cloudinaryLink}
+        data={{ upload_preset: "erwyc7ba" }}
+        listType="picture-card"
+        fileList={fileList}
+        onChange={onChange}
+        maxCount={1}
+      >
+        {"Add/Change Image"}
+      </Upload>
       <p className="edit_profile_text">Post Content</p>
       <TextArea
         onChange={(e) =>
