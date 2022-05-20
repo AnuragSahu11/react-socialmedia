@@ -3,9 +3,9 @@ import { UserOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import "./modals.css";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cloudinaryLink, uploadImage } from "../../utils";
-import { updateUserData } from "../../firebase/firestore-methods";
+import { getUserData, updateUserData } from "../../firebase/firestore-methods";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { TextArea } = Input;
@@ -13,13 +13,15 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { userData } = useSelector((store) => store.userData);
   const { token } = useSelector((store) => store.token);
 
+  const dispatch = useDispatch();
+
   const [inputFields, setInputFields] = useState(userData.userData);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOk = async () => {
     setIsLoading(true);
-    console.log(inputFields);
     await updateUserData(token, inputFields);
+    dispatch(getUserData(token));
     setIsLoading(false);
     setEditProfileModal(false);
   };
