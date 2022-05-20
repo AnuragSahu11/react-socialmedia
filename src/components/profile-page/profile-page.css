@@ -5,10 +5,21 @@
   margin-left: auto;
   margin-right: auto;
 }
+.user_profile_background_wrapper {
+  max-height: 300px;
+}
+.user_profile_background_wrapper img {
+  object-fit: fill;
+  width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  margin-bottom: -47px;
+}
 .user_profile_avatar_wrapper {
   width: min-content;
   margin-left: auto;
   margin-right: auto;
+  
 }
 .profile_name {
   margin-top: 20px;

@@ -44,12 +44,20 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   };
 
   const [fileList, setFileList] = useState([]);
+  const [fileListBackground, setFileListBackground] = useState([]);
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
     setInputFields({
       ...inputFields,
       dp: newFileList[0]?.response?.secure_url,
+    });
+  };
+  const onChangeBackground = ({ fileList: newFileList }) => {
+    setFileListBackground(newFileList);
+    setInputFields({
+      ...inputFields,
+      background: newFileList[0]?.response?.secure_url,
     });
   };
 
@@ -62,7 +70,7 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
       onCancel={handleCancel}
       confirmLoading={isLoading}
     >
-      <div className="user_profile_avatar_wrapper">
+      <div className="edit_profile_avatar_wrapper">
         <ImgCrop rotate>
           <Upload
             action={cloudinaryLink}
@@ -73,6 +81,18 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
             maxCount={1}
           >
             {"Change Profile Picture"}
+          </Upload>
+        </ImgCrop>
+        <ImgCrop aspect={900 / 250} rotate>
+          <Upload
+            action={cloudinaryLink}
+            data={{ upload_preset: "erwyc7ba" }}
+            listType="picture-card"
+            fileList={fileListBackground}
+            onChange={onChangeBackground}
+            maxCount={1}
+          >
+            {"Change Profile Background"}
           </Upload>
         </ImgCrop>
       </div>
