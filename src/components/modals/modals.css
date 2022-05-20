@@ -10,3 +10,8 @@
   margin-right: 10px;
   color: #ff4d4f;
 }
+.emoji_picker_icon_wrapper {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 2rem;
+}

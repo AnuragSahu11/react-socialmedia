@@ -1,10 +1,12 @@
-import { Modal, Input, Upload } from "antd";
+import { Modal, Input, Upload, Tooltip } from "antd";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hideNewPostModal } from "../../redux/slice/operation-slice";
 import { getPosts, newPost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
+import { SmileOutlined } from "@ant-design/icons";
+import Picker from "emoji-picker-react";
 
 const NewPostModal = () => {
   const { newPostModal } = useSelector((store) => store.operationData);
@@ -14,6 +16,20 @@ const NewPostModal = () => {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputField, setInputField] = useState({ caption: "", content: "" });
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker((prevState) => !prevState);
+  };
+
+  const onEmojiClick = (event, { emoji }) => {
+    console.log(emoji);
+    setInputField((prevState) => ({
+      ...inputField,
+      content: prevState.content + emoji,
+    }));
+    console.log(inputField);
+  };
 
   const handleOk = async () => {
     setConfirmLoading(true);
@@ -54,6 +70,7 @@ const NewPostModal = () => {
       onOk={handleOk}
       onCancel={handleCancel}
       confirmLoading={confirmLoading}
+      okText={"Post"}
     >
       <p className="edit_profile_text">Caption</p>
       <Input
@@ -73,6 +90,7 @@ const NewPostModal = () => {
       >
         {"Add Image to the Post"}
       </Upload>
+
       <p className="edit_profile_text">Post Content</p>
       <TextArea
         onChange={(e) =>
@@ -80,7 +98,24 @@ const NewPostModal = () => {
         }
         placeholder="Post content"
         autoSize={{ minRows: 3, maxRows: 5 }}
+        value={inputField.content}
       />
+      {showEmojiPicker && (
+        <Picker
+          className="emoji_picker"
+          onEmojiClick={onEmojiClick}
+          disableSearchBar={true}
+          pickerStyle={{ width: "100%" }}
+        />
+      )}
+      <div className="emoji_picker_icon_wrapper">
+        <Tooltip title="Add Emoji">
+          <SmileOutlined
+            className="emoji_picker_icon"
+            onClick={toggleEmojiPicker}
+          />
+        </Tooltip>
+      </div>
     </Modal>
   );
 };

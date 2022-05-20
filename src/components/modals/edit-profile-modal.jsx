@@ -1,11 +1,12 @@
-import { Modal, Input, Upload } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Modal, Input, Upload, Tooltip } from "antd";
+import { UserOutlined, SmileOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cloudinaryLink } from "../../utils";
 import { getUserData, updateUserData } from "../../firebase/firestore-methods";
+import Picker from "emoji-picker-react";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { TextArea } = Input;
@@ -17,6 +18,18 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
 
   const [inputFields, setInputFields] = useState(userData.userData);
   const [isLoading, setIsLoading] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker((prevState) => !prevState);
+  };
+
+  const onEmojiClick = (event, { emoji }) => {
+    setInputFields((prevState) => ({
+      ...inputFields,
+      bio: prevState.bio + emoji,
+    }));
+  };
 
   const handleOk = async () => {
     setIsLoading(true);
@@ -75,15 +88,6 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
           })
         }
       />
-      <p className="edit_profile_text">Your Bio</p>
-      <TextArea
-        value={inputFields?.bio}
-        placeholder="Something about yourself"
-        autoSize={{ minRows: 3, maxRows: 5 }}
-        onChange={(e) =>
-          setInputFields({ ...inputFields, bio: e.target.value })
-        }
-      />
       <p className="edit_profile_text">Website</p>
       <TextArea
         value={inputFields?.website}
@@ -93,6 +97,31 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
           setInputFields({ ...inputFields, website: e.target.value })
         }
       />
+      <p className="edit_profile_text">Your Bio</p>
+      <TextArea
+        value={inputFields?.bio}
+        placeholder="Something about yourself"
+        autoSize={{ minRows: 3, maxRows: 5 }}
+        onChange={(e) =>
+          setInputFields({ ...inputFields, bio: e.target.value })
+        }
+      />
+      {showEmojiPicker && (
+        <Picker
+          className="emoji_picker"
+          onEmojiClick={onEmojiClick}
+          disableSearchBar={true}
+          pickerStyle={{ width: "100%" }}
+        />
+      )}
+      <div className="emoji_picker_icon_wrapper">
+        <Tooltip title="Add Emoji">
+          <SmileOutlined
+            className="emoji_picker_icon"
+            onClick={toggleEmojiPicker}
+          />
+        </Tooltip>
+      </div>
     </Modal>
   );
 };

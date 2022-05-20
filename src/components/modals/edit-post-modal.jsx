@@ -1,9 +1,11 @@
-import { Modal, Input, Upload } from "antd";
+import { Modal, Input, Upload, Tooltip } from "antd";
 import "./modals.css";
 import { useState } from "react";
+import { SmileOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts, updatePost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
+import Picker from "emoji-picker-react";
 
 const EditPostModal = ({ isVisible, toggleModal, postData }) => {
   const { token } = useSelector((store) => store.token);
@@ -16,6 +18,19 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
     content: postData.content,
     img: postData.img,
   });
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker((prevState) => !prevState);
+  };
+
+  const onEmojiClick = (event, { emoji }) => {
+    console.log(emoji);
+    setInputField((prevState) => ({
+      ...inputField,
+      content: prevState.content + emoji,
+    }));
+  };
 
   const handleOk = async () => {
     setConfirmLoading(true);
@@ -50,6 +65,7 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
       onOk={handleOk}
       onCancel={handleCancel}
       confirmLoading={confirmLoading}
+      okText={"Save"}
     >
       <p className="edit_profile_text">Caption</p>
       <Input
@@ -79,6 +95,22 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
         placeholder="Post content"
         autoSize={{ minRows: 3, maxRows: 5 }}
       />
+      {showEmojiPicker && (
+        <Picker
+          className="emoji_picker"
+          onEmojiClick={onEmojiClick}
+          disableSearchBar={true}
+          pickerStyle={{ width: "100%" }}
+        />
+      )}
+      <div className="emoji_picker_icon_wrapper">
+        <Tooltip title="Add Emoji">
+          <SmileOutlined
+            className="emoji_picker_icon"
+            onClick={toggleEmojiPicker}
+          />
+        </Tooltip>
+      </div>
     </Modal>
   );
 };
