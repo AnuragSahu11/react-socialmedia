@@ -23,7 +23,9 @@ const createUser = async (firstName, lastName, email, userID) => {
     batch.set(userRef, {
       firstName,
       lastName,
+      fullName: firstName + lastName,
       email,
+      handle: "",
       bio: "",
       dp: "",
       website: "",
@@ -42,6 +44,13 @@ const createUser = async (firstName, lastName, email, userID) => {
   } catch {
     console.error("Error adding document: ", err);
   }
+};
+
+const updateUserData = async (userID, userData) => {
+  try {
+    const userDocRef = doc(db, userID, "userData");
+    await updateDoc(userDocRef, { userData });
+  } catch (err) {}
 };
 
 const newPost = async (
@@ -236,4 +245,5 @@ export {
   bookmarkPost,
   removeBookmark,
   getOtherUserData,
+  updateUserData,
 };
