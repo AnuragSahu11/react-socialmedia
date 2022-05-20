@@ -15,7 +15,6 @@ import { addComment, getPosts } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 
 const Comments = ({ commentData, postID }) => {
-  const { userData } = useSelector((store) => store.userData);
   const dispatch = useDispatch();
   const { Title, Text } = Typography;
   const { TextArea } = Input;

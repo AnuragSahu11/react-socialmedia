@@ -1,10 +1,10 @@
-import { Modal, Button, Avatar, Input, Upload } from "antd";
+import { Modal, Input, Upload } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cloudinaryLink, uploadImage } from "../../utils";
+import { cloudinaryLink } from "../../utils";
 import { getUserData, updateUserData } from "../../firebase/firestore-methods";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   follow,
   getOtherUserData,
-  getUserData,
   unFollow,
 } from "../../firebase/firestore-methods";
 import { PostContainer } from "..";

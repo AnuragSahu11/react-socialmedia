@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserData, getUserPost } from "../../firebase/firestore-methods";
+import { getUserData } from "../../firebase/firestore-methods";
 import { statusConstants } from "../../utils/constants";
 
 const initialState = {

@@ -2,9 +2,8 @@ import { Avatar, Button, Card, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./profile-page.css";
 import { EditProfileModal } from "../modals/edit-profile-modal";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserData } from "../../firebase/firestore-methods";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { PostContainer } from "../index";
 import { statusConstants } from "../../utils";
 
@@ -12,7 +11,6 @@ const ProfilePage = () => {
   const [editProfileModal, setEditProfileModal] = useState(false);
   const { token } = useSelector((store) => store.token);
   const { userData, status } = useSelector((store) => store.userData);
-  const dispatch = useDispatch();
 
   return (
     <div className="user_profile_wrapper">

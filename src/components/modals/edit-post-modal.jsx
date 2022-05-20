@@ -1,11 +1,9 @@
-import { Modal, Button, Input } from "antd";
+import { Modal, Input } from "antd";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hideNewPostModal } from "../../redux/slice/operation-slice";
 import {
   getPosts,
-  newPost,
   updatePost,
 } from "../../firebase/firestore-methods";
 
