@@ -1,5 +1,5 @@
 const NotificationPage = () => {
-  return <></>;
+  return <>Coming Soon</>;
 };
 
 export { NotificationPage };

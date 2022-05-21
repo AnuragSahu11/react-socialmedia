@@ -5,6 +5,7 @@ import "./post-container.css";
 import { Skeleton, Input, Select } from "antd";
 import { filterAndSort } from "../../utils";
 import { changeSort } from "../../redux/slice/operation-slice";
+import { statusConstants } from "../../utils/constants";
 
 const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
   const [postsArray, setPostsArray] = useState([]);
 
   useEffect(() => {
-    if (status === "fulfilled") {
+    if (status === statusConstants.fulfilled) {
       setPostsArray(
         filterAndSort(posts, userID, bookmarks, feed, sortPost).map(
           (postData) => {
@@ -36,7 +37,7 @@ const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
 
   return (
     <div className="post_container">
-      {status === "fulfilled" ? (
+      {status === statusConstants.fulfilled ? (
         <>
           <Input.Group compact>
             <Select

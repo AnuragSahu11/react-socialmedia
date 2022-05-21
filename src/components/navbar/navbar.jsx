@@ -3,13 +3,17 @@ import { Layout, Menu, Input, Row, Col, Button } from "antd";
 import { useState } from "react";
 import { LogoutModal } from "../modals";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { Header } = Layout;
   const { Search } = Input;
+
+  const { token } = useSelector((store) => store.token);
+
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const showLogout = () => setShowLogoutModal((prevState) => !prevState);
+  const toggleLogout = () => setShowLogoutModal((prevState) => !prevState);
   const onSearch = (value) => console.log(value);
   return (
     <Header className="header header_custom">
@@ -42,13 +46,23 @@ const Navbar = () => {
         </Col>
         <Col span={"auto"} className="navbar_buttons">
           <Row>
-            <Button
-              onClick={() => navigate("/")}
-              className="navbar_btn"
-              type="primary"
-            >
-              Login / Signup
-            </Button>
+            {token ? (
+              <Button
+                onClick={() => toggleLogout()}
+                className="navbar_btn"
+                type="primary"
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button
+                onClick={() => navigate("/")}
+                className="navbar_btn"
+                type="primary"
+              >
+                Login / Signup
+              </Button>
+            )}
           </Row>
         </Col>
       </Row>

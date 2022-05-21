@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginUser } from "../../firebase/firebase-auth";
+import { statusConstants } from "../../utils/constants";
 
 const initialState = {
-  status: "idle",
+  status: statusConstants.idle,
   error: null,
   token: null,
 };
@@ -14,16 +15,21 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.token = action.payload;
     },
+    logout: (state) => {
+      state.token = null;
+    },
   },
   extraReducers: {
     [loginUser.pending]: (state) => {
-      state.status = "loading";
+      state.status = statusConstants.loading;
     },
     [loginUser.fulfilled]: (state, action) => {
       state.token = action.payload;
-      state.status = "fulfilled";
+      state.status = statusConstants.fulfilled;
     },
   },
 });
+
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

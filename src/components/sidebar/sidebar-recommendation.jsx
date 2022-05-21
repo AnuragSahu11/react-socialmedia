@@ -1,22 +1,25 @@
-import { Layout, List, Avatar, Divider } from "antd";
+import { Layout, List, Avatar, Divider, Skeleton } from "antd";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { statusConstants, objectToArr } from "../../utils";
+import { UserOutlined } from "@ant-design/icons";
 import "./sidebar.css";
 
 const SidebarRecommendations = () => {
   const { Sider } = Layout;
-  const data = [
-    {
-      title: "Ant Design Title 1",
-    },
-    {
-      title: "Ant Design Title 2",
-    },
-    {
-      title: "Ant Design Title 3",
-    },
-    {
-      title: "Ant Design Title 4",
-    },
-  ];
+  const navigate = useNavigate();
+
+  const { userList, status } = useSelector((store) => store.operationData);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (userList) {
+      setData(objectToArr(userList).slice(0, 5));
+    }
+  }, [userList]);
+
   return (
     <Sider
       style={{ height: "min-content" }}
@@ -27,22 +30,36 @@ const SidebarRecommendations = () => {
       theme="light"
       className="sidebar_recommendation"
     >
-      <p className="sidebar_recommendation_text">Who to follow?</p>
-      <Divider className="divider_recommendation" />
-      <List
-        itemLayout="horizontal"
-        className="list_recommendation"
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-              title={<a href="https://ant.design">{item.title}</a>}
-              description="Ant Design"
-            />
-          </List.Item>
-        )}
-      />
+      {status === statusConstants.fulfilled ? (
+        <>
+          <p className="sidebar_recommendation_text">Who to follow?</p>
+          <Divider className="divider_recommendation" />
+          <List
+            itemLayout="horizontal"
+            className="list_recommendation"
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item>
+                <List.Item.Meta
+                  className="hover"
+                  onClick={() => navigate(`/user/${item.userID}`)}
+                  avatar={
+                    item.dp ? (
+                      <Avatar src={item.dp} />
+                    ) : (
+                      <Avatar icon={<UserOutlined />} />
+                    )
+                  }
+                  title={<a>{item.fullName}</a>}
+                  description={item.handle && "@" + item.handle}
+                />
+              </List.Item>
+            )}
+          />
+        </>
+      ) : (
+        <Skeleton avatar paragraph={{ rows: 4 }} />
+      )}
     </Sider>
   );
 };

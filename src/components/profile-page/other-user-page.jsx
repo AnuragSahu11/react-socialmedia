@@ -6,15 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   follow,
   getOtherUserData,
-  getUserData,
   unFollow,
 } from "../../firebase/firestore-methods";
 import { PostContainer } from "..";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { changeTitle } from "../../utils";
 
 const OtherUserPage = () => {
   const dispatch = useDispatch();
   const { userID } = useParams();
+  const navigate = useNavigate();
 
   const { token } = useSelector((store) => store.token);
   const { userData } = useSelector((store) => store.userData);
@@ -55,8 +56,11 @@ const OtherUserPage = () => {
   };
 
   useEffect(() => {
+    if (token === userID) navigate("/user/profile");
     getData();
   }, []);
+
+  changeTitle(userInfo?.userData?.firstName);
 
   return (
     <div className="user_profile_wrapper">

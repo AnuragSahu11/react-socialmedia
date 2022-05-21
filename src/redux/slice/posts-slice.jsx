@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getPosts } from "../../firebase/firestore-methods";
+import { statusConstants } from "../../utils/constants";
 
 const initialState = {
-  status: "idle",
+  status: statusConstants.idle,
   error: null,
   posts: {},
 };
@@ -13,11 +14,11 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getPosts.pending]: (state) => {
-      state.status = "loading";
+      state.status = statusConstants.loading;
     },
     [getPosts.fulfilled]: (state, action) => {
       state.posts = action.payload;
-      state.status = "fulfilled";
+      state.status = statusConstants.fulfilled;
     },
   },
 });

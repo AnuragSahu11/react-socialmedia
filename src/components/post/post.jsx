@@ -16,9 +16,9 @@ import {
   DeleteOutlined,
   BookOutlined,
   BookTwoTone,
+  UserOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { Comments } from "./comments";
 import {
   bookmarkPost,
   dislikePost,
@@ -40,6 +40,7 @@ const Post = ({ postData, postID, editPost }) => {
 
   const { token } = useSelector((store) => store.token);
   const { userData } = useSelector((store) => store.userData);
+  const { userList } = useSelector((store) => store.operationData);
 
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -48,6 +49,7 @@ const Post = ({ postData, postID, editPost }) => {
   const [editPostModal, setEditPostModal] = useState(false);
   const [deletePostModal, setDeletePostModal] = useState(false);
   const [inBookmark, setInBookmark] = useState(false);
+  const [postInfo, setPostInfo] = useState({});
 
   const { caption, content, comments, postByID } = postData;
 
@@ -85,8 +87,9 @@ const Post = ({ postData, postID, editPost }) => {
   };
 
   const clickProfile = () => {
-    postByID === token?navigate('/user/profile'):
-    navigate(`/user/${postByID}`);
+    postByID === token
+      ? navigate("/user/profile")
+      : navigate(`/user/${postByID}`);
   };
 
   return (
@@ -105,10 +108,14 @@ const Post = ({ postData, postID, editPost }) => {
         <Meta
           className="hover"
           onClick={clickProfile}
-          title="Card title"
-          description="This is the description"
+          title={userList[postByID]?.fullName}
+          description={userList[postByID]?.handle}
           avatar={
-            <Avatar size="large" src="https://joeschmoe.io/api/v1/random" />
+            userList[postByID]?.dp ? (
+              <Avatar size="large" src={userList[postByID]?.dp} />
+            ) : (
+              <Avatar size="large" icon={<UserOutlined />} />
+            )
           }
         />
         <Divider plain></Divider>
@@ -116,10 +123,9 @@ const Post = ({ postData, postID, editPost }) => {
           <Text>{caption}</Text>
           <div className="post_image_wrapper_outer">
             <div className="post_image_wrapper">
-              <Image
-                className="post_image"
-                src="https://picsum.photos/300/500"
-              />
+              {postData?.img && (
+                <Image className="post_image" src={postData?.img} />
+              )}
             </div>
           </div>
           <Text>{content}</Text>

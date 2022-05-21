@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   doc,
@@ -23,7 +24,9 @@ const createUser = async (firstName, lastName, email, userID) => {
     batch.set(userRef, {
       firstName,
       lastName,
+      fullName: firstName + lastName,
       email,
+      handle: "",
       bio: "",
       dp: "",
       website: "",
@@ -32,11 +35,17 @@ const createUser = async (firstName, lastName, email, userID) => {
     const likedPostRef = doc(db, userID, "likedPost");
     const followRef = doc(db, userID, "follow");
     const bookmarkRef = doc(db, userID, "bookmarks");
+    const userArrRef = doc(db, "users", userID);
 
     batch.set(postRef, { posts: [] });
     batch.set(followRef, { following: [], followers: [] });
     batch.set(likedPostRef, { likedPost: [] });
     batch.set(bookmarkRef, { bookmarks: [] });
+    batch.set(userArrRef, {
+      fullName: firstName + lastName,
+      dp: "",
+      handle: "",
+    });
 
     await batch.commit();
   } catch {
@@ -44,13 +53,32 @@ const createUser = async (firstName, lastName, email, userID) => {
   }
 };
 
-const newPost = async (
-  postCaption,
-  postContent,
-  userID,
-  userHandle,
-  postImg = "hmm"
-) => {
+const updateUserData = async (userID, userData) => {
+  try {
+    const userDocRef = doc(db, userID, "userData");
+    const userArrRef = doc(db, "users", userID);
+    await updateDoc(userDocRef, userData);
+    updateDoc(userArrRef, {
+      dp: userData.dp,
+      handle: userData.handle,
+    });
+  } catch (err) {}
+};
+
+const getUserList = createAsyncThunk("get/userList", async () => {
+  const userList = {};
+  try {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+      userList[doc.id] = doc.data();
+    });
+    return userList;
+  } catch (err) {
+    console.error("Error during fetching data: ", err);
+  }
+});
+
+const newPost = async (postCaption, postContent, userID, postImg) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
       caption: postCaption,
@@ -59,7 +87,6 @@ const newPost = async (
       time: serverTimestamp(),
       comments: [],
       likes: 0,
-      postBy: userHandle,
       postByID: userID,
     });
     const userPostRef = doc(db, userID, "posts");
@@ -78,12 +105,13 @@ const deletePost = async (postID, userID) => {
 };
 
 const updatePost = async (postID, updatedPost) => {
-  const { caption, content } = updatedPost;
+  const { caption, content, img } = updatedPost;
   try {
     const postRef = doc(db, "Posts", postID);
     await updateDoc(postRef, {
       caption,
       content,
+      img,
     });
   } catch (err) {}
 };
@@ -236,4 +264,6 @@ export {
   bookmarkPost,
   removeBookmark,
   getOtherUserData,
+  updateUserData,
+  getUserList,
 };
