@@ -16,7 +16,7 @@ const SidebarRecommendations = () => {
 
   useEffect(() => {
     if (userList) {
-      setData(objectToArr(userList));
+      setData(objectToArr(userList).slice(0, 5));
     }
   }, [userList]);
 
