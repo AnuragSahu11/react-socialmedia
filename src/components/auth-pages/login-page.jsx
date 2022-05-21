@@ -28,7 +28,7 @@ const LoginPage = () => {
     signUp(firstName, lastName, email, password);
   };
 
-  const loginClick = async (demoLogin = false) => {
+  const loginClick = async (demoLogin) => {
     if (demoLogin) {
       setloginInput({ email: "anurag@gmail.com", password: "123456" });
       await dispatch(
@@ -79,7 +79,7 @@ const LoginPage = () => {
           value={loginInput.password}
         />
         <Button
-          onClick={loginClick}
+          onClick={() => loginClick(false)}
           className="login_button"
           block={true}
           type="primary"

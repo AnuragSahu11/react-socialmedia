@@ -1,26 +1,54 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Post } from "..";
 import "./post-container.css";
-import { Skeleton } from "antd";
+import { Skeleton, Input, Select } from "antd";
+import { filterAndSort } from "../../utils";
+import { changeSort } from "../../redux/slice/operation-slice";
 
-const PostContainer = () => {
+const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
+  const dispatch = useDispatch();
+  const Option = Select.Option;
+
   const { posts, status } = useSelector((store) => store.posts);
+  const { userData } = useSelector((store) => store.userData);
+  const { sortPost } = useSelector((store) => store.operationData);
   const [postsArray, setPostsArray] = useState([]);
 
   useEffect(() => {
-    status === "fulfilled" &&
+    if (status === "fulfilled") {
       setPostsArray(
-        Object.keys(posts).map((postID) => {
-          return <Post key={postID} postData={posts[postID]} postID={postID} />;
-        })
+        filterAndSort(posts, userID, bookmarks, feed, sortPost).map(
+          (postData) => {
+            return (
+              <Post
+                key={postData.postID}
+                postData={postData}
+                postID={postData.postID}
+                editPost={editPost || false}
+              />
+            );
+          }
+        )
       );
-  }, [status]);
+    }
+  }, [sortPost, userData]);
 
   return (
     <div className="post_container">
       {status === "fulfilled" ? (
-        postsArray
+        <>
+          <Input.Group compact>
+            <Select
+              onChange={(e) => dispatch(changeSort(e))}
+              defaultValue="recent"
+            >
+              <Option value="recent">Recent</Option>
+              <Option value="trending">Trending</Option>
+            </Select>
+          </Input.Group>
+          {postsArray}
+        </>
       ) : (
         <>
           <Skeleton active={true} /> <Skeleton active={true} />

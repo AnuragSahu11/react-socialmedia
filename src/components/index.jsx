@@ -13,3 +13,4 @@ export { ErrorPage } from "./error-page/error-page";
 export { NotificationPage } from "./notification-page/notification-page";
 export { Post } from "./post/post";
 export { PostContainer } from "./post/post-container";
+export { OtherUserPage } from "./profile-page/other-user-page";

@@ -2,9 +2,12 @@ import { Modal, Button, Avatar, Input } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./modals.css";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { TextArea } = Input;
+
+  const { userData } = useSelector((store) => store.userData);
 
   const showModal = () => {
     setEditProfileModal(true);
@@ -33,8 +36,7 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
       <Input placeholder="Full Name" prefix={<UserOutlined />} />
       <p className="edit_profile_text">Discription</p>
       <TextArea
-        // value={value}
-        placeholder="discription"
+        placeholder="Discription"
         autoSize={{ minRows: 3, maxRows: 5 }}
       />
       <p className="edit_profile_text">Website</p>

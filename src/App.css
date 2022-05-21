@@ -9,3 +9,6 @@
   background: #ececec;
   z-index: 0;
 }
+.hover {
+  cursor: pointer;
+}

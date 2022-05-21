@@ -9,14 +9,21 @@ import {
 import "./sidebar.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { showNewPostModal } from "../../redux/slice/operation-slice";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
-  const [showTrigger, setShowTrigger] = useState(false);
   const { Sider } = Layout;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [showTrigger, setShowTrigger] = useState(false);
+
   const triggerSwitch = () => {
     if (!showTrigger) return null;
   };
+
   const siderItems = [
     {
       key: "1",
@@ -72,7 +79,12 @@ const Sidebar = () => {
     >
       <div className="logo" />
       <Menu mode="inline" defaultSelectedKeys={["1"]} items={siderItems} />
-      <Button size={"large"} block={true} type="primary">
+      <Button
+        onClick={() => dispatch(showNewPostModal())}
+        size={"large"}
+        block={true}
+        type="primary"
+      >
         Create new post
       </Button>
     </Sider>

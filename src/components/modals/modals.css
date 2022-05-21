@@ -5,3 +5,8 @@
 .edit_profile_text {
   margin-top: 14px;
 }
+.delete_modal_icon {
+  font-size: 4rem;
+  margin-right: 10px;
+  color: #ff4d4f;
+}
