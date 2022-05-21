@@ -1,7 +1,11 @@
 # Tradepeer
 
+#### NOTE - This web app will not work in forced https extension or browser ie Brave browser
+<br>
+
 Tradepeer is a social media app for Traders.
 <br>
+
 ![Tradepeer logo](public/images/logo-social.svg)
 
 ### Live Link 
