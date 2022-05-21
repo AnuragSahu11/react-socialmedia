@@ -1,8 +1,11 @@
 import { PostContainer } from "..";
 import { Typography } from "antd";
+import { changeTitle } from "../../utils";
 
 const ExplorePage = () => {
   const { Title } = Typography;
+
+  changeTitle("Explore Tradepeer");
 
   return (
     <div className="explore_wrapper">

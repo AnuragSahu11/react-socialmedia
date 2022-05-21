@@ -5,13 +5,14 @@ import { EditProfileModal } from "../modals/edit-profile-modal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { PostContainer } from "../index";
-import { statusConstants } from "../../utils";
+import { changeTitle, statusConstants } from "../../utils";
 
 const ProfilePage = () => {
   const [editProfileModal, setEditProfileModal] = useState(false);
   const { token } = useSelector((store) => store.token);
   const { userData, status } = useSelector((store) => store.userData);
 
+  changeTitle(userData?.userData?.fullName);
   return (
     <div className="user_profile_wrapper">
       {status === statusConstants.loading ? (

@@ -15,6 +15,9 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.token = action.payload;
     },
+    logout: (state) => {
+      state.token = null;
+    },
   },
   extraReducers: {
     [loginUser.pending]: (state) => {
@@ -26,5 +29,7 @@ const authSlice = createSlice({
     },
   },
 });
+
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

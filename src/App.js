@@ -17,6 +17,7 @@ import {
   NotificationPage,
   OtherUserPage,
 } from "./components";
+import { RequiresAuth } from "./utils";
 
 function App() {
   return (
@@ -26,7 +27,14 @@ function App() {
         <NewPostModal />
         <Routes>
           <Route path="/" element={<LoginPage />} />
-          <Route path="/user" element={<UserPage />}>
+          <Route
+            path="/user"
+            element={
+              <RequiresAuth>
+                <UserPage />
+              </RequiresAuth>
+            }
+          >
             <Route path="/user/explore" element={<ExplorePage />} />
             <Route path="/user/bookmark" element={<BookmarkPage />} />
             <Route path="/user/feed" element={<Feed />} />

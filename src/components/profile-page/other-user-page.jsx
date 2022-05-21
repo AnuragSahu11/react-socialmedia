@@ -10,6 +10,7 @@ import {
 } from "../../firebase/firestore-methods";
 import { PostContainer } from "..";
 import { useNavigate, useParams } from "react-router-dom";
+import { changeTitle } from "../../utils";
 
 const OtherUserPage = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,8 @@ const OtherUserPage = () => {
     if (token === userID) navigate("/user/profile");
     getData();
   }, []);
+
+  changeTitle(userInfo?.userData?.firstName);
 
   return (
     <div className="user_profile_wrapper">

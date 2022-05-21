@@ -3,13 +3,16 @@ import { UserOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import "./login-page.css";
 import { loginUser, signUp } from "../../firebase/firebase-auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { changeTitle } from "../../utils";
 
 const LoginPage = () => {
   const { status } = useSelector((store) => store.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const [activeTabKey1, setActiveTabKey1] = useState("login");
 
@@ -43,6 +46,8 @@ const LoginPage = () => {
   const onTab1Change = (key) => {
     setActiveTabKey1(key);
   };
+
+  changeTitle("Login/Signup");
 
   const tabList = [
     {
