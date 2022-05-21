@@ -1,28 +1,27 @@
 .user_profile {
-  margin-top: 30px;
+  margin-top: 3rem;
   text-align: center;
   width: 50vw;
   margin-left: auto;
   margin-right: auto;
 }
 .user_profile_background_wrapper {
-  max-height: 300px;
+  max-height: 30rem;
 }
 .user_profile_background_wrapper img {
   object-fit: fill;
   width: 100%;
-  max-height: 300px;
+  max-height: 30rem;
   border-radius: 8px;
-  margin-bottom: -47px;
+  margin-bottom: -4.7rem;
 }
 .user_profile_avatar_wrapper {
   width: min-content;
   margin-left: auto;
   margin-right: auto;
-  
 }
 .profile_name {
-  margin-top: 20px;
+  margin-top: 2rem;
   margin-bottom: 0px;
   font-weight: 900;
   font-size: 3rem;
@@ -33,11 +32,11 @@
   margin-bottom: 20px;
 }
 .profile_disc {
-  margin-top: 20px;
+  margin-top: 2rem;
   font-size: 1.6rem;
 }
 .profile_card {
-  margin-top: 24px;
+  margin-top: 2.4rem;
   width: 85%;
   margin-left: auto;
   margin-right: auto;

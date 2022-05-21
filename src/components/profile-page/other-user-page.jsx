@@ -9,11 +9,12 @@ import {
   unFollow,
 } from "../../firebase/firestore-methods";
 import { PostContainer } from "..";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const OtherUserPage = () => {
   const dispatch = useDispatch();
   const { userID } = useParams();
+  const navigate = useNavigate();
 
   const { token } = useSelector((store) => store.token);
   const { userData } = useSelector((store) => store.userData);
@@ -54,6 +55,7 @@ const OtherUserPage = () => {
   };
 
   useEffect(() => {
+    if (token === userID) navigate("/user/profile");
     getData();
   }, []);
 

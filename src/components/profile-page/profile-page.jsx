@@ -27,9 +27,6 @@ const ProfilePage = () => {
               <img src={userData?.userData?.background} alt="" />
             </div>
           )}
-          {/* <div className="user_profile_background_wrapper">
-            <img src="https://picsum.photos/900/250" alt="" />
-          </div> */}
           <div className="user_profile_avatar_wrapper">
             <Avatar
               src={userData?.userData?.dp}

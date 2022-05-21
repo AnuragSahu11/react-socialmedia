@@ -23,18 +23,15 @@ const NewPostModal = () => {
   };
 
   const onEmojiClick = (event, { emoji }) => {
-    console.log(emoji);
     setInputField((prevState) => ({
       ...inputField,
       content: prevState.content + emoji,
     }));
-    console.log(inputField);
   };
 
   const handleOk = async () => {
     setConfirmLoading(true);
     try {
-      console.log(inputField);
       await newPost(
         inputField.caption,
         inputField.content,

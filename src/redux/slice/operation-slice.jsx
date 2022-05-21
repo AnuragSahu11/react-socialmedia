@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getUserList } from "../../firebase/firestore-methods";
 import { filterConstants } from "../../utils";
 import { statusConstants } from "../../utils/constants";
 
@@ -8,6 +9,7 @@ const initialState = {
   newPostModal: false,
   darkmode: false,
   sortPost: filterConstants.recent,
+  userList: null,
 };
 
 const operationSlice = createSlice({
@@ -22,6 +24,15 @@ const operationSlice = createSlice({
     },
     changeSort: (state, action) => {
       state.sortPost = action.payload;
+    },
+  },
+  extraReducers: {
+    [getUserList.pending]: (state) => {
+      state.status = statusConstants.loading;
+    },
+    [getUserList.fulfilled]: (state, action) => {
+      state.userList = action.payload;
+      state.status = statusConstants.fulfilled;
     },
   },
 });

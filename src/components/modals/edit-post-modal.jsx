@@ -25,7 +25,6 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
   };
 
   const onEmojiClick = (event, { emoji }) => {
-    console.log(emoji);
     setInputField((prevState) => ({
       ...inputField,
       content: prevState.content + emoji,
