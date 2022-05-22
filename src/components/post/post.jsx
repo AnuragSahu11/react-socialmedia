@@ -31,6 +31,7 @@ import { EditPostModal } from "../modals/edit-post-modal";
 import { DeletePostModal } from "../modals";
 import { useNavigate } from "react-router-dom";
 import { changeSort } from "../../redux/slice/operation-slice";
+import { Comments } from "./comments";
 
 const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
