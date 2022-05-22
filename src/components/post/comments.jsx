@@ -13,10 +13,15 @@ import { MessageTwoTone } from "@ant-design/icons";
 import { useState } from "react";
 import { addComment, getPosts } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
+import { UserOutlined } from "@ant-design/icons";
 
 const Comments = ({ commentData, postID }) => {
+  const { token } = useSelector((store) => store.token);
+  const { userList } = useSelector((store) => store.operationData);
   const { userData } = useSelector((store) => store.userData);
+
   const dispatch = useDispatch();
+
   const { Title, Text } = Typography;
   const { TextArea } = Input;
 
@@ -25,10 +30,10 @@ const Comments = ({ commentData, postID }) => {
 
   const commentList = Object.keys(commentData)
     .map((commentID) => {
-      const { commentText, commentName, commentTime } = commentData[commentID];
+      const { commentText, commenterID, commentTime } = commentData[commentID];
       return {
-        author: commentName,
-        avatar: "https://joeschmoe.io/api/v1/random",
+        author: userList[commenterID].fullName,
+        avatar: userList[commenterID].dp || <UserOutlined />,
         content: <p>{commentText}</p>,
         commentTime: commentTime,
       };
@@ -37,18 +42,22 @@ const Comments = ({ commentData, postID }) => {
 
   const addCommentClick = async () => {
     setLoading(true);
-    await addComment(postID, textField, "anurag");
+    await addComment(postID, textField, token);
     setLoading(false);
     dispatch(getPosts());
   };
-
+  console.log(userList[token].fullName);
   return (
     <>
       <Divider plain />
       <Title level={5}>Add Comment</Title>
       <Row direction="vertical">
         <Col className="add_comment_avatar">
-          <Avatar src="https://joeschmoe.io/api/v1/random" />
+          {userList[token].dp ? (
+            <Avatar src={userList[token].dp} />
+          ) : (
+            <Avatar icon={<UserOutlined />} />
+          )}
         </Col>
         <Col flex="auto">
           <TextArea
@@ -78,6 +87,7 @@ const Comments = ({ commentData, postID }) => {
               author={item.author}
               avatar={item.avatar}
               content={item.content}
+              // datetime={item.commentTime}
             />
           </li>
         )}

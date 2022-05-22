@@ -110,7 +110,7 @@ const Post = ({ postData, postID, editPost }) => {
           className="hover"
           onClick={clickProfile}
           title={userList[postByID]?.fullName}
-          description={userList[postByID]?.handle}
+          description={`@${userList[postByID]?.handle}`}
           avatar={
             userList[postByID]?.dp ? (
               <Avatar size="large" src={userList[postByID]?.dp} />

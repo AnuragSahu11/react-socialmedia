@@ -6,13 +6,14 @@ import { loginUser, signUp } from "../../firebase/firebase-auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeTitle } from "../../utils";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const { status } = useSelector((store) => store.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/user/explore";
 
   const [activeTabKey1, setActiveTabKey1] = useState("login");
 
@@ -24,23 +25,38 @@ const LoginPage = () => {
   });
 
   const [loginInput, setloginInput] = useState({ email: "", password: "" });
+  const [signUpLoading, setSignUpLoading] = useState(false);
 
   const { firstName, lastName, email, password } = signUpInput;
 
-  const signUpClick = () => {
-    signUp(firstName, lastName, email, password);
+  const signUpClick = async () => {
+    setSignUpLoading(true);
+    try {
+      await signUp(firstName, lastName, email, password);
+      toast.success("SignUp Successful");
+      toast.success("Login with your new account");
+    } catch (err) {
+      toast.error(`SignUp failed ${err.message}`);
+    }
+    setSignUpLoading(false);
   };
 
   const loginClick = async (demoLogin) => {
-    if (demoLogin) {
-      setloginInput({ email: "anurag@gmail.com", password: "123456" });
-      await dispatch(
-        loginUser({ email: "anurag@gmail.com", password: "123456" })
-      );
-    } else {
-      await dispatch(loginUser(loginInput));
+    try {
+      if (demoLogin) {
+        setloginInput({ email: "anurag@gmail.com", password: "123456" });
+        await dispatch(
+          loginUser({ email: "anurag@gmail.com", password: "123456" })
+        );
+        toast.success("Login Successful");
+      } else {
+        await dispatch(loginUser(loginInput));
+        toast.success("Login Successful");
+      }
+    } catch (err) {
+      toast.error(`Login Failed ${err.message}`);
     }
-    navigate("/user/feed");
+    navigate(from);
   };
 
   const onTab1Change = (key) => {
@@ -148,6 +164,7 @@ const LoginPage = () => {
           className="login_button"
           block={true}
           type="primary"
+          loading={signUpLoading}
         >
           Sign Up
         </Button>

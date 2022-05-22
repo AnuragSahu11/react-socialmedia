@@ -17,12 +17,15 @@ import {
   NotificationPage,
   OtherUserPage,
 } from "./components";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { RequiresAuth } from "./utils";
 
 function App() {
   return (
     <div className="App">
       <Layout>
+        <ToastContainer hideProgressBar={true} autoClose={3500} />
         <Navbar />
         <NewPostModal />
         <Routes>

@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   doc,
@@ -24,7 +23,7 @@ const createUser = async (firstName, lastName, email, userID) => {
     batch.set(userRef, {
       firstName,
       lastName,
-      fullName: firstName + lastName,
+      fullName: firstName + " " + lastName,
       email,
       handle: "",
       bio: "",
@@ -42,14 +41,14 @@ const createUser = async (firstName, lastName, email, userID) => {
     batch.set(likedPostRef, { likedPost: [] });
     batch.set(bookmarkRef, { bookmarks: [] });
     batch.set(userArrRef, {
-      fullName: firstName + lastName,
+      fullName: firstName + " " + lastName,
       dp: "",
       handle: "",
     });
 
     await batch.commit();
-  } catch {
-    console.error("Error adding document: ", err);
+  } catch (err) {
+    throw err.message;
   }
 };
 
@@ -165,14 +164,14 @@ const getOtherUserData = async (userID, setState) => {
   9;
 };
 
-const addComment = async (postID, commentText, commentName) => {
+const addComment = async (postID, commentText, commenterID) => {
   const newID = short.generate();
   const newComment = `comments.${newID}`;
   try {
     const commentDoc = doc(db, "Posts", postID);
     await updateDoc(commentDoc, {
       [newComment]: {
-        commentName,
+        commenterID,
         commentText,
         commentTime: serverTimestamp(),
       },
