@@ -1,16 +1,8 @@
-export { LoginPage } from "./auth-pages/login-page";
 export { Navbar } from "./navbar/navbar";
 export { FooterComponent } from "./footer/footer";
 export { Sidebar } from "./sidebar/sidebar";
-export { ProfilePage } from "./profile-page/profile-page";
-export { Feed } from "./feed-page/feed-page";
-export { UserPage } from "./user-page/user-page";
 export { SidebarRecommendations } from "./sidebar/sidebar-recommendation";
 export { NewPostModal } from "./modals/create-post-modal";
-export { BookmarkPage } from "./bookmark-page/bookmark";
-export { ExplorePage } from "./explore-page/explore";
-export { ErrorPage } from "./error-page/error-page";
-export { NotificationPage } from "./notification-page/notification-page";
+export { NotificationPage } from "../pages/notification-page/notification-page";
 export { Post } from "./post/post";
 export { PostContainer } from "./post/post-container";
-export { OtherUserPage } from "./profile-page/other-user-page";

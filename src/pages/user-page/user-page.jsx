@@ -2,14 +2,13 @@ import { Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { Sidebar } from "../sidebar/sidebar";
-import { SidebarRecommendations } from "../sidebar/sidebar-recommendation";
 import { useEffect } from "react";
 import {
   getPosts,
   getUserData,
   getUserList,
 } from "../../firebase/firestore-methods";
+import { Sidebar, SidebarRecommendations } from "../../components";
 
 const UserPage = () => {
   const dispatch = useDispatch();

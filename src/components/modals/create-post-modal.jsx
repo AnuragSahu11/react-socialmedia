@@ -7,6 +7,7 @@ import { getPosts, newPost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
 import { SmileOutlined } from "@ant-design/icons";
 import Picker from "emoji-picker-react";
+import { toast } from "react-toastify";
 
 const NewPostModal = () => {
   const { newPostModal } = useSelector((store) => store.operationData);
@@ -40,7 +41,9 @@ const NewPostModal = () => {
       );
       dispatch(getPosts());
       dispatch(hideNewPostModal());
+      toast.success("New Post Created");
     } catch (err) {
+      toast.error("New Post Failed");
       console.error(err);
     }
     setConfirmLoading(false);

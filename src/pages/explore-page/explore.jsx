@@ -1,5 +1,5 @@
-import { PostContainer } from "..";
 import { Typography } from "antd";
+import { PostContainer } from "../../components";
 import { changeTitle } from "../../utils";
 
 const ExplorePage = () => {

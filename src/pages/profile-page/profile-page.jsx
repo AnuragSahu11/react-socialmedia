@@ -1,10 +1,10 @@
 import { Avatar, Button, Card, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./profile-page.css";
-import { EditProfileModal } from "../modals/edit-profile-modal";
+import { EditProfileModal } from "../../components/modals/edit-profile-modal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { PostContainer } from "../index";
+import { PostContainer } from "../../components/index";
 import { changeTitle, statusConstants } from "../../utils";
 
 const ProfilePage = () => {

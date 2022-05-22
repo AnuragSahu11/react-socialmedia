@@ -8,9 +8,9 @@ import {
   getOtherUserData,
   unFollow,
 } from "../../firebase/firestore-methods";
-import { PostContainer } from "..";
 import { useNavigate, useParams } from "react-router-dom";
 import { changeTitle } from "../../utils";
+import { PostContainer } from "../../components";
 
 const OtherUserPage = () => {
   const dispatch = useDispatch();

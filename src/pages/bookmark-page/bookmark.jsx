@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { PostContainer } from "../post/post-container";
 import { Typography } from "antd";
 import { changeTitle } from "../../utils";
+import { PostContainer } from "../../components";
 
 const BookmarkPage = () => {
   const { Title } = Typography;

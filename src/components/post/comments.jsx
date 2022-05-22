@@ -14,6 +14,7 @@ import { useState } from "react";
 import { addComment, getPosts } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 import { UserOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 const Comments = ({ commentData, postID }) => {
   const { token } = useSelector((store) => store.token);
@@ -42,7 +43,12 @@ const Comments = ({ commentData, postID }) => {
 
   const addCommentClick = async () => {
     setLoading(true);
-    await addComment(postID, textField, token);
+    try {
+      await addComment(postID, textField, token);
+      toast.success("Comment Added");
+    } catch (err) {
+      toast.error("Add Comment Failed");
+    }
     setLoading(false);
     dispatch(getPosts());
   };

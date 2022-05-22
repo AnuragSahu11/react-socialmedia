@@ -14,7 +14,11 @@ const Navbar = () => {
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const toggleLogout = () => setShowLogoutModal((prevState) => !prevState);
-  const onSearch = (value) => console.log(value);
+
+  const onSearch = (value) => {
+
+  };
+
   return (
     <Header className="header header_custom">
       <LogoutModal
@@ -43,6 +47,7 @@ const Navbar = () => {
             placeholder="input search text"
             enterButton
           />
+          
         </Col>
         <Col span={"auto"} className="navbar_buttons">
           <Row>

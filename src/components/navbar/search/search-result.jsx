@@ -1,0 +1,3 @@
+const SearchResult = () => {};
+
+export { SearchResult };
