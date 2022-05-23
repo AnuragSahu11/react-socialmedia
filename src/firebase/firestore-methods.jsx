@@ -13,6 +13,7 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
+  deleteField,
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 const short = require("short-uuid");
@@ -24,7 +25,7 @@ const createUser = async (firstName, lastName, email, userID) => {
     batch.set(userRef, {
       firstName,
       lastName,
-      fullName: firstName + lastName,
+      fullName: firstName + " " + lastName,
       email,
       handle: "",
       bio: "",
@@ -42,14 +43,14 @@ const createUser = async (firstName, lastName, email, userID) => {
     batch.set(likedPostRef, { likedPost: [] });
     batch.set(bookmarkRef, { bookmarks: [] });
     batch.set(userArrRef, {
-      fullName: firstName + lastName,
+      fullName: firstName + " " + lastName,
       dp: "",
       handle: "",
     });
 
     await batch.commit();
-  } catch {
-    console.error("Error adding document: ", err);
+  } catch (err) {
+    throw err.message;
   }
 };
 
@@ -165,14 +166,14 @@ const getOtherUserData = async (userID, setState) => {
   9;
 };
 
-const addComment = async (postID, commentText, commentName) => {
+const addComment = async (postID, commentText, commenterID) => {
   const newID = short.generate();
   const newComment = `comments.${newID}`;
   try {
     const commentDoc = doc(db, "Posts", postID);
     await updateDoc(commentDoc, {
       [newComment]: {
-        commentName,
+        commenterID,
         commentText,
         commentTime: serverTimestamp(),
       },
@@ -237,14 +238,31 @@ const unFollow = async (currentUserID, userToUnFollowID) => {
 const bookmarkPost = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
-    updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
+    await updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
   } catch (err) {}
 };
 
 const removeBookmark = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
-    updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
+    await updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
+  } catch (err) {}
+};
+
+const addToDraft = async (userID, postData) => {
+  const newID = short.generate();
+  try {
+    const draftRef = doc(db, userID, newID);
+    await updateDoc(draftRef, { ...postData });
+  } catch (err) {}
+};
+
+const deleteFromDraft = async (userID, draftID) => {
+  try {
+    const draftRef = doc(db, userID, "drafts");
+    await updateDoc(draftRef, {
+      [draftID]: deleteField(),
+    });
   } catch (err) {}
 };
 
@@ -266,4 +284,6 @@ export {
   getOtherUserData,
   updateUserData,
   getUserList,
+  addToDraft,
+  deleteFromDraft,
 };

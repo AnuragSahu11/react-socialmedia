@@ -1,11 +1,12 @@
-import { PostContainer } from "..";
 import { Typography } from "antd";
+import { PostContainer } from "../../components";
 import { changeTitle } from "../../utils";
+import { titleConstants } from "../../utils/constants";
 
 const ExplorePage = () => {
   const { Title } = Typography;
 
-  changeTitle("Explore Tradepeer");
+  changeTitle(titleConstants.explorePage);
 
   return (
     <div className="explore_wrapper">

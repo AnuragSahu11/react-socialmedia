@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cloudinaryLink } from "../../utils";
 import { getUserData, updateUserData } from "../../firebase/firestore-methods";
 import Picker from "emoji-picker-react";
+import { toast } from "react-toastify";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { TextArea } = Input;
@@ -33,7 +34,13 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
 
   const handleOk = async () => {
     setIsLoading(true);
-    await updateUserData(token, inputFields);
+    try {
+      await updateUserData(token, inputFields);
+      toast.success("Edit Profile Successful");
+    } catch (err) {
+      toast.error("Edit Profile Failed");
+    }
+
     dispatch(getUserData(token));
     setIsLoading(false);
     setEditProfileModal(false);

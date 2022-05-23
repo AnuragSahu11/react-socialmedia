@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts, updatePost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
 import Picker from "emoji-picker-react";
+import { toast } from "react-toastify";
 
 const EditPostModal = ({ isVisible, toggleModal, postData }) => {
   const { token } = useSelector((store) => store.token);
@@ -37,7 +38,9 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
       await updatePost(postData.postID, inputField);
       dispatch(getPosts());
       toggleModal();
+      toast.success("Post Successfuly Edited");
     } catch (err) {
+      toast.error("Post Edit Failed");
       console.error(err);
     }
     setConfirmLoading(false);

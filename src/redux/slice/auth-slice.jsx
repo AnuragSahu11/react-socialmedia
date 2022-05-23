@@ -27,6 +27,9 @@ const authSlice = createSlice({
       state.token = action.payload;
       state.status = statusConstants.fulfilled;
     },
+    [loginUser.rejected]: (state) => {
+      state.status = statusConstants.rejected;
+    },
   },
 });
 
