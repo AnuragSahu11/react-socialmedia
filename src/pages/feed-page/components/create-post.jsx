@@ -44,10 +44,10 @@ const CreatePost = () => {
             onClick={() => dispatch(showNewPostModal())}
             title="Edit Posts"
           >
-            <EditTwoTone />
+            <EditTwoTone className="new_post_icon" />
           </Tooltip>
           <Tooltip onClick={() => {}} title="Go to Drafts">
-            <SaveTwoTone />
+            <SaveTwoTone className="new_post_icon" />
           </Tooltip>
         </div>
       </Card>

@@ -17,6 +17,7 @@ import {
   ProfilePage,
   NotificationPage,
   UserPage,
+  DraftPage,
 } from "./pages";
 
 function App() {

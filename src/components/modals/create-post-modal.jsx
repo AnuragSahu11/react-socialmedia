@@ -1,13 +1,18 @@
-import { Modal, Input, Upload, Tooltip } from "antd";
+import { Modal, Input, Upload, Tooltip, Button } from "antd";
 import "./modals.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hideNewPostModal } from "../../redux/slice/operation-slice";
-import { getPosts, newPost } from "../../firebase/firestore-methods";
+import {
+  addToDraft,
+  getPosts,
+  newPost,
+} from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
 import { SmileOutlined } from "@ant-design/icons";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
+import { toastConstants } from "../../utils/constants";
 
 const NewPostModal = () => {
   const { newPostModal } = useSelector((store) => store.operationData);
@@ -18,6 +23,7 @@ const NewPostModal = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputField, setInputField] = useState({ caption: "", content: "" });
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [fileList, setFileList] = useState([]);
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prevState) => !prevState);
@@ -41,19 +47,23 @@ const NewPostModal = () => {
       );
       dispatch(getPosts());
       dispatch(hideNewPostModal());
-      toast.success("New Post Created");
+      toast.success(toastConstants.postSuccess);
     } catch (err) {
-      toast.error("New Post Failed");
+      toast.error(toastConstants.postFailed);
       console.error(err);
     }
     setConfirmLoading(false);
   };
 
-  const handleCancel = () => {
-    dispatch(hideNewPostModal());
+  const draftClick = async () => {
+    try {
+      await addToDraft(token, inputField);
+    } catch (err) {}
   };
 
-  const [fileList, setFileList] = useState([]);
+  const onCancel = () => {
+    dispatch(hideNewPostModal());
+  };
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -67,10 +77,25 @@ const NewPostModal = () => {
     <Modal
       title="Create New Post"
       visible={newPostModal}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      confirmLoading={confirmLoading}
-      okText={"Post"}
+      onCancel={onCancel}
+      footer={[
+        <Button
+          key="submit"
+          type="primary"
+          // loading={loading}
+          // onClick={handleOk}
+        >
+          Add Post
+        </Button>,
+        <Button
+          key="link"
+          type="primary"
+          // loading={loading}
+          // onClick={handleOk}
+        >
+          Move to Drafts
+        </Button>,
+      ]}
     >
       <p className="edit_profile_text">Caption</p>
       <Input
