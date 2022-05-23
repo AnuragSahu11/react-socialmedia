@@ -20,12 +20,20 @@
   margin-right: auto;
 }
 .navbar_search_wrapper {
+  position: relative;
   display: flex;
   align-items: center;
 }
 .navbar_btn {
   margin-left: 10px;
 }
+.search_result_wrapper {
+  top: 50px;
+  position: absolute;
+  width: 100%;
+  background-color: white;
+}
+
 @media only screen and (max-width: 768px) {
   .navbar_heading {
     display: none;

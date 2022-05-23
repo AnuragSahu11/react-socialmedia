@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import { changeTitle } from "../../utils";
-import { PostContainer } from "../post/post-container";
+import { PostContainer } from "../../components/post/post-container";
 import { CreatePost } from "./components/create-post";
+import { titleConstants } from "../../utils/constants";
 
-const Feed = () => {
+const FeedPage = () => {
   const { userData } = useSelector((store) => store.userData);
   const { token } = useSelector((store) => store.token);
 
-  changeTitle("Your Feed");
+  changeTitle(titleConstants.feedPage);
 
   return (
     <div>
@@ -17,4 +18,4 @@ const Feed = () => {
   );
 };
 
-export { Feed };
+export { FeedPage };

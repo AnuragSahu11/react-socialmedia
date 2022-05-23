@@ -1,9 +1,11 @@
 import "./navbar.css";
-import { Layout, Menu, Input, Row, Col, Button } from "antd";
+import { Layout, Input, Row, Col, Button } from "antd";
 import { useState } from "react";
 import { LogoutModal } from "../modals";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { UsersList } from "../list/users-list";
+import { objectToArr, statusConstants } from "../../utils";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,10 +13,25 @@ const Navbar = () => {
   const { Search } = Input;
 
   const { token } = useSelector((store) => store.token);
+  const { userList, status } = useSelector((store) => store.operationData);
 
+  const [listData, setListData] = useState([]);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+
   const toggleLogout = () => setShowLogoutModal((prevState) => !prevState);
-  const onSearch = (value) => console.log(value);
+  const onSearch = ({ target: { value } }) => {
+    const lowercaseValue = value.toLowerCase();
+    if (value.length > 0)
+      setListData(
+        objectToArr(userList).filter(
+          (user) =>
+            user.fullName.toLowerCase().includes(lowercaseValue) ||
+            user.handle.includes(lowercaseValue)
+        )
+      );
+    else setListData([]);
+  };
+
   return (
     <Header className="header header_custom">
       <LogoutModal
@@ -38,11 +55,21 @@ const Navbar = () => {
         </Col>
 
         <Col className="navbar_search_wrapper" xs={19} sm={18} md={10}>
-          <Search
-            className="navbar_search"
-            placeholder="input search text"
-            enterButton
-          />
+          {token && (
+            <Search
+              className="navbar_search"
+              placeholder="Search people"
+              onChange={onSearch}
+              disabled={status === statusConstants.loading}
+              enterButton
+            />
+          )}
+
+          <div className="search_result_wrapper">
+            {listData.length > 0 && (
+              <UsersList className="search_result" listData={listData} />
+            )}
+          </div>
         </Col>
         <Col span={"auto"} className="navbar_buttons">
           <Row>

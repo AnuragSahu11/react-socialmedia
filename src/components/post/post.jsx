@@ -31,6 +31,7 @@ import { EditPostModal } from "../modals/edit-post-modal";
 import { DeletePostModal } from "../modals";
 import { useNavigate } from "react-router-dom";
 import { changeSort } from "../../redux/slice/operation-slice";
+import { Comments } from "./comments";
 
 const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
@@ -109,7 +110,7 @@ const Post = ({ postData, postID, editPost }) => {
           className="hover"
           onClick={clickProfile}
           title={userList[postByID]?.fullName}
-          description={userList[postByID]?.handle}
+          description={`@${userList[postByID]?.handle}`}
           avatar={
             userList[postByID]?.dp ? (
               <Avatar size="large" src={userList[postByID]?.dp} />

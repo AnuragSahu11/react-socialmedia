@@ -21,9 +21,7 @@ const signUp = async (firstName, lastName, email, password) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     createUser(firstName, lastName, email, res.user.uid);
   } catch (err) {
-    const errCode = err.code;
-    const errorMessage = err.message;
-    console.error(errCode, errorMessage);
+    throw err.message;
   }
 };
 
