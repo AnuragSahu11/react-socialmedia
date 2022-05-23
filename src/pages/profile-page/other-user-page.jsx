@@ -58,7 +58,7 @@ const OtherUserPage = () => {
   useEffect(() => {
     if (token === userID) navigate("/user/profile");
     getData();
-  }, []);
+  }, [userID]);
 
   changeTitle(userInfo?.userData?.firstName);
 

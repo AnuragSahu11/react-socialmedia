@@ -6,3 +6,4 @@ export { NewPostModal } from "./modals/create-post-modal";
 export { NotificationPage } from "../pages/notification-page/notification-page";
 export { Post } from "./post/post";
 export { PostContainer } from "./post/post-container";
+export { UsersList } from "./list/users-list";
