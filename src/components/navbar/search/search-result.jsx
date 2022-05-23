@@ -1,3 +1,0 @@
-const SearchResult = () => {};
-
-export { SearchResult };

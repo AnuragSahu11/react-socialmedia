@@ -1,5 +1,10 @@
-import { Card, Avatar } from "antd";
-import { PictureTwoTone, SmileTwoTone, EditTwoTone } from "@ant-design/icons";
+import { Card, Avatar, Tooltip } from "antd";
+import {
+  PictureTwoTone,
+  SmileTwoTone,
+  EditTwoTone,
+  SaveTwoTone,
+} from "@ant-design/icons";
 import "./feed-page-components.css";
 import { useDispatch, useSelector } from "react-redux";
 import { showNewPostModal } from "../../../redux/slice/operation-slice";
@@ -13,17 +18,37 @@ const CreatePost = () => {
       <Card className="card_post" title="New Post" bordered={false}>
         <div className="new_post_contents">
           <Avatar size={65} src={userData?.userData?.dp} />
-          <button
-            onClick={() => dispatch(showNewPostModal())}
-            className="button_new_post"
-          >
-            Start a Post
-          </button>
+          <div className="button_new_post_wrapper">
+            <button
+              onClick={() => dispatch(showNewPostModal())}
+              className="button_new_post"
+            >
+              Start a Post
+            </button>
+          </div>
         </div>
         <div className="new_post_icon_wrapper">
-          <PictureTwoTone className="new_post_icon" />{" "}
-          <SmileTwoTone className="new_post_icon" />
-          <EditTwoTone />
+          <Tooltip
+            onClick={() => dispatch(showNewPostModal())}
+            title="Add Image"
+          >
+            <PictureTwoTone className="new_post_icon" />{" "}
+          </Tooltip>
+          <Tooltip
+            onClick={() => dispatch(showNewPostModal())}
+            title="Add Emoji"
+          >
+            <SmileTwoTone className="new_post_icon" />
+          </Tooltip>
+          <Tooltip
+            onClick={() => dispatch(showNewPostModal())}
+            title="Edit Posts"
+          >
+            <EditTwoTone />
+          </Tooltip>
+          <Tooltip onClick={() => {}} title="Go to Drafts">
+            <SaveTwoTone />
+          </Tooltip>
         </div>
       </Card>
     </div>

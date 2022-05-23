@@ -93,7 +93,6 @@ const Comments = ({ commentData, postID }) => {
               author={item.author}
               avatar={item.avatar}
               content={item.content}
-              // datetime={item.commentTime}
             />
           </li>
         )}

@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   doc,
@@ -12,6 +13,7 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
+  deleteField,
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 const short = require("short-uuid");
@@ -236,14 +238,31 @@ const unFollow = async (currentUserID, userToUnFollowID) => {
 const bookmarkPost = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
-    updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
+    await updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
   } catch (err) {}
 };
 
 const removeBookmark = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
-    updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
+    await updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
+  } catch (err) {}
+};
+
+const addToDraft = async (userID, postData) => {
+  const newID = short.generate();
+  try {
+    const draftRef = doc(db, userID, newID);
+    await updateDoc(draftRef, { ...postData });
+  } catch (err) {}
+};
+
+const deleteFromDraft = async (userID, draftID) => {
+  try {
+    const draftRef = doc(db, userID, "drafts");
+    await updateDoc(draftRef, {
+      [draftID]: deleteField(),
+    });
   } catch (err) {}
 };
 
@@ -265,4 +284,6 @@ export {
   getOtherUserData,
   updateUserData,
   getUserList,
+  addToDraft,
+  deleteFromDraft,
 };

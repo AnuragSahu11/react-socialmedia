@@ -1,5 +1,5 @@
 import "./navbar.css";
-import { Layout, Menu, Input, Row, Col, Button } from "antd";
+import { Layout, Input, Row, Col, Button } from "antd";
 import { useState } from "react";
 import { LogoutModal } from "../modals";
 import { useNavigate } from "react-router-dom";

@@ -15,12 +15,13 @@
   cursor: pointer;
   margin-left: 20px;
   border-radius: 40px;
-  flex-grow: 1;
+  width: 94%;
   background-color: white;
   border: 1px solid #c6c6c6;
   color: #9e9e9e;
   font-weight: 600;
   font-size: 1.6rem;
+  padding: 10px 0px;
 }
 .button_new_post:hover {
   background-color: #f6f6f6;
@@ -28,6 +29,11 @@
 .new_post_contents {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.button_new_post_wrapper {
+  flex-grow: 1;
 }
 .new_post_icon_wrapper {
   margin: 8px 0px;

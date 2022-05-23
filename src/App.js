@@ -42,6 +42,7 @@ function App() {
             <Route path="/user/profile" element={<ProfilePage />} />
             <Route path="/user/notifications" element={<NotificationPage />} />
             <Route path="/user/:userID" element={<OtherUserPage />} />
+            <Route path="/user/drafts" element={<DraftPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />
