@@ -20,6 +20,8 @@ export const toastConstants = {
   signupFailed: "SignUp failed",
   loginSuccess: "Login Successful",
   loginFailded: `Login Failed`,
+  postSuccess: "New Post Created",
+  postFailed: "New Post Failed",
 };
 
 export const demoLoginCredentials = {

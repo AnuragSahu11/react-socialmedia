@@ -37,6 +37,8 @@ const createUser = async (firstName, lastName, email, userID) => {
     const followRef = doc(db, userID, "follow");
     const bookmarkRef = doc(db, userID, "bookmarks");
     const userArrRef = doc(db, "users", userID);
+    const draftRef = doc(db, userID, "drafts");
+    const notificationRef = doc(db, userID, "notifications");
 
     batch.set(postRef, { posts: [] });
     batch.set(followRef, { following: [], followers: [] });
@@ -47,6 +49,8 @@ const createUser = async (firstName, lastName, email, userID) => {
       dp: "",
       handle: "",
     });
+    batch.set(notificationRef, { notifications: [] });
+    batch.set(draftRef, {});
 
     await batch.commit();
   } catch (err) {
@@ -213,10 +217,14 @@ const follow = async (currentUserID, userToFollowID) => {
   try {
     const followingRef = doc(db, currentUserID, "follow");
     const followerRef = doc(db, userToFollowID, "follow");
+    const notificationRef = doc(db, userToFollowID, "notifications");
     updateDoc(followingRef, {
       following: arrayUnion(userToFollowID),
     });
     updateDoc(followerRef, { followers: arrayUnion(currentUserID) });
+    updateDoc(notificationRef, {
+      notifications: arrayUnion({ type: "follow", userID: currentUserID }),
+    });
   } catch (err) {
     throw err.message;
   }
@@ -226,10 +234,14 @@ const unFollow = async (currentUserID, userToUnFollowID) => {
   try {
     const followingRef = doc(db, currentUserID, "follow");
     const followerRef = doc(db, userToUnFollowID, "follow");
+    const notificationRef = doc(db, userToUnFollowID, "notifications");
     updateDoc(followingRef, {
       following: arrayRemove(userToUnFollowID),
     });
     updateDoc(followerRef, { followers: arrayRemove(currentUserID) });
+    updateDoc(notificationRef, {
+      notifications: arrayUnion({ type: "unfollow", userID: currentUserID }),
+    });
   } catch (err) {
     throw err.message;
   }
@@ -252,8 +264,8 @@ const removeBookmark = async (postID, userID) => {
 const addToDraft = async (userID, postData) => {
   const newID = short.generate();
   try {
-    const draftRef = doc(db, userID, newID);
-    await updateDoc(draftRef, { ...postData });
+    const draftRef = doc(db, userID, "drafts");
+    await updateDoc(draftRef, { [newID]: { ...postData } });
   } catch (err) {}
 };
 
@@ -263,7 +275,14 @@ const deleteFromDraft = async (userID, draftID) => {
     await updateDoc(draftRef, {
       [draftID]: deleteField(),
     });
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const clearNotifications = async (userID) => {
+  const notificationRef = doc(db, userID, "notifications");
+  updateDoc(notificationRef, { notifications: [] });
 };
 
 export {
@@ -286,4 +305,5 @@ export {
   getUserList,
   addToDraft,
   deleteFromDraft,
+  clearNotifications,
 };

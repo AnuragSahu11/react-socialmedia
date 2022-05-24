@@ -8,9 +8,11 @@ import {
 import "./feed-page-components.css";
 import { useDispatch, useSelector } from "react-redux";
 import { showNewPostModal } from "../../../redux/slice/operation-slice";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userData } = useSelector((store) => store.userData);
 
   return (
@@ -44,10 +46,15 @@ const CreatePost = () => {
             onClick={() => dispatch(showNewPostModal())}
             title="Edit Posts"
           >
-            <EditTwoTone />
+            <EditTwoTone className="new_post_icon" />
           </Tooltip>
-          <Tooltip onClick={() => {}} title="Go to Drafts">
-            <SaveTwoTone />
+          <Tooltip
+            onClick={() => {
+              navigate("/user/drafts");
+            }}
+            title="Go to Drafts"
+          >
+            <SaveTwoTone className="new_post_icon" />
           </Tooltip>
         </div>
       </Card>
