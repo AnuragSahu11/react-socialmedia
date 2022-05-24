@@ -1,0 +1,29 @@
+.notifications_page {
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+.notification_button {
+  margin-top: auto;
+}
+
+@media only screen and (max-width: 1600px) {
+  .notifications_page {
+    width: 55vw;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .notifications_page {
+    width: 48vw;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .notifications_page {
+    width: 80vw;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .notifications_page {
+    width: 90vw;
+  }
+}

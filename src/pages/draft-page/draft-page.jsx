@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeTitle, objectToArr } from "../../utils";
-import { Button, Divider, List, Tooltip, Typography } from "antd";
+import { changeTitle, objectToArr, statusConstants } from "../../utils";
+import { Button, Divider, List, Tooltip, Typography, Skeleton } from "antd";
 import "./draft-page.css";
 import {
   setDraftData,
@@ -53,47 +53,54 @@ const DraftPage = () => {
       <div className="draft_header">
         <Title level={2}>Draft Posts</Title>
       </div>
-      <List
-        itemLayout="vertical"
-        size="large"
-        dataSource={draftArr}
-        renderItem={(item) => (
-          <>
-            <List.Item
-              key={item.caption}
-              actions={[
-                <Tooltip title="Post Draft">
-                  <Button
-                    onClick={() => clickPostDraft(item)}
-                    type="primary"
-                    icon={<PlusOutlined />}
-                  />
-                </Tooltip>,
-                <Tooltip title="Delete Draft">
-                  <Button
-                    onClick={() => clickDelete(item)}
-                    type="primary"
-                    icon={<DeleteOutlined />}
-                    loading={deleteLoading}
-                  />
-                </Tooltip>,
-                <Divider />,
-              ]}
-              extra={
-                item.img && (
-                  <div className="draft_image">
-                    <img height="100%" alt="draft image" src={item.img} />
-                  </div>
-                )
-              }
-            >
-              <List.Item.Meta title={item.caption} />
-              {item.content}
-            </List.Item>
-            <Divider />
-          </>
-        )}
-      />
+      {status === statusConstants.fulfilled ? (
+        <List
+          itemLayout="vertical"
+          size="large"
+          dataSource={draftArr}
+          renderItem={(item) => (
+            <>
+              <List.Item
+                key={item.caption}
+                actions={[
+                  <Tooltip title="Post Draft">
+                    <Button
+                      onClick={() => clickPostDraft(item)}
+                      type="primary"
+                      icon={<PlusOutlined />}
+                    />
+                  </Tooltip>,
+                  <Tooltip title="Delete Draft">
+                    <Button
+                      onClick={() => clickDelete(item)}
+                      type="primary"
+                      icon={<DeleteOutlined />}
+                      loading={deleteLoading}
+                    />
+                  </Tooltip>,
+                  <Divider />,
+                ]}
+                extra={
+                  item.img && (
+                    <div className="draft_image">
+                      <img height="100%" alt="draft image" src={item.img} />
+                    </div>
+                  )
+                }
+              >
+                <List.Item.Meta title={item.caption} />
+                {item.content}
+              </List.Item>
+              <Divider />
+            </>
+          )}
+        />
+      ) : (
+        <>
+          <Skeleton active />
+          <Skeleton active />
+        </>
+      )}
     </div>
   );
 };

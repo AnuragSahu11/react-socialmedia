@@ -13,7 +13,9 @@ const Navbar = () => {
   const { Search } = Input;
 
   const { token } = useSelector((store) => store.token);
-  const { userList, status } = useSelector((store) => store.operationData);
+  const { userList, userListStatus } = useSelector(
+    (store) => store.operationData
+  );
 
   const [listData, setListData] = useState([]);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -60,7 +62,7 @@ const Navbar = () => {
               className="navbar_search"
               placeholder="Search people"
               onChange={onSearch}
-              disabled={status === statusConstants.loading}
+              disabled={userListStatus=== statusConstants.loading}
               enterButton
             />
           )}

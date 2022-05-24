@@ -7,4 +7,15 @@ const objectToArr = (obj, id = "userID") => {
   });
 };
 
-export { objectToArr };
+const notificationDisc = (name, type) => {
+  switch (type) {
+    case "unfollow":
+      return `${name} stoped following you.`;
+      break;
+    case "follow":
+      return `${name} started following you.`;
+      break;
+  }
+};
+
+export { objectToArr, notificationDisc };

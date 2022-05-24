@@ -7,7 +7,9 @@ import { UsersList } from "../list/users-list";
 
 const SidebarRecommendations = () => {
   const { Sider } = Layout;
-  const { userList, status } = useSelector((store) => store.operationData);
+  const { userList, userListStatus } = useSelector(
+    (store) => store.operationData
+  );
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const SidebarRecommendations = () => {
       theme="light"
       className="sidebar_recommendation"
     >
-      {status === statusConstants.fulfilled ? (
+      {userListStatus === statusConstants.fulfilled ? (
         <>
           <p className="sidebar_recommendation_text">Who to follow?</p>
           <Divider className="divider_recommendation" />

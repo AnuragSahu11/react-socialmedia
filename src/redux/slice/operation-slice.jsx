@@ -4,7 +4,7 @@ import { filterConstants } from "../../utils";
 import { statusConstants } from "../../utils/constants";
 
 const initialState = {
-  status: statusConstants.idle,
+  userListStatus: statusConstants.idle,
   error: null,
   newPostModal: false,
   draftData: null,
@@ -36,11 +36,11 @@ const operationSlice = createSlice({
   },
   extraReducers: {
     [getUserList.pending]: (state) => {
-      state.status = statusConstants.loading;
+      state.userListStatus = statusConstants.loading;
     },
     [getUserList.fulfilled]: (state, action) => {
       state.userList = action.payload;
-      state.status = statusConstants.fulfilled;
+      state.userListStatus = statusConstants.fulfilled;
     },
   },
 });
