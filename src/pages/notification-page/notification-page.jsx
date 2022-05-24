@@ -1,4 +1,4 @@
-import { Skeleton, Button } from "antd";
+import { Skeleton, Button, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UsersList } from "../../components";
@@ -11,6 +11,7 @@ import {
 } from "../../firebase/firestore-methods";
 
 const NotificationPage = () => {
+  const { Title } = Typography;
   const { userList, userListStatus } = useSelector(
     (store) => store.operationData
   );
@@ -46,13 +47,21 @@ const NotificationPage = () => {
 
   return (
     <div className="notifications_page">
+      <div className="notifications_page_header">
+        <Title level={2}>Your Notifications</Title>
+      </div>
       {userListStatus === statusConstants.fulfilled &&
       status === statusConstants.fulfilled ? (
         <>
-          <UsersList listData={notificationArr} />
+          <UsersList
+            className="notificatio_page_list"
+            listData={notificationArr}
+            notification={true}
+          />
           <Button
+            block
             onClick={clickClearNotification}
-            className="notification_button"
+            className="notifications_button"
             type="primary"
             icon={<ClearOutlined />}
           >

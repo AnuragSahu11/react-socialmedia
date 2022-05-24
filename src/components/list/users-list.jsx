@@ -2,7 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { List, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const UsersList = ({ listData }) => {
+const UsersList = ({ listData, notification }) => {
   const navigate = useNavigate();
   return (
     <List
@@ -12,7 +12,7 @@ const UsersList = ({ listData }) => {
       renderItem={(item) => (
         <List.Item>
           <List.Item.Meta
-            className="hover"
+            className={`hover ${notification && "notification_user_list"}`}
             onClick={() => navigate(`/user/${item.userID}`)}
             avatar={
               item.dp ? (

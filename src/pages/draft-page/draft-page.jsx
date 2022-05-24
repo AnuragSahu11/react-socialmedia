@@ -61,6 +61,7 @@ const DraftPage = () => {
           renderItem={(item) => (
             <>
               <List.Item
+                className="draft_page_list"
                 key={item.caption}
                 actions={[
                   <Tooltip title="Post Draft">
