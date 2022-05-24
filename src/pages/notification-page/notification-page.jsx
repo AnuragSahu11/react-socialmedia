@@ -41,7 +41,7 @@ const NotificationPage = () => {
 
   const clickClearNotification = () => {
     clearNotifications(token);
-    dispatch(getUserData());
+    dispatch(getUserData(token));
   };
 
   return (
