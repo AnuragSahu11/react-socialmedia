@@ -1,27 +1,36 @@
 import { Modal, Input, Upload, Tooltip, Button } from "antd";
 import "./modals.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hideNewPostModal } from "../../redux/slice/operation-slice";
 import {
   addToDraft,
+  deleteFromDraft,
   getPosts,
+  getUserData,
   newPost,
 } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
-import { SmileOutlined } from "@ant-design/icons";
+import {
+  SmileOutlined,
+  PlusOutlined,
+  ContainerOutlined,
+} from "@ant-design/icons";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
 
 const NewPostModal = () => {
-  const { newPostModal } = useSelector((store) => store.operationData);
+  const { newPostModal, draftData } = useSelector(
+    (store) => store.operationData
+  );
   const { token } = useSelector((store) => store.token);
   const dispatch = useDispatch();
   const { TextArea } = Input;
 
+  const initialInputField = { caption: "", content: "", img: "" };
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [inputField, setInputField] = useState({ caption: "", content: "" });
+  const [inputField, setInputField] = useState(initialInputField);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [fileList, setFileList] = useState([]);
 
@@ -36,6 +45,10 @@ const NewPostModal = () => {
     }));
   };
 
+  useEffect(() => {
+    if (draftData) setInputField(draftData);
+  }, [draftData]);
+
   const handleOk = async () => {
     setConfirmLoading(true);
     try {
@@ -45,6 +58,9 @@ const NewPostModal = () => {
         token,
         inputField.img
       );
+      if (draftData) {
+        await deleteFromDraft(token, draftData.postID);
+      }
       dispatch(getPosts());
       dispatch(hideNewPostModal());
       toast.success(toastConstants.postSuccess);
@@ -56,12 +72,16 @@ const NewPostModal = () => {
   };
 
   const draftClick = async () => {
+    setConfirmLoading(true);
     try {
       await addToDraft(token, inputField);
+      dispatch(getUserData(token));
     } catch (err) {}
+    setConfirmLoading(false);
   };
 
   const onCancel = () => {
+    setInputField(initialInputField);
     dispatch(hideNewPostModal());
   };
 
@@ -80,20 +100,24 @@ const NewPostModal = () => {
       onCancel={onCancel}
       footer={[
         <Button
-          key="submit"
-          type="primary"
-          // loading={loading}
-          // onClick={handleOk}
-        >
-          Add Post
-        </Button>,
-        <Button
           key="link"
           type="primary"
-          // loading={loading}
-          // onClick={handleOk}
+          loading={confirmLoading}
+          onClick={draftClick}
+          icon={<ContainerOutlined />}
+          disabled={draftData}
+          ghost
         >
           Move to Drafts
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={confirmLoading}
+          onClick={handleOk}
+          icon={<PlusOutlined />}
+        >
+          Add Post
         </Button>,
       ]}
     >
@@ -103,6 +127,7 @@ const NewPostModal = () => {
         onChange={(e) =>
           setInputField({ ...inputField, caption: e.target.value })
         }
+        value={inputField.caption}
       />
       <p className="edit_profile_text">Add Image to the Post</p>
       <Upload
@@ -115,7 +140,6 @@ const NewPostModal = () => {
       >
         {"Add Image to the Post"}
       </Upload>
-
       <p className="edit_profile_text">Post Content</p>
       <TextArea
         onChange={(e) =>

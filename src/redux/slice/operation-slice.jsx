@@ -7,6 +7,7 @@ const initialState = {
   status: statusConstants.idle,
   error: null,
   newPostModal: false,
+  draftData: null,
   darkmode: false,
   sortPost: filterConstants.recent,
   userList: null,
@@ -20,10 +21,17 @@ const operationSlice = createSlice({
       state.newPostModal = true;
     },
     hideNewPostModal: (state) => {
+      state.draftData = null;
       state.newPostModal = false;
     },
     changeSort: (state, action) => {
       state.sortPost = action.payload;
+    },
+    setDraftData: (state, action) => {
+      state.draftData = action.payload;
+    },
+    clearDraftData: (state) => {
+      state.draftData = null;
     },
   },
   extraReducers: {
@@ -37,6 +45,11 @@ const operationSlice = createSlice({
   },
 });
 
-export const { showNewPostModal, hideNewPostModal, changeSort } =
-  operationSlice.actions;
+export const {
+  showNewPostModal,
+  hideNewPostModal,
+  changeSort,
+  setDraftData,
+  clearDraftData,
+} = operationSlice.actions;
 export default operationSlice.reducer;

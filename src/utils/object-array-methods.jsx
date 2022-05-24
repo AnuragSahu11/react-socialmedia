@@ -1,8 +1,8 @@
-const objectToArr = (obj) => {
-  return Object.keys(obj).map((userID) => {
+const objectToArr = (obj, id = "userID") => {
+  return Object.keys(obj).map((key) => {
     return {
-      userID,
-      ...obj[userID],
+      [id]: key,
+      ...obj[key],
     };
   });
 };

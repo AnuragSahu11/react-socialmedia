@@ -37,6 +37,7 @@ const createUser = async (firstName, lastName, email, userID) => {
     const followRef = doc(db, userID, "follow");
     const bookmarkRef = doc(db, userID, "bookmarks");
     const userArrRef = doc(db, "users", userID);
+    const draftRef = doc(db, userID, "drafts");
 
     batch.set(postRef, { posts: [] });
     batch.set(followRef, { following: [], followers: [] });
@@ -47,6 +48,7 @@ const createUser = async (firstName, lastName, email, userID) => {
       dp: "",
       handle: "",
     });
+    batch.set(draftRef, {});
 
     await batch.commit();
   } catch (err) {
@@ -252,8 +254,8 @@ const removeBookmark = async (postID, userID) => {
 const addToDraft = async (userID, postData) => {
   const newID = short.generate();
   try {
-    const draftRef = doc(db, userID, newID);
-    await updateDoc(draftRef, { ...postData });
+    const draftRef = doc(db, userID, "drafts");
+    await updateDoc(draftRef, { [newID]: { ...postData } });
   } catch (err) {}
 };
 
@@ -263,7 +265,9 @@ const deleteFromDraft = async (userID, draftID) => {
     await updateDoc(draftRef, {
       [draftID]: deleteField(),
     });
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export {
