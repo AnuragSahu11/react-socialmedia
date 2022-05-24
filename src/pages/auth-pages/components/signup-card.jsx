@@ -1,11 +1,13 @@
 import { toast } from "react-toastify";
+import { Input, Checkbox, Button } from "antd";
 import { signUp } from "../../../firebase/firebase-auth";
 import { UserOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
-import { toastConstants } from "../../../utils/constants";
+import { initialSignUpInput, toastConstants } from "../../../utils/constants";
 import { useState } from "react";
 
 const SignUpCard = () => {
   const [signUpLoading, setSignUpLoading] = useState(false);
+  const [signUpInput, setSignUpInput] = useState(initialSignUpInput);
   const { firstName, lastName, email, password } = signUpInput;
 
   const signUpClick = async () => {
