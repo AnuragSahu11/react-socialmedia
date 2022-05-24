@@ -29,6 +29,8 @@ Checkout the live website [here](https://tradepeer.netlify.app/)
 - Follow/Unfollow Users
 - Recommendation sidebar
 - Search Users
+- Draft Posts ( access using the save icon below the start a post button in home page ) 
+- Notifications 
 
 ### Misc Features
 - Mobile responsive
