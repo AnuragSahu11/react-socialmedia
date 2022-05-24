@@ -28,7 +28,8 @@ Checkout the live website [here](https://tradepeer.netlify.app/)
 - Add emoji to Post, profile bio ( emoji-picker-react )
 - Follow/Unfollow Users
 - Recommendation sidebar
-- Search Users
+- Search Users- Draft Posts ( access using the save icon below the start a post button in home page ) 
+- Notifications 
 
 ### Misc Features
 - Mobile responsive
