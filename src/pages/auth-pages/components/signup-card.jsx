@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { signUp } from "../../../firebase/firebase-auth";
 import { UserOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
 import { toastConstants } from "../../../utils/constants";
+import { useState } from "react";
 
 const SignUpCard = () => {
   const [signUpLoading, setSignUpLoading] = useState(false);
