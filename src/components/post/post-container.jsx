@@ -8,8 +8,8 @@ import { changeSort } from "../../redux/slice/operation-slice";
 import { statusConstants } from "../../utils/constants";
 
 const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
-  const dispatch = useDispatch();
   const Option = Select.Option;
+  const dispatch = useDispatch();
 
   const { posts, status } = useSelector((store) => store.posts);
   const { userData } = useSelector((store) => store.userData);

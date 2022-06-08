@@ -29,11 +29,12 @@ const NotificationPage = () => {
       setNotificationArr(
         userData?.notifications?.notifications?.map((notification) => {
           const { userID, type } = notification;
+          const { dp, fullName, handle } = userList[userID];
           return {
             userID,
-            dp: userList[userID].dp,
-            fullName: userList[userID].fullName,
-            handle: notificationDisc(userList[userID].handle, type),
+            dp: dp,
+            fullName: fullName,
+            handle: notificationDisc(handle, type),
           };
         })
       );

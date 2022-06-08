@@ -20,7 +20,7 @@ const DraftPage = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
-    if (status === "fulfilled") {
+    if (status === statusConstants.fulfilled) {
       setDraftArr(
         objectToArr(userData.drafts, "postID").map((post) => {
           return {
@@ -58,11 +58,11 @@ const DraftPage = () => {
           itemLayout="vertical"
           size="large"
           dataSource={draftArr}
-          renderItem={(item) => (
+          renderItem={({ item, item: { caption, img, content } }) => (
             <>
               <List.Item
                 className="draft_page_list"
-                key={item.caption}
+                key={caption}
                 actions={[
                   <Tooltip title="Post Draft">
                     <Button
@@ -82,15 +82,15 @@ const DraftPage = () => {
                   <Divider />,
                 ]}
                 extra={
-                  item.img && (
+                  img && (
                     <div className="draft_image">
-                      <img height="100%" alt="draft image" src={item.img} />
+                      <img height="100%" alt="draft image" src={img} />
                     </div>
                   )
                 }
               >
-                <List.Item.Meta title={item.caption} />
-                {item.content}
+                <List.Item.Meta title={caption} />
+                {content}
               </List.Item>
               <Divider />
             </>

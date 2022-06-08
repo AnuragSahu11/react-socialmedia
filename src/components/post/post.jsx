@@ -50,9 +50,9 @@ const Post = ({ postData, postID, editPost }) => {
   const [editPostModal, setEditPostModal] = useState(false);
   const [deletePostModal, setDeletePostModal] = useState(false);
   const [inBookmark, setInBookmark] = useState(false);
-  const [postInfo, setPostInfo] = useState({});
 
-  const { caption, content, comments, postByID } = postData;
+  const { caption, content, comments, postByID, img } = postData || {};
+  const { handle, dp, fullName } = userList[postByID] || {};
 
   useEffect(() => {
     setIsLiked(userData?.likedPost?.likedPost?.includes(postID));
@@ -109,11 +109,11 @@ const Post = ({ postData, postID, editPost }) => {
         <Meta
           className="hover"
           onClick={clickProfile}
-          title={userList[postByID]?.fullName}
-          description={`@${userList[postByID]?.handle}`}
+          title={fullName}
+          description={`@${handle}`}
           avatar={
-            userList[postByID]?.dp ? (
-              <Avatar size="large" src={userList[postByID]?.dp} />
+            dp ? (
+              <Avatar size="large" src={dp} />
             ) : (
               <Avatar size="large" icon={<UserOutlined />} />
             )
@@ -124,9 +124,7 @@ const Post = ({ postData, postID, editPost }) => {
           <Text>{caption}</Text>
           <div className="post_image_wrapper_outer">
             <div className="post_image_wrapper">
-              {postData?.img && (
-                <Image className="post_image" src={postData?.img} />
-              )}
+              {img && <Image className="post_image" src={img} />}
             </div>
           </div>
           <Text>{content}</Text>

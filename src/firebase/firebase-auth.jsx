@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+import { toastConstants } from "../utils/constants";
 import { auth } from "./firebase-config";
 import { createUser } from "./firestore-methods";
 
@@ -10,9 +12,10 @@ const loginUser = createAsyncThunk("login", async (loginCredentials) => {
     const {
       user: { uid },
     } = await signInWithEmailAndPassword(auth, email, password);
+    toast.success(toastConstants.loginSuccess);
     return uid;
   } catch (err) {
-    throw err.message;
+    toast.error(toastConstants.loginFailed);
   }
 });
 

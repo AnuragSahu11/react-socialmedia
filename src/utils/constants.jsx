@@ -19,7 +19,7 @@ export const toastConstants = {
   loginAfterSignup: "Login with your new account",
   signupFailed: "SignUp failed",
   loginSuccess: "Login Successful",
-  loginFailded: `Login Failed`,
+  loginFailed: `Login Failed`,
   postSuccess: "New Post Created",
   postFailed: "New Post Failed",
 };
@@ -34,6 +34,7 @@ export const initialSignUpInput = {
   lastName: "",
   email: "",
   password: "",
+  acceptTC: false,
 };
 
 export const titleConstants = {

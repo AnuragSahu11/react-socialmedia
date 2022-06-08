@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import "./antd.css";
-import "./design system/primary-styles.css";
-import "./App.css";
 import { FooterComponent, Navbar, NewPostModal } from "./components";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RequiresAuth } from "./utils";
+import "./design system/primary-styles.css";
+import "./design system/antd-custom-styles.css";
+import "./App.css";
 import {
   BookmarkPage,
   ErrorPage,

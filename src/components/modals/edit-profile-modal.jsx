@@ -8,6 +8,7 @@ import { cloudinaryLink } from "../../utils";
 import { getUserData, updateUserData } from "../../firebase/firestore-methods";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
+import { profileFormValidation } from "../../utils/misc-operation-functions";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { TextArea } = Input;
@@ -20,6 +21,10 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const [inputFields, setInputFields] = useState(userData.userData);
   const [isLoading, setIsLoading] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [fileList, setFileList] = useState([]);
+  const [fileListBackground, setFileListBackground] = useState([]);
+
+  const { handle, website, bio } = inputFields || {};
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prevState) => !prevState);
@@ -34,24 +39,23 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
 
   const handleOk = async () => {
     setIsLoading(true);
-    try {
-      await updateUserData(token, inputFields);
-      toast.success("Edit Profile Successful");
-    } catch (err) {
-      toast.error("Edit Profile Failed");
+    if (profileFormValidation(inputFields)) {
+      try {
+        await updateUserData(token, inputFields);
+        toast.success("Edit Profile Successful");
+      } catch (err) {
+        toast.error("Edit Profile Failed");
+      }
+      setEditProfileModal(false);
+      dispatch(getUserData(token));
     }
 
-    dispatch(getUserData(token));
     setIsLoading(false);
-    setEditProfileModal(false);
   };
 
   const handleCancel = () => {
     setEditProfileModal(false);
   };
-
-  const [fileList, setFileList] = useState([]);
-  const [fileListBackground, setFileListBackground] = useState([]);
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -105,7 +109,7 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
       </div>
       <p className="edit_profile_text">Your handle</p>
       <Input
-        value={inputFields?.handle}
+        value={handle}
         placeholder="Your account handle"
         prefix={<UserOutlined />}
         onChange={(e) =>
@@ -117,7 +121,7 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
       />
       <p className="edit_profile_text">Website</p>
       <TextArea
-        value={inputFields?.website}
+        value={website}
         placeholder="Website Link"
         autoSize={{ minRows: 2, maxRows: 6 }}
         onChange={(e) =>
@@ -126,7 +130,7 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
       />
       <p className="edit_profile_text">Your Bio</p>
       <TextArea
-        value={inputFields?.bio}
+        value={bio}
         placeholder="Something about yourself"
         autoSize={{ minRows: 3, maxRows: 5 }}
         onChange={(e) =>

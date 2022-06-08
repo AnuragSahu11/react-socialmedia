@@ -19,11 +19,10 @@ import { toast } from "react-toastify";
 const Comments = ({ commentData, postID }) => {
   const { token } = useSelector((store) => store.token);
   const { userList } = useSelector((store) => store.operationData);
-  const { userData } = useSelector((store) => store.userData);
 
   const dispatch = useDispatch();
 
-  const { Title, Text } = Typography;
+  const { Title } = Typography;
   const { TextArea } = Input;
 
   const [textField, setTextField] = useState("");
@@ -52,7 +51,6 @@ const Comments = ({ commentData, postID }) => {
     setLoading(false);
     dispatch(getPosts());
   };
-  console.log(userList[token].fullName);
   return (
     <>
       <Divider plain />
@@ -87,13 +85,9 @@ const Comments = ({ commentData, postID }) => {
         header={`${commentList.length} comments`}
         itemLayout="horizontal"
         dataSource={commentList}
-        renderItem={(item) => (
+        renderItem={({ author, avatar, content }) => (
           <li>
-            <Comment
-              author={item.author}
-              avatar={item.avatar}
-              content={item.content}
-            />
+            <Comment author={author} avatar={avatar} content={content} />
           </li>
         )}
       />

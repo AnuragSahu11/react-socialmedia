@@ -2,13 +2,13 @@
   margin-top: 40px;
   text-align: center;
   font-weight: 700;
-  font-size: 3.5rem;
+  font-size: 1.8rem;
   padding-left: 30px;
   padding-right: 30px;
 }
 .text_primary_color {
   color: var(--primary);
-  font-size: 4.5rem;
+  font-size: 3rem;
   font-weight: 900;
 }
 

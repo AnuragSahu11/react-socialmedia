@@ -1,6 +1,6 @@
 import { Input, Button } from "antd";
-import { KeyOutlined, MailOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { EyeOutlined, MailOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -8,8 +8,10 @@ import {
   demoLoginCredentials,
   toastConstants,
   initialLoginInput,
+  statusConstants,
 } from "../../../utils/constants";
 import { loginUser } from "../../../firebase/firebase-auth";
+import { loginFormValidation } from "../../../utils";
 
 const LoginCard = () => {
   const dispatch = useDispatch();
@@ -17,24 +19,30 @@ const LoginCard = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/user/explore";
 
-  const { status } = useSelector((store) => store.token);
+  const { token, status } = useSelector((store) => store.token);
   const [loginInput, setloginInput] = useState(initialLoginInput);
+  const [viewPassword, setViewPassword] = useState(false);
 
   const loginClick = async (demoLogin) => {
-    try {
-      if (demoLogin) {
-        setloginInput(demoLoginCredentials);
-        await dispatch(loginUser(demoLoginCredentials));
-        toast.success(toastConstants.loginSuccess);
-      } else {
-        await dispatch(loginUser(loginInput));
-        toast.success(toastConstants.loginSuccess);
-      }
-    } catch (err) {
-      toast.error(toastConstants.loginFailded);
+    if (demoLogin || loginFormValidation(loginInput)) {
+      try {
+        if (demoLogin) {
+          setloginInput(demoLoginCredentials);
+          dispatch(loginUser(demoLoginCredentials));
+        } else {
+          dispatch(loginUser(loginInput));
+        }
+      } catch (err) {}
+    } else {
+      toast.warn("Enter valid details");
     }
-    navigate(from);
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate(from);
+    }
+  }, [status]);
 
   return (
     <div className="login_card">
@@ -50,10 +58,10 @@ const LoginCard = () => {
       />
       <p className="login_label">Password</p>
       <Input
-        type={"password"}
+        type={viewPassword ? "text" : "password"}
         className="login_input"
         placeholder="Password"
-        prefix={<KeyOutlined />}
+        prefix={<EyeOutlined onClick={() => setViewPassword(!viewPassword)} />}
         onChange={(e) =>
           setloginInput({ ...loginInput, password: e.target.value })
         }

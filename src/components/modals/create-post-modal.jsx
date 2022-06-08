@@ -19,20 +19,24 @@ import {
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
+import { postFormValidation } from "../../utils/misc-operation-functions";
 
 const NewPostModal = () => {
+  const { TextArea } = Input;
+  const dispatch = useDispatch();
+
   const { newPostModal, draftData } = useSelector(
     (store) => store.operationData
   );
   const { token } = useSelector((store) => store.token);
-  const dispatch = useDispatch();
-  const { TextArea } = Input;
 
   const initialInputField = { caption: "", content: "", img: "" };
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputField, setInputField] = useState(initialInputField);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [fileList, setFileList] = useState([]);
+
+  const { caption, content, img } = inputField;
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prevState) => !prevState);
@@ -51,22 +55,18 @@ const NewPostModal = () => {
 
   const handleOk = async () => {
     setConfirmLoading(true);
-    try {
-      await newPost(
-        inputField.caption,
-        inputField.content,
-        token,
-        inputField.img
-      );
-      if (draftData) {
-        await deleteFromDraft(token, draftData.postID);
+    if (postFormValidation(inputField)) {
+      try {
+        await newPost(caption, content, token, img);
+        if (draftData) {
+          await deleteFromDraft(token, draftData.postID);
+        }
+        dispatch(getPosts());
+        dispatch(hideNewPostModal());
+        toast.success(toastConstants.postSuccess);
+      } catch (err) {
+        toast.error(toastConstants.postFailed);
       }
-      dispatch(getPosts());
-      dispatch(hideNewPostModal());
-      toast.success(toastConstants.postSuccess);
-    } catch (err) {
-      toast.error(toastConstants.postFailed);
-      console.error(err);
     }
     setConfirmLoading(false);
   };
@@ -127,7 +127,7 @@ const NewPostModal = () => {
         onChange={(e) =>
           setInputField({ ...inputField, caption: e.target.value })
         }
-        value={inputField.caption}
+        value={caption}
       />
       <p className="edit_profile_text">Add Image to the Post</p>
       <Upload
@@ -147,7 +147,7 @@ const NewPostModal = () => {
         }
         placeholder="Post content"
         autoSize={{ minRows: 3, maxRows: 5 }}
-        value={inputField.content}
+        value={content}
       />
       {showEmojiPicker && (
         <Picker
