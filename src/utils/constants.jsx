@@ -68,4 +68,11 @@ export const loginPageTabList = [
   },
 ];
 
+export const toastProps = {
+  hideProgressBa: true,
+  autoClos: 3500,
+  positio: "top-center",
+  closeOnClick: true,
+};
+
 export const initialLoginInput = { email: "", password: "" };
