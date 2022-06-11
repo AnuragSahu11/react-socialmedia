@@ -12,6 +12,7 @@ import {
 } from "../../firebase/firestore-methods";
 import "./profile-page.css";
 import { titleConstants } from "../../utils/constants";
+import { FollowButton } from "./components/follow-button";
 
 const OtherUserPage = () => {
   const { userID } = useParams();
@@ -82,23 +83,13 @@ const OtherUserPage = () => {
               <p className="profile_name">{firstName}</p>
               <p className="profile_id">{lastName}</p>
             </div>
-            {isFollowing ? (
-              <Button
-                loading={buttonLoading}
-                onClick={() => clickUnfollow()}
-                type="primary"
-              >
-                Unfollow
-              </Button>
-            ) : (
-              <Button
-                loading={buttonLoading}
-                onClick={() => clickFollow()}
-                type="primary"
-              >
-                Follow
-              </Button>
-            )}
+
+            <FollowButton
+              isFollowing={isFollowing}
+              buttonLoading={buttonLoading}
+              clickFollow={clickFollow}
+              clickUnfollow={clickUnfollow}
+            />
 
             <div className="profile_disc">
               <p className="">
@@ -106,6 +97,7 @@ const OtherUserPage = () => {
                 vel saepe ut? Temporibus, qui quisquam.
               </p>
             </div>
+
             <Card className="profile_card">
               <div className="profile_card_div">
                 <div className="profile_card_info">
