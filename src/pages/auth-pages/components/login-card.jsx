@@ -5,10 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  demoLoginCredentials,
   toastConstants,
   initialLoginInput,
   statusConstants,
+  ankushLoginCredentials,
+  anuragLoginCredentials,
 } from "../../../utils/constants";
 import { loginUser } from "../../../firebase/firebase-auth";
 import { loginFormValidation } from "../../../utils";
@@ -23,10 +24,10 @@ const LoginCard = () => {
   const [loginInput, setloginInput] = useState(initialLoginInput);
   const [viewPassword, setViewPassword] = useState(false);
 
-  const loginClick = async (demoLogin) => {
-    if (demoLogin || loginFormValidation(loginInput)) {
+  const loginClick = async (demoLoginCredentials) => {
+    if (demoLoginCredentials || loginFormValidation(loginInput)) {
       try {
-        if (demoLogin) {
+        if (demoLoginCredentials) {
           setloginInput(demoLoginCredentials);
           dispatch(loginUser(demoLoginCredentials));
         } else {
@@ -77,12 +78,20 @@ const LoginCard = () => {
         Login
       </Button>
       <Button
-        onClick={() => loginClick(true)}
+        onClick={() => loginClick(anuragLoginCredentials)}
         className="demo_login_button"
         block={true}
         loading={status === "loading"}
       >
-        Login with demo credentials
+        Login as Anurag
+      </Button>
+      <Button
+        onClick={() => loginClick(ankushLoginCredentials)}
+        className="demo_login_button"
+        block={true}
+        loading={status === "loading"}
+      >
+        Login as Ankush
       </Button>
     </div>
   );

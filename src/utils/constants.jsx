@@ -35,8 +35,13 @@ export const toastConstants = {
   commentFailed: "Comment not added",
 };
 
-export const demoLoginCredentials = {
+export const anuragLoginCredentials = {
   email: "anurag@gmail.com",
+  password: "123456",
+};
+
+export const ankushLoginCredentials = {
+  email: "ankush@gmail.com",
   password: "123456",
 };
 
