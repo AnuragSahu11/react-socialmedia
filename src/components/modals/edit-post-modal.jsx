@@ -8,6 +8,7 @@ import { cloudinaryLink } from "../../utils";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
 import { postFormValidation } from "../../utils/misc-operation-functions";
+import { toastConstants } from "../../utils/constants";
 
 const EditPostModal = ({
   isVisible,
@@ -43,9 +44,9 @@ const EditPostModal = ({
         await updatePost(postID, inputField);
         dispatch(getPosts());
         toggleModal();
-        toast.success("Post Successfuly Edited");
+        toast.success(toastConstants.editSuccess);
       } catch (err) {
-        toast.error("Post Edit Failed");
+        toast.error(toastConstants.editFailed);
       }
     }
     setConfirmLoading(false);

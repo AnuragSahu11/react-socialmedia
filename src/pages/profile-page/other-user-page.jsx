@@ -1,16 +1,17 @@
 import { Avatar, Button, Card, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import "./profile-page.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { changeTitle } from "../../utils";
+import { PostContainer } from "../../components";
 import {
   follow,
   getOtherUserData,
   unFollow,
 } from "../../firebase/firestore-methods";
-import { useNavigate, useParams } from "react-router-dom";
-import { changeTitle } from "../../utils";
-import { PostContainer } from "../../components";
+import "./profile-page.css";
+import { titleConstants } from "../../utils/constants";
 
 const OtherUserPage = () => {
   const { userID } = useParams();
@@ -28,8 +29,8 @@ const OtherUserPage = () => {
 
   const { firstName, lastName } = userInfo.userData || {};
   const {
-    follow: { following, followers },
-    posts: { posts },
+    follow: { following = [], followers = [] } = {},
+    posts: { posts = [] } = {},
   } = userInfo || {};
 
   const clickFollow = async () => {
@@ -65,7 +66,7 @@ const OtherUserPage = () => {
     getData();
   }, [userID]);
 
-  changeTitle(firstName);
+  changeTitle(firstName || titleConstants.profilePage);
 
   return (
     <div className="user_profile_wrapper">
@@ -108,7 +109,7 @@ const OtherUserPage = () => {
             <Card className="profile_card">
               <div className="profile_card_div">
                 <div className="profile_card_info">
-                  <p className="profile_card_number">{isFollowing.length}</p>
+                  <p className="profile_card_number">{following.length}</p>
                   <p className="profile_card_text">Following</p>
                 </div>
                 <div className="profile_card_info">

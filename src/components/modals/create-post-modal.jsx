@@ -76,7 +76,10 @@ const NewPostModal = () => {
     try {
       await addToDraft(token, inputField);
       dispatch(getUserData(token));
-    } catch (err) {}
+      toast.success(toastConstants.draftSuccess);
+    } catch (err) {
+      toast.error(toastConstants.draftFailed);
+    }
     setConfirmLoading(false);
   };
 

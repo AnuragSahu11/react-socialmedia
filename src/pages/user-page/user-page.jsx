@@ -14,7 +14,6 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.token);
   const { posts } = useSelector((store) => store.posts);
-  const { userList } = useSelector((store) => store.operationData);
 
   useEffect(() => {
     if (token) {

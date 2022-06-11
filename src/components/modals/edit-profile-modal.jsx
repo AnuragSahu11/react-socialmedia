@@ -9,6 +9,7 @@ import { getUserData, updateUserData } from "../../firebase/firestore-methods";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
 import { profileFormValidation } from "../../utils/misc-operation-functions";
+import { toastConstants } from "../../utils/constants";
 
 const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
   const { TextArea } = Input;
@@ -42,9 +43,9 @@ const EditProfileModal = ({ editProfileModal, setEditProfileModal }) => {
     if (profileFormValidation(inputFields)) {
       try {
         await updateUserData(token, inputFields);
-        toast.success("Edit Profile Successful");
+        toast.success(toastConstants.profileSuccess);
       } catch (err) {
-        toast.error("Edit Profile Failed");
+        toast.error(toastConstants.profileFailed);
       }
       setEditProfileModal(false);
       dispatch(getUserData(token));

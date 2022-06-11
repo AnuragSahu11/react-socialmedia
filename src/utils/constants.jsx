@@ -22,6 +22,17 @@ export const toastConstants = {
   loginFailed: `Login Failed`,
   postSuccess: "New Post Created",
   postFailed: "New Post Failed",
+  draftSuccess: "Added to Drafts",
+  draftFailed: "Add to Draft Failed",
+  deleteSuccess: "Post Deleted",
+  deleteFailed: "Post delete Failed",
+  editSuccess: "Post edited",
+  editFailed: "Post edit Failed",
+  profileSuccess: "Profile edited",
+  profileFailed: "Profile edit Failed",
+  logout: "You are logged out",
+  commentSuccess: "Comment Added",
+  commentFailed: "Comment not added",
 };
 
 export const demoLoginCredentials = {
@@ -43,6 +54,7 @@ export const titleConstants = {
   errorPage: "Page not Found",
   explorePage: "Explore Tradepeer",
   feedPage: "Your Feed",
+  profilePage: "Your Profile page",
 };
 
 export const loginPageTabList = [

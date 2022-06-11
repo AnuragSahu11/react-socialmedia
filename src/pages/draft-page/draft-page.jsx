@@ -22,14 +22,16 @@ const DraftPage = () => {
   useEffect(() => {
     if (status === statusConstants.fulfilled) {
       setDraftArr(
-        objectToArr(userData.drafts, "postID").map((post) => {
-          return {
-            postID: post.postID,
-            caption: post.caption,
-            content: post.content,
-            img: post?.img,
-          };
-        })
+        objectToArr(userData.drafts, "postID").map(
+          ({ postID, caption, content, img }) => {
+            return {
+              postID: postID,
+              caption: caption,
+              content: content,
+              img: img || null,
+            };
+          }
+        )
       );
     }
   }, [status]);
