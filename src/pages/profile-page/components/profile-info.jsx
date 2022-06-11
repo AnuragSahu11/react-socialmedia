@@ -8,6 +8,7 @@ const ProfileInfo = ({
     posts: { posts = [] } = {},
     follow: { followers = [], following = [] } = {},
   },
+  setEditProfileModal,
 }) => {
   const { dp, fullName, handle, bio, website, background } = userData || {};
 

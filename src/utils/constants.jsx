@@ -69,9 +69,9 @@ export const loginPageTabList = [
 ];
 
 export const toastProps = {
-  hideProgressBa: true,
-  autoClos: 3500,
-  positio: "top-center",
+  hideProgressBar: true,
+  autoClose: 3500,
+  position: "top-center",
   closeOnClick: true,
 };
 

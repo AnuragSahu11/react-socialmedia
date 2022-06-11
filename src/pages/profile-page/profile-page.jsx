@@ -26,7 +26,10 @@ const ProfilePage = () => {
             editProfileModal={editProfileModal}
             setEditProfileModal={setEditProfileModal}
           />
-          <ProfileInfo userData={userData} />
+          <ProfileInfo
+            userData={userData}
+            setEditProfileModal={setEditProfileModal}
+          />
         </div>
       )}
       <PostContainer userID={token} editPost={true} />

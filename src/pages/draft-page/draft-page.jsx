@@ -60,11 +60,11 @@ const DraftPage = () => {
           itemLayout="vertical"
           size="large"
           dataSource={draftArr}
-          renderItem={({ item, item: { caption, img, content } }) => (
+          renderItem={(item) => (
             <>
               <List.Item
                 className="draft_page_list"
-                key={caption}
+                key={item.caption}
                 actions={[
                   <Tooltip title="Post Draft">
                     <Button
@@ -84,15 +84,15 @@ const DraftPage = () => {
                   <Divider />,
                 ]}
                 extra={
-                  img && (
+                  item.img && (
                     <div className="draft_image">
-                      <img height="100%" alt="draft image" src={img} />
+                      <img height="100%" alt="draft image" src={item.img} />
                     </div>
                   )
                 }
               >
-                <List.Item.Meta title={caption} />
-                {content}
+                <List.Item.Meta title={item.caption} />
+                {item.content}
               </List.Item>
               <Divider />
             </>
