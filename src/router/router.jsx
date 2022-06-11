@@ -17,6 +17,7 @@ const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
+
       <Route element={<RequiresAuth />}>
         <Route path="/user" element={<UserPage />}>
           <Route path="/user/explore" element={<ExplorePage />} />
@@ -29,6 +30,7 @@ const Router = () => {
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Route>
+
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

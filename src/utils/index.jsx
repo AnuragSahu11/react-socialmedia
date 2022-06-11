@@ -7,4 +7,3 @@ export {
   signupFormValidation,
 } from "./misc-operation-functions";
 export { changeTitle } from "./change-title";
-export { RequiresAuth } from "../router/require-auth";
