@@ -5,6 +5,7 @@ import {
   HomeFilled,
   RocketFilled,
   NotificationFilled,
+  ImportOutlined,
 } from "@ant-design/icons";
 import "./sidebar.css";
 import { useState } from "react";
@@ -59,6 +60,14 @@ const Sidebar = () => {
     },
     {
       key: "5",
+      icon: <ImportOutlined style={{ fontSize: "1.1rem" }} />,
+      label: "Archived",
+      onClick: () => {
+        navigate("/user/archive");
+      },
+    },
+    {
+      key: "6",
       icon: <UserOutlined style={{ fontSize: "1.1rem" }} />,
       label: "Profile",
       onClick: () => {

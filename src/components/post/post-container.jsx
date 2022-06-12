@@ -7,7 +7,7 @@ import { filterAndSort } from "../../utils";
 import { changeSort } from "../../redux/slice/operation-slice";
 import { statusConstants } from "../../utils/constants";
 
-const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
+const PostContainer = ({ userID, editPost, bookmarks, feed, archive }) => {
   const Option = Select.Option;
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const PostContainer = ({ userID, editPost, bookmarks, feed }) => {
   useEffect(() => {
     if (status === statusConstants.fulfilled) {
       setPostsArray(
-        filterAndSort(posts, userID, bookmarks, feed, sortPost).map(
+        filterAndSort(posts, userID, bookmarks, feed, archive, sortPost).map(
           (postData) => {
             return (
               <Post

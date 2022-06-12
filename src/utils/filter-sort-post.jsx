@@ -5,30 +5,39 @@ const filterAndSort = (
   userID = null,
   bookmark = null,
   feed = null,
+  archive = null,
   sort = filterConstants.recent
 ) => {
   const postArr = Object.keys(postObj).map((postID) => {
     return { ...postObj[postID], postID };
   });
-  return curryFunc(postArr, { sort, userID, bookmark, feed })(
+  return curryFunc(postArr, { sort, userID, bookmark, feed, archive })(
     filterPost,
     sortPost
   );
 };
 
-const filterPost = (arr, { userID, bookmark, feed }) => {
-  if (userID && !feed) {
-    return arr.filter((post) => post.postByID === userID);
-  }
-  if (bookmark) {
-    return arr.filter((post) => bookmark.includes(post.postID));
-  }
-  if (feed) {
+const filterPost = (arr, { userID, bookmark, feed, archive }) => {
+  const archiveFilterArr = [...arr].filter((post) => !post.archive);
+
+  if (archive && userID) {
     return arr.filter(
+      (post) => post.archive === true && post.postByID === userID
+    );
+  }
+
+  if (userID && !feed) {
+    return archiveFilterArr.filter((post) => post.postByID === userID);
+  }
+  if (bookmark)
+    return archiveFilterArr.filter((post) => bookmark.includes(post.postID));
+
+  if (feed) {
+    return archiveFilterArr.filter(
       (post) => feed.includes(post.postByID) || post.postByID === userID
     );
   }
-  return arr;
+  return archiveFilterArr;
 };
 
 const sortPost = (arr, { sort }) => {
