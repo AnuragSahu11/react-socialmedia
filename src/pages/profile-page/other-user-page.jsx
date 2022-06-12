@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Skeleton } from "antd";
+import { Avatar, Card, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -64,7 +64,7 @@ const OtherUserPage = () => {
 
   useEffect(() => {
     if (token === userID) navigate("/user/profile");
-    getData();
+    else getData();
   }, [userID]);
 
   changeTitle(firstName || titleConstants.profilePage);
