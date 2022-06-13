@@ -7,6 +7,7 @@ import {
   Image,
   Button,
   Tooltip,
+  Tag,
 } from "antd";
 import {
   LikeTwoTone,
@@ -38,6 +39,7 @@ import { changeSort } from "../../redux/slice/operation-slice";
 import { Comments } from "./comments";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
+import { TagList } from "../list/tag-list";
 
 const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
@@ -58,7 +60,15 @@ const Post = ({ postData, postID, editPost }) => {
   const [deletePostModal, setDeletePostModal] = useState(false);
   const [inBookmark, setInBookmark] = useState(false);
 
-  const { caption, content, comments, postByID, img, archive } = postData || {};
+  const {
+    caption,
+    content,
+    comments,
+    postByID,
+    img,
+    archive,
+    tags = [],
+  } = postData || {};
   const { handle, dp, fullName } = userList[postByID] || {};
 
   useEffect(() => {
@@ -153,6 +163,9 @@ const Post = ({ postData, postID, editPost }) => {
           </div>
           <Text>{content}</Text>
         </Space>
+        <div className="post_tag_container">
+          <TagList tagArr={tags} />
+        </div>
         <Divider plain></Divider>
         <Space>
           {editPost ? (

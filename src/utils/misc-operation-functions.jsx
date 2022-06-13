@@ -65,6 +65,18 @@ const profileFormValidation = ({ handle, website, bio }) => {
   return true;
 };
 
+const tagValidation = (tag, tags) => {
+  if (tags.length > 4) {
+    toast.warn("Maximum 5 tags can be added");
+  } else if (tags.includes(tag)) {
+    toast.warn("Tag already present");
+  } else if (tag.length < 4) {
+    toast.warn("Tag should have atleast 4 alphabets");
+  } else {
+    return true;
+  }
+};
+
 export {
   objectToArr,
   notificationDisc,
@@ -72,4 +84,5 @@ export {
   loginFormValidation,
   postFormValidation,
   profileFormValidation,
+  tagValidation,
 };

@@ -82,7 +82,7 @@ const getUserList = createAsyncThunk("get/userList", async () => {
   }
 });
 
-const newPost = async (postCaption, postContent, userID, postImg) => {
+const newPost = async (postCaption, postContent, userID, postImg, tags) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
       caption: postCaption,
@@ -93,6 +93,7 @@ const newPost = async (postCaption, postContent, userID, postImg) => {
       likes: 0,
       postByID: userID,
       archive: false,
+      tags,
     });
     const userPostRef = doc(db, userID, "posts");
     await updateDoc(userPostRef, { posts: arrayUnion(docRef.id) });
@@ -111,13 +112,14 @@ const deletePost = async (postID, userID) => {
   }
 };
 
-const updatePost = async (postID, { caption, content, img }) => {
+const updatePost = async (postID, { caption, content, img, tags }) => {
   try {
     const postRef = doc(db, "Posts", postID);
     await updateDoc(postRef, {
       caption,
       content,
       img,
+      tags,
     });
   } catch (err) {
     throw err.message;

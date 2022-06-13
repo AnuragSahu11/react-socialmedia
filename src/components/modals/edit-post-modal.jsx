@@ -7,13 +7,17 @@ import { getPosts, updatePost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
-import { postFormValidation } from "../../utils/misc-operation-functions";
+import {
+  postFormValidation,
+  tagValidation,
+} from "../../utils/misc-operation-functions";
 import { toastConstants } from "../../utils/constants";
+import { TagList } from "../list/tag-list";
 
 const EditPostModal = ({
   isVisible,
   toggleModal,
-  postData: { caption, content, img, postID },
+  postData: { caption, content, img, postID, tags = [] },
 }) => {
   const { TextArea } = Input;
   const dispatch = useDispatch();
@@ -23,6 +27,7 @@ const EditPostModal = ({
     caption,
     content,
     img,
+    tags,
   });
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
@@ -64,6 +69,12 @@ const EditPostModal = ({
       ...inputField,
       img: newFileList[0]?.response?.secure_url,
     });
+  };
+
+  const addTag = (tag) => {
+    if (tagValidation(tag, tags)) {
+      setInputField({ ...inputField, tags: [...inputField.tags, tag] });
+    }
   };
 
   return (
@@ -119,6 +130,15 @@ const EditPostModal = ({
           />
         </Tooltip>
       </div>
+      <p className="edit_profile_text">Add Tags</p>
+      <div className="create_post_tags">
+        <TagList tagArr={inputField.tags} />
+      </div>
+      <Input
+        size="small"
+        placeholder="Press Enter to add tags"
+        onPressEnter={(e) => addTag(e.target.value.toLowerCase())}
+      />
     </Modal>
   );
 };

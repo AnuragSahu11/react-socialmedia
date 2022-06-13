@@ -1,4 +1,4 @@
-import { Modal, Input, Upload, Tooltip, Button } from "antd";
+import { Modal, Input, Upload, Tooltip, Button, Tag } from "antd";
 import "./modals.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,11 @@ import {
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
-import { postFormValidation } from "../../utils/misc-operation-functions";
+import {
+  tagValidation,
+  postFormValidation,
+} from "../../utils/misc-operation-functions";
+import { TagList } from "../list/tag-list";
 
 const NewPostModal = () => {
   const { TextArea } = Input;
@@ -30,13 +34,13 @@ const NewPostModal = () => {
   );
   const { token } = useSelector((store) => store.token);
 
-  const initialInputField = { caption: "", content: "", img: "" };
+  const initialInputField = { caption: "", content: "", img: "", tags: [] };
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputField, setInputField] = useState(initialInputField);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [fileList, setFileList] = useState([]);
 
-  const { caption, content, img } = inputField;
+  const { caption, content, img, tags } = inputField;
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prevState) => !prevState);
@@ -57,7 +61,7 @@ const NewPostModal = () => {
     setConfirmLoading(true);
     if (postFormValidation(inputField)) {
       try {
-        await newPost(caption, content, token, img);
+        await newPost(caption, content, token, img, tags);
         if (draftData) {
           await deleteFromDraft(token, draftData.postID);
         }
@@ -94,6 +98,12 @@ const NewPostModal = () => {
       ...inputField,
       img: newFileList[0]?.response?.secure_url,
     });
+  };
+
+  const addTag = (tag) => {
+    if (tagValidation(tag, tags)) {
+      setInputField({ ...inputField, tags: [...inputField.tags, tag] });
+    }
   };
 
   return (
@@ -168,6 +178,15 @@ const NewPostModal = () => {
           />
         </Tooltip>
       </div>
+      <p className="edit_profile_text">Add Tags</p>
+      <div className="create_post_tags">
+        <TagList tagArr={inputField.tags} />
+      </div>
+      <Input
+        size="small"
+        placeholder="Press Enter to add tags"
+        onPressEnter={(e) => addTag(e.target.value.toLowerCase())}
+      />
     </Modal>
   );
 };
