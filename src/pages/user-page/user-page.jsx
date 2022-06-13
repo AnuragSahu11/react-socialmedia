@@ -14,7 +14,7 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.token);
   const { posts } = useSelector((store) => store.posts);
-  const { userList } = useSelector((store) => store.operationData);
+  const { userData } = useSelector((store) => store.userData);
 
   useEffect(() => {
     if (token) {
@@ -28,6 +28,10 @@ const UserPage = () => {
       dispatch(getPosts());
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(getUserList());
+  }, [userData]);
 
   return (
     <Layout>

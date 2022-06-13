@@ -1,23 +1,30 @@
 import { toast } from "react-toastify";
 import { Input, Checkbox, Button } from "antd";
 import { signUp } from "../../../firebase/firebase-auth";
-import { UserOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
+import { UserOutlined, EyeOutlined, MailOutlined } from "@ant-design/icons";
 import { initialSignUpInput, toastConstants } from "../../../utils/constants";
 import { useState } from "react";
+import { signupFormValidation } from "../../../utils";
 
 const SignUpCard = () => {
   const [signUpLoading, setSignUpLoading] = useState(false);
   const [signUpInput, setSignUpInput] = useState(initialSignUpInput);
-  const { firstName, lastName, email, password } = signUpInput;
+  const { firstName, lastName, email, password, acceptTC } = signUpInput;
+  const [viewPassword, setViewPassword] = useState(false);
 
   const signUpClick = async () => {
     setSignUpLoading(true);
-    try {
-      await signUp(firstName, lastName, email, password);
-      toast.success(toastConstants.signupSuccess);
-      toast.success(toastConstants.loginAfterSignup);
-    } catch (err) {
-      toast.error(toastConstants.signupFailed);
+    if (signupFormValidation(signUpInput)) {
+      try {
+        await signUp(firstName, lastName, email, password);
+        toast.success(toastConstants.signupSuccess);
+        toast.success(toastConstants.loginAfterSignup);
+      } catch (err) {
+        toast.error(toastConstants.signupFailed);
+        toast.error(err);
+      }
+    } else {
+      toast.warn("Enter correct details");
     }
     setSignUpLoading(false);
   };
@@ -53,15 +60,22 @@ const SignUpCard = () => {
       />
       <p className="login_label">Password</p>
       <Input
+        type={viewPassword ? "text" : "password"}
         className="login_input"
         placeholder="Password"
+        prefix={<EyeOutlined onClick={() => setViewPassword(!viewPassword)} />}
         onChange={(e) =>
           setSignUpInput({ ...signUpInput, password: e.target.value })
         }
-        prefix={<KeyOutlined />}
       />
-      <Checkbox className="remember_me" onChange={() => {}}>
-        Remember me
+      <Checkbox
+        className="remember_me"
+        onChange={() => {
+          setSignUpInput({ ...signUpInput, acceptTC: !signUpInput.acceptTC });
+        }}
+        checked={acceptTC}
+      >
+        Accept Terms & Conditions
       </Checkbox>
       <Button
         onClick={signUpClick}

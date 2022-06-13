@@ -5,17 +5,15 @@ import { statusConstants } from "../../utils/constants";
 const initialState = {
   status: statusConstants.idle,
   error: null,
-  token: null,
+  token: localStorage.getItem("token") || null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action) => {
-      state.token = action.payload;
-    },
     logout: (state) => {
+      localStorage.clear("token");
       state.token = null;
     },
   },
@@ -25,6 +23,7 @@ const authSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, action) => {
       state.token = action.payload;
+      localStorage.setItem("token", action.payload);
       state.status = statusConstants.fulfilled;
     },
     [loginUser.rejected]: (state) => {

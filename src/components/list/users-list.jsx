@@ -9,20 +9,16 @@ const UsersList = ({ listData, notification }) => {
       itemLayout="horizontal"
       className="list_recommendation"
       dataSource={listData}
-      renderItem={(item) => (
+      renderItem={({ userID, dp, fullName, handle }) => (
         <List.Item>
           <List.Item.Meta
             className={`hover ${notification && "notification_user_list"}`}
-            onClick={() => navigate(`/user/${item.userID}`)}
+            onClick={() => navigate(`/user/${userID}`)}
             avatar={
-              item.dp ? (
-                <Avatar src={item.dp} />
-              ) : (
-                <Avatar icon={<UserOutlined />} />
-              )
+              dp ? <Avatar src={dp} /> : <Avatar icon={<UserOutlined />} />
             }
-            title={<a>{item.fullName}</a>}
-            description={item.handle && "@" + item.handle}
+            title={<a>{fullName}</a>}
+            description={handle && "@" + handle}
           />
         </List.Item>
       )}

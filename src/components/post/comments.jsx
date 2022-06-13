@@ -15,15 +15,15 @@ import { addComment, getPosts } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 import { UserOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
+import { toastConstants } from "../../utils/constants";
 
 const Comments = ({ commentData, postID }) => {
   const { token } = useSelector((store) => store.token);
   const { userList } = useSelector((store) => store.operationData);
-  const { userData } = useSelector((store) => store.userData);
 
   const dispatch = useDispatch();
 
-  const { Title, Text } = Typography;
+  const { Title } = Typography;
   const { TextArea } = Input;
 
   const [textField, setTextField] = useState("");
@@ -45,14 +45,13 @@ const Comments = ({ commentData, postID }) => {
     setLoading(true);
     try {
       await addComment(postID, textField, token);
-      toast.success("Comment Added");
+      toast.success(toastConstants.commentSuccess);
     } catch (err) {
-      toast.error("Add Comment Failed");
+      toast.error(toastConstants.commentFailed);
     }
     setLoading(false);
     dispatch(getPosts());
   };
-  console.log(userList[token].fullName);
   return (
     <>
       <Divider plain />
@@ -87,13 +86,9 @@ const Comments = ({ commentData, postID }) => {
         header={`${commentList.length} comments`}
         itemLayout="horizontal"
         dataSource={commentList}
-        renderItem={(item) => (
+        renderItem={({ author, avatar, content }) => (
           <li>
-            <Comment
-              author={item.author}
-              avatar={item.avatar}
-              content={item.content}
-            />
+            <Comment author={author} avatar={avatar} content={content} />
           </li>
         )}
       />

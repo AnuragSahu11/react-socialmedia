@@ -19,13 +19,29 @@ export const toastConstants = {
   loginAfterSignup: "Login with your new account",
   signupFailed: "SignUp failed",
   loginSuccess: "Login Successful",
-  loginFailded: `Login Failed`,
+  loginFailed: `Login Failed`,
   postSuccess: "New Post Created",
   postFailed: "New Post Failed",
+  draftSuccess: "Added to Drafts",
+  draftFailed: "Add to Draft Failed",
+  deleteSuccess: "Post Deleted",
+  deleteFailed: "Post delete Failed",
+  editSuccess: "Post edited",
+  editFailed: "Post edit Failed",
+  profileSuccess: "Profile edited",
+  profileFailed: "Profile edit Failed",
+  logout: "You are logged out",
+  commentSuccess: "Comment Added",
+  commentFailed: "Comment not added",
 };
 
-export const demoLoginCredentials = {
+export const anuragLoginCredentials = {
   email: "anurag@gmail.com",
+  password: "123456",
+};
+
+export const ankushLoginCredentials = {
+  email: "ankush@gmail.com",
   password: "123456",
 };
 
@@ -34,6 +50,7 @@ export const initialSignUpInput = {
   lastName: "",
   email: "",
   password: "",
+  acceptTC: false,
 };
 
 export const titleConstants = {
@@ -42,6 +59,7 @@ export const titleConstants = {
   errorPage: "Page not Found",
   explorePage: "Explore Tradepeer",
   feedPage: "Your Feed",
+  profilePage: "Your Profile page",
 };
 
 export const loginPageTabList = [
@@ -54,5 +72,12 @@ export const loginPageTabList = [
     tab: "Sign Up",
   },
 ];
+
+export const toastProps = {
+  hideProgressBar: true,
+  autoClose: 3500,
+  position: "top-center",
+  closeOnClick: true,
+};
 
 export const initialLoginInput = { email: "", password: "" };

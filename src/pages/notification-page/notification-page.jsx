@@ -27,13 +27,13 @@ const NotificationPage = () => {
       status === statusConstants.fulfilled
     ) {
       setNotificationArr(
-        userData?.notifications?.notifications?.map((notification) => {
-          const { userID, type } = notification;
+        userData?.notifications?.notifications?.map(({ userID, type }) => {
+          const { dp, fullName, handle } = userList[userID];
           return {
             userID,
-            dp: userList[userID].dp,
-            fullName: userList[userID].fullName,
-            handle: notificationDisc(userList[userID].handle, type),
+            dp: dp,
+            fullName: fullName,
+            handle: notificationDisc(handle, type),
           };
         })
       );

@@ -109,8 +109,7 @@ const deletePost = async (postID, userID) => {
   } catch (err) {}
 };
 
-const updatePost = async (postID, updatedPost) => {
-  const { caption, content, img } = updatedPost;
+const updatePost = async (postID,{ caption, content, img } ) => {
   try {
     const postRef = doc(db, "Posts", postID);
     await updateDoc(postRef, {

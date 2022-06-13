@@ -7,17 +7,22 @@ import { getPosts, updatePost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
+import { postFormValidation } from "../../utils/misc-operation-functions";
+import { toastConstants } from "../../utils/constants";
 
-const EditPostModal = ({ isVisible, toggleModal, postData }) => {
-  const { token } = useSelector((store) => store.token);
-  const dispatch = useDispatch();
+const EditPostModal = ({
+  isVisible,
+  toggleModal,
+  postData: { caption, content, img, postID },
+}) => {
   const { TextArea } = Input;
+  const dispatch = useDispatch();
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputField, setInputField] = useState({
-    caption: postData.caption,
-    content: postData.content,
-    img: postData.img,
+    caption,
+    content,
+    img,
   });
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
@@ -34,14 +39,15 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
 
   const handleOk = async () => {
     setConfirmLoading(true);
-    try {
-      await updatePost(postData.postID, inputField);
-      dispatch(getPosts());
-      toggleModal();
-      toast.success("Post Successfuly Edited");
-    } catch (err) {
-      toast.error("Post Edit Failed");
-      console.error(err);
+    if (postFormValidation(inputField)) {
+      try {
+        await updatePost(postID, inputField);
+        dispatch(getPosts());
+        toggleModal();
+        toast.success(toastConstants.editSuccess);
+      } catch (err) {
+        toast.error(toastConstants.editFailed);
+      }
     }
     setConfirmLoading(false);
   };
@@ -67,7 +73,7 @@ const EditPostModal = ({ isVisible, toggleModal, postData }) => {
       onOk={handleOk}
       onCancel={handleCancel}
       confirmLoading={confirmLoading}
-      okText={"Save"}
+      okText="Save"
     >
       <p className="edit_profile_text">Caption</p>
       <Input

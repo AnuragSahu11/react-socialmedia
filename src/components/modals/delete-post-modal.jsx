@@ -5,6 +5,7 @@ import { deletePost, getPosts } from "../../firebase/firestore-methods";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { toastConstants } from "../../utils/constants";
 
 const DeletePostModal = ({ isVisible, toggleModal, postID }) => {
   const { token } = useSelector((store) => store.token);
@@ -17,9 +18,9 @@ const DeletePostModal = ({ isVisible, toggleModal, postID }) => {
       await deletePost(postID, token);
       dispatch(getPosts());
       toggleModal();
-      toast.success("Post Deleted");
+      toast.success(toastConstants.deleteSuccess);
     } catch (err) {
-      toast.error("Post Delete Failed")
+      toast.error(toastConstants.deleteFailed);
     }
     setIsLoading(false);
   };
