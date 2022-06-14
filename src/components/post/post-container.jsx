@@ -7,7 +7,14 @@ import { filterAndSort } from "../../utils";
 import { changeSort } from "../../redux/slice/operation-slice";
 import { statusConstants } from "../../utils/constants";
 
-const PostContainer = ({ userID, editPost, bookmarks, feed, archive }) => {
+const PostContainer = ({
+  userID,
+  editPost,
+  bookmarks,
+  feed,
+  archive,
+  tagPosts,
+}) => {
   const Option = Select.Option;
   const dispatch = useDispatch();
 
@@ -19,21 +26,26 @@ const PostContainer = ({ userID, editPost, bookmarks, feed, archive }) => {
   useEffect(() => {
     if (status === statusConstants.fulfilled) {
       setPostsArray(
-        filterAndSort(posts, userID, bookmarks, feed, archive, sortPost).map(
-          (postData) => {
-            return (
-              <Post
-                key={postData.postID}
-                postData={postData}
-                postID={postData.postID}
-                editPost={editPost || false}
-              />
-            );
-          }
-        )
+        filterAndSort(
+          tagPosts || posts,
+          userID,
+          bookmarks,
+          feed,
+          archive,
+          sortPost
+        ).map((postData) => {
+          return (
+            <Post
+              key={postData.postID}
+              postData={postData}
+              postID={postData.postID}
+              editPost={editPost || false}
+            />
+          );
+        })
       );
     }
-  }, [sortPost, userData]);
+  }, [sortPost, userData, tagPosts]);
 
   return (
     <div className="post_container">

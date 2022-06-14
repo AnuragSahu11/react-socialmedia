@@ -13,6 +13,8 @@ import {
   arrayUnion,
   arrayRemove,
   deleteField,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 const short = require("short-uuid");
@@ -328,6 +330,22 @@ const unArchivePost = async (postID) => {
   }
 };
 
+const getTaggedPost = async (tag, setState) => {
+  const taggedPost = {};
+  try {
+    const postsRef = collection(db, "Posts");
+    const taggedPostsQuerry = query(
+      postsRef,
+      where("tags", "array-contains", tag)
+    );
+    const querySnapshot = await getDocs(taggedPostsQuerry);
+    querySnapshot.forEach((doc) => {
+      taggedPost[doc.id] = doc.data();
+    });
+    setState(taggedPost);
+  } catch (error) {}
+};
+
 export {
   createUser,
   newPost,
@@ -351,4 +369,5 @@ export {
   clearNotifications,
   archivePost,
   unArchivePost,
+  getTaggedPost,
 };

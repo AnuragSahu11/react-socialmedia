@@ -132,7 +132,7 @@ const EditPostModal = ({
       </div>
       <p className="edit_profile_text">Add Tags</p>
       <div className="create_post_tags">
-        <TagList tagArr={inputField.tags} />
+        <TagList tagArr={inputField.tags} setState={setInputField} />
       </div>
       <Input
         size="small"

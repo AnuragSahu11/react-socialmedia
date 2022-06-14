@@ -36,6 +36,8 @@ export const toastConstants = {
   archiveSuccess: "Post archived",
   archiveFailed: "Post archive failed",
   unArchiveSuccess: "Post un-archived",
+  addTag: "Tag added",
+  removeTag: "Tag removed",
 };
 
 export const anuragLoginCredentials = {
