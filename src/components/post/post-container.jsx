@@ -10,10 +10,10 @@ import { statusConstants } from "../../utils/constants";
 const PostContainer = ({
   userID,
   editPost,
-  bookmarks,
-  feed,
-  archive,
   tagPosts,
+  mode,
+  feed,
+  bookmarks,
 }) => {
   const Option = Select.Option;
   const dispatch = useDispatch();
@@ -26,14 +26,12 @@ const PostContainer = ({
   useEffect(() => {
     if (status === statusConstants.fulfilled) {
       setPostsArray(
-        filterAndSort(
-          tagPosts || posts,
+        filterAndSort(tagPosts || posts, mode, {
           userID,
-          bookmarks,
           feed,
-          archive,
-          sortPost
-        ).map((postData) => {
+          sortPost,
+          bookmarks,
+        }).map((postData) => {
           return (
             <Post
               key={postData.postID}

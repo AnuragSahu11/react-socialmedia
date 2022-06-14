@@ -15,7 +15,10 @@ const BookmarkPage = () => {
       <div className="bookmark_header">
         <Title level={2}>Your Bookmarks</Title>
       </div>
-      <PostContainer bookmarks={userData?.bookmarks?.bookmarks} />
+      <PostContainer
+        bookmarks={userData?.bookmarks?.bookmarks}
+        mode="bookmark"
+      />
     </div>
   );
 };

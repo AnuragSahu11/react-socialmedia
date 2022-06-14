@@ -117,7 +117,7 @@ const OtherUserPage = () => {
           </>
         )}
       </div>
-      <PostContainer userID={userID} />
+      <PostContainer userID={userID} mode="user" />
     </div>
   );
 };

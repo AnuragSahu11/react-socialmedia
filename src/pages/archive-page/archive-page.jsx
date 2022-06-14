@@ -8,7 +8,7 @@ const ArchivePage = () => {
   const { Title } = Typography;
 
   const { token } = useSelector((store) => store.token);
-  
+
   changeTitle(titleConstants.bookmarkPage);
 
   return (
@@ -16,7 +16,7 @@ const ArchivePage = () => {
       <div className="bookmark_header">
         <Title level={2}>Archived Posts</Title>
       </div>
-      <PostContainer editPost={true} archive={true} userID={token} />
+      <PostContainer editPost={true} mode={"archive"} userID={token} />
     </div>
   );
 };

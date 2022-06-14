@@ -13,7 +13,7 @@ const ExplorePage = () => {
       <div className="bookmark_header">
         <Title level={2}>Explore</Title>
       </div>
-      <PostContainer />
+      <PostContainer mode="explore" />
     </div>
   );
 };

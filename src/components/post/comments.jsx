@@ -43,13 +43,17 @@ const Comments = ({ commentData, postID }) => {
 
   const addCommentClick = async () => {
     setLoading(true);
-    try {
-      await addComment(postID, textField, token);
-      toast.success(toastConstants.commentSuccess);
-    } catch (err) {
-      toast.error(toastConstants.commentFailed);
+    if (textField.length > 0) {
+      try {
+        await addComment(postID, textField, token);
+        toast.success(toastConstants.commentSuccess);
+      } catch (err) {
+        toast.error(toastConstants.commentFailed);
+      }
+      setLoading(false);
+    } else {
+      toast.warn(toastConstants.commentWarn);
     }
-    setLoading(false);
     dispatch(getPosts());
   };
   return (

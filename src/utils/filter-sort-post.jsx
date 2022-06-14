@@ -2,41 +2,60 @@ import { filterConstants } from "./constants";
 
 const filterAndSort = (
   postObj,
-  userID = null,
-  bookmark = null,
-  feed = null,
-  archive = null,
-  sort = filterConstants.recent
+  mode,
+  { userID = null, feed = null, sort = filterConstants.recent, bookmarks = [] }
 ) => {
   const postArr = Object.keys(postObj).map((postID) => {
     return { ...postObj[postID], postID };
   });
-  return curryFunc(postArr, { sort, userID, bookmark, feed, archive })(
+  return curryFunc(postArr, { sort, userID, mode, feed, bookmarks })(
     filterPost,
     sortPost
   );
 };
 
-const filterPost = (arr, { userID, bookmark, feed, archive }) => {
+const filterPost = (arr, { userID, mode, feed, bookmarks }) => {
   const archiveFilterArr = [...arr].filter((post) => !post.archive);
 
-  if (archive && userID) {
-    return arr.filter(
-      (post) => post.archive === true && post.postByID === userID
-    );
+  switch (mode) {
+    case "tag":
+      return archiveFilterArr;
+    case "archive":
+      return arr.filter(
+        (post) => post.archive === true && post.postByID === userID
+      );
+    case "bookmark":
+      return archiveFilterArr.filter((post) => bookmarks.includes(post.postID));
+    case "feed":
+      return archiveFilterArr.filter(
+        (post) => feed.includes(post.postByID) || post.postByID === userID
+      );
+    case "explore":
+      console.log("expl");
+      return archiveFilterArr.filter((post) => !(post.postByID === userID));
+    case "user":
+      return archiveFilterArr.filter((post) => post.postByID === userID);
+    default:
+      return archiveFilterArr;
   }
 
-  if (userID && !feed) {
-    return archiveFilterArr.filter((post) => post.postByID === userID);
-  }
-  if (bookmark)
-    return archiveFilterArr.filter((post) => bookmark.includes(post.postID));
+  // if (archive && userID) {
+  //   return arr.filter(
+  //     (post) => post.archive === true && post.postByID === userID
+  //   );
+  // }
 
-  if (feed) {
-    return archiveFilterArr.filter(
-      (post) => feed.includes(post.postByID) || post.postByID === userID
-    );
-  }
+  // if (userID && !feed) {
+  //   return archiveFilterArr.filter((post) => post.postByID === userID);
+  // }
+  // if (bookmark)
+  //   return archiveFilterArr.filter((post) => bookmark.includes(post.postID));
+
+  // if (feed) {
+  //   return archiveFilterArr.filter(
+  //     (post) => feed.includes(post.postByID) || post.postByID === userID
+  //   );
+  // }
   return archiveFilterArr;
 };
 

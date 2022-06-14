@@ -23,7 +23,7 @@ const TagPage = () => {
       <div className="bookmark_header">
         <Title level={2}>#{tag}</Title>
       </div>
-      <PostContainer tagPosts={tagPosts} />
+      <PostContainer tagPosts={tagPosts} mode="tag" />
     </div>
   );
 };

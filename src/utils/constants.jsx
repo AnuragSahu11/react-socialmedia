@@ -38,6 +38,7 @@ export const toastConstants = {
   unArchiveSuccess: "Post un-archived",
   addTag: "Tag added",
   removeTag: "Tag removed",
+  commentWarn: "Empty comment could not be posted",
 };
 
 export const anuragLoginCredentials = {
