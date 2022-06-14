@@ -31,32 +31,12 @@ const filterPost = (arr, { userID, mode, feed, bookmarks }) => {
         (post) => feed.includes(post.postByID) || post.postByID === userID
       );
     case "explore":
-      console.log("expl");
       return archiveFilterArr.filter((post) => !(post.postByID === userID));
     case "user":
       return archiveFilterArr.filter((post) => post.postByID === userID);
     default:
       return archiveFilterArr;
   }
-
-  // if (archive && userID) {
-  //   return arr.filter(
-  //     (post) => post.archive === true && post.postByID === userID
-  //   );
-  // }
-
-  // if (userID && !feed) {
-  //   return archiveFilterArr.filter((post) => post.postByID === userID);
-  // }
-  // if (bookmark)
-  //   return archiveFilterArr.filter((post) => bookmark.includes(post.postID));
-
-  // if (feed) {
-  //   return archiveFilterArr.filter(
-  //     (post) => feed.includes(post.postByID) || post.postByID === userID
-  //   );
-  // }
-  return archiveFilterArr;
 };
 
 const sortPost = (arr, { sort }) => {
