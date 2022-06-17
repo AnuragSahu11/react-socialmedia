@@ -17,6 +17,7 @@ const FeedPage = () => {
         feed={userData?.follow?.following}
         mode="feed"
         userID={token}
+        infiniteScroll={true}
       />
     </div>
   );
