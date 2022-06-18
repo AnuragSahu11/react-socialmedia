@@ -14,6 +14,18 @@ const filterAndSort = (
   );
 };
 
+const filterPosts = (postObj, userID = null, feed = null) => {
+  const postArr = Object.keys(postObj).map((postID) => {
+    return { ...postObj[postID], postID };
+  });
+  if (feed)
+    return postArr.filter(
+      (post) => feed.includes(post.postByID) || post.postByID === userID
+    );
+  else {
+    return postArr;
+  }
+};
 const filterPost = (arr, { userID, mode, feed, bookmarks }) => {
   const archiveFilterArr = [...arr].filter((post) => !post.archive);
 
@@ -53,4 +65,4 @@ const curryFunc =
     }, arr);
   };
 
-export { filterAndSort };
+export { filterAndSort, filterPosts };
