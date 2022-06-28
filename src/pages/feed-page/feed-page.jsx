@@ -18,6 +18,7 @@ const FeedPage = () => {
         mode="feed"
         userID={token}
         infiniteScroll={true}
+        showSortPost={true}
       />
     </div>
   );

@@ -3,32 +3,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { Post } from "..";
 import "./post-container.css";
 import { Skeleton, Input, Select } from "antd";
-import { filterAndSort } from "../../utils";
 import { changeSort } from "../../redux/slice/operation-slice";
 import { statusConstants } from "../../utils/constants";
 import { useRef } from "react";
 import {
+  archivedPosts,
   explorePagePosts,
-  getLimitedPosts,
+  getMoreArchivedPosts,
   getMoreExplorePosts,
-  nextPosts,
+  getMoreUserPosts,
+  getTaggedPosts,
+  userPosts,
+  getBookmarkedPosts,
 } from "../../firebase/firestore-methods";
-import { filterPosts } from "../../utils/filter-sort-post";
+import { filterPost } from "../../utils/filter-sort-post";
 
 const PostContainer = ({
   userID,
   editPost,
-  tagPosts,
+  tag,
   mode,
   feed,
   bookmarks,
-  infiniteScroll,
+  showSortPost,
 }) => {
   const Option = Select.Option;
   const dispatch = useDispatch();
   const postContainerRef = useRef();
 
-  const [paginatedPosts, setPaginatedPosts] = useState({});
+  const [paginatedPosts, setPaginatedPosts] = useState([]);
   const [lastPost, setLastPost] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -48,37 +51,94 @@ const PostContainer = ({
       const { scrollTop, scrollHeight, clientHeight } =
         postContainerRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
-        getMoreExplorePosts(
-          userID,
-          lastPost,
-          setPaginatedPosts,
-          setLoading,
-          setLastPost
-        );
+        switch (mode) {
+          case "explore":
+            getMoreExplorePosts(
+              lastPost,
+              setPaginatedPosts,
+              setLoading,
+              setLastPost,
+              sortPost === "recent" ? "time" : "likes"
+            );
+            break;
+          case "feed":
+            getMoreExplorePosts(
+              lastPost,
+              setPaginatedPosts,
+              setLoading,
+              setLastPost,
+              sortPost === "recent" ? "time" : "likes"
+            );
+            break;
+          case "user":
+            getMoreUserPosts(
+              userID,
+              lastPost,
+              setPaginatedPosts,
+              setLoading,
+              setLastPost
+            );
+            break;
+          case "archive":
+            getMoreArchivedPosts(
+              userID,
+              lastPost,
+              setPaginatedPosts,
+              setLoading,
+              setLastPost
+            );
+            break;
+        }
       }
     }
   };
 
   useEffect(() => {
-    explorePagePosts(userID, setPaginatedPosts, setLoading, setLastPost);
-
-    // switch (mode) {
-    //   case "explore" || "feed":
-    //     explorePagePosts(userID, setPaginatedPosts, setLoading, setLastPost);
-    // }
-  }, []);
+    setPaginatedPosts([]);
+    setLastPost({});
+    switch (mode) {
+      case "explore":
+        explorePagePosts(
+          setPaginatedPosts,
+          setLoading,
+          setLastPost,
+          sortPost === "recent" ? "time" : "likes"
+        );
+        break;
+      case "feed":
+        explorePagePosts(
+          setPaginatedPosts,
+          setLoading,
+          setLastPost,
+          sortPost === "recent" ? "time" : "likes"
+        );
+        break;
+      case "user":
+        userPosts(userID, setPaginatedPosts, setLoading, setLastPost);
+        break;
+      case "archive":
+        archivedPosts(userID, setPaginatedPosts, setLoading, setLastPost);
+        break;
+      case "tag":
+        getTaggedPosts(tag, setPaginatedPosts, setLoading);
+        break;
+      case "bookmark":
+        getBookmarkedPosts(setPaginatedPosts, setLoading);
+        break;
+    }
+  }, [userID, mode, sortPost]);
 
   useEffect(() => {
     if (paginatedPosts && userListStatus === statusConstants.fulfilled) {
       getMorePosts(mode, feed);
     }
-  }, [paginatedPosts, userDataStatus]);
+  }, [paginatedPosts, userDataStatus, userListStatus, tag]);
 
   const getMorePosts = (mode, feed = []) => {
     let postArray;
     switch (mode) {
       case "explore":
-        postArray = filterPosts(paginatedPosts).map((postData) => {
+        postArray = filterPost(paginatedPosts, { mode }).map((postData) => {
           return (
             <Post
               key={postData.postID}
@@ -91,7 +151,7 @@ const PostContainer = ({
         setPostsArray(postArray);
         break;
       case "feed":
-        postArray = filterPosts(paginatedPosts, userID, feed).map(
+        postArray = filterPost(paginatedPosts, { userID, feed, mode }).map(
           (postData) => {
             return (
               <Post
@@ -103,101 +163,56 @@ const PostContainer = ({
             );
           }
         );
-        console.log(filterPosts(paginatedPosts, userID, feed));
         setPostsArray(postArray);
         break;
-    }
-
-    // if (mode === "explore") {
-    //   setPostsArray(
-    //     Object.keys(paginatedPosts)
-    //       .map((postID) => {
-    //         return { ...paginatedPosts[postID], postID };
-    //       })
-    //       .map((postData) => {
-    //         return (
-    //           <Post
-    //             key={postData.postID}
-    //             postData={postData}
-    //             postID={postData.postID}
-    //             editPost={editPost || false}
-    //           />
-    //         );
-    //       })
-    //   );
-    // }
-    if (mode === "feed") {
+      case "bookmark":
+        postArray = filterPost(paginatedPosts, { bookmarks, mode }).map(
+          (postData) => {
+            return (
+              <Post
+                key={postData.postID}
+                postData={postData}
+                postID={postData.postID}
+                editPost={editPost || false}
+              />
+            );
+          }
+        );
+        setPostsArray(postArray);
+        break;
+      default:
+        postArray = filterPost(paginatedPosts, { userID, feed, mode }).map(
+          (postData) => {
+            return (
+              <Post
+                key={postData.postID}
+                postData={postData}
+                postID={postData.postID}
+                editPost={editPost || true}
+              />
+            );
+          }
+        );
+        setPostsArray(postArray);
     }
   };
-
-  // useEffect(() => {
-  //   if (status === statusConstants.fulfilled && !infiniteScroll) {
-  //     setPostsArray(
-  //       filterAndSort(tagPosts || posts, mode, {
-  //         userID,
-  //         feed,
-  //         sortPost,
-  //         bookmarks,
-  //       }).map((postData) => {
-  //         return (
-  //           <Post
-  //             key={postData.postID}
-  //             postData={postData}
-  //             postID={postData.postID}
-  //             editPost={editPost || false}
-  //           />
-  //         );
-  //       })
-  //     );
-  //   }
-  // }, [sortPost, userData, tagPosts]);
-
-  // useEffect(() => {
-  //   if (infiniteScroll) {
-  //     getLimitedPosts(
-  //       setLastPost,
-  //       setLimitedPosts,
-  //       setLoading,
-  //       sortPost === "recent" ? "time" : "likes"
-  //     );
-  //   }
-  // }, [userDataStatus]);
-
-  // useEffect(() => {
-  //   if (infiniteScroll && userDataStatus === statusConstants.fulfilled) {
-  //     setPostsArray(
-  //       filterAndSort(limitedPosts, mode, {
-  //         userID,
-  //         feed,
-  //         sortPost,
-  //         bookmarks,
-  //       }).map((postData) => {
-  //         return (
-  //           <Post
-  //             key={postData.postID}
-  //             postData={postData}
-  //             postID={postData.postID}
-  //             editPost={editPost || false}
-  //           />
-  //         );
-  //       })
-  //     );
-  //   }
-  // }, [limitedPosts, userDataStatus]);
 
   return (
     <div className="post_container" ref={postContainerRef} onScroll={onScroll}>
       {!loading ? (
         <>
-          <Input.Group compact>
-            <Select
-              onChange={(e) => dispatch(changeSort(e))}
-              defaultValue="recent"
-            >
-              <Option value="recent">Recent</Option>
-              <Option value="trending">Trending</Option>
-            </Select>
-          </Input.Group>
+          {showSortPost && (
+            <Input.Group compact>
+              <Select
+                onChange={(e) => dispatch(changeSort(e))}
+                defaultValue={sortPost}
+              >
+                <Option value="recent">Recent</Option>
+                <Option value="trending">Trending</Option>
+              </Select>
+            </Input.Group>
+          )}
+
           {postsArray}
         </>
       ) : (

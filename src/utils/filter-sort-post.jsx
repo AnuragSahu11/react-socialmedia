@@ -14,26 +14,14 @@ const filterAndSort = (
   );
 };
 
-const filterPosts = (postObj, userID = null, feed = null) => {
-  const postArr = Object.keys(postObj).map((postID) => {
-    return { ...postObj[postID], postID };
-  });
-  if (feed)
-    return postArr.filter(
-      (post) => feed.includes(post.postByID) || post.postByID === userID
-    );
-  else {
-    return postArr;
-  }
-};
-const filterPost = (arr, { userID, mode, feed, bookmarks }) => {
-  const archiveFilterArr = [...arr].filter((post) => !post.archive);
-
+const filterPost = (
+  postArr,
+  { userID = null, mode = null, feed = null, bookmarks = null } = null
+) => {
+  const archiveFilterArr = [...postArr].filter((post) => !post.archive);
   switch (mode) {
-    case "tag":
-      return archiveFilterArr;
     case "archive":
-      return arr.filter(
+      return postArr.filter(
         (post) => post.archive === true && post.postByID === userID
       );
     case "bookmark":
@@ -42,10 +30,6 @@ const filterPost = (arr, { userID, mode, feed, bookmarks }) => {
       return archiveFilterArr.filter(
         (post) => feed.includes(post.postByID) || post.postByID === userID
       );
-    case "explore":
-      return archiveFilterArr.filter((post) => !(post.postByID === userID));
-    case "user":
-      return archiveFilterArr.filter((post) => post.postByID === userID);
     default:
       return archiveFilterArr;
   }
@@ -65,4 +49,4 @@ const curryFunc =
     }, arr);
   };
 
-export { filterAndSort, filterPosts };
+export { filterAndSort, filterPost };

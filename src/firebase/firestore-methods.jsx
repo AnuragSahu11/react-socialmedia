@@ -334,83 +334,30 @@ const unArchivePost = async (postID) => {
   }
 };
 
-const getTaggedPost = async (tag, setPostsArray, setLoading, setLastPost) => {
+const getTaggedPosts = async (tag, setPostsArray, setLoading) => {
+  setLoading(true);
   try {
     const postsRef = collection(db, "Posts");
     const taggedPostsQuerry = query(
       postsRef,
       where("tags", "array-contains", tag),
-      where("archive", "==", false),
-      limit(4)
+      where("archive", "==", false)
     );
     const querySnapshot = await getDocs(taggedPostsQuerry);
     setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
   } catch (error) {}
+  setLoading(false);
 };
 
-const getMoreTaggedPost = async (
-  tag,
-  lastPost,
-  setPostsArray,
-  setLoading,
-  setLastPost
-) => {
+const getBookmarkedPosts = async (setPostsArray, setLoading) => {
+  setLoading(true);
   try {
-    const postsRef = collection(db, "Posts");
-    const taggedPostsQuerry = query(
-      postsRef,
-      where("tags", "array-contains", tag),
-      where("archive", "==", false),
-      startAfter(lastPost),
-      limit(4)
-    );
-    const querySnapshot = await getDocs(taggedPostsQuerry);
+    const querySnapshot = await getDocs(collection(db, "Posts"));
     setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
-  } catch (error) {}
-};
-
-const bookmarkedPosts = async (
-  userID,
-  setPostsArray,
-  setLoading,
-  setLastPost
-) => {
-  try {
-    const postsRef = collection(db, "Posts");
-    const bookmarkedPostsQuerry = query(
-      postsRef,
-      where("bookmarkedBy", "array-contains", userID),
-      where("archive", "==", false),
-      limit(4)
-    );
-    const querySnapshot = await getDocs(bookmarkedPostsQuerry);
-    setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
-  } catch (error) {}
-};
-
-const getMoreBookmarkedPosts = async (
-  userID,
-  lastPost,
-  setPostsArray,
-  setLoading,
-  setLastPost
-) => {
-  try {
-    const postsRef = collection(db, "Posts");
-    const bookmarkedPostsQuerry = query(
-      postsRef,
-      where("bookmarkedBy", "array-contains", userID),
-      where("archive", "==", false),
-      startAfter(lastPost),
-      limit(4)
-    );
-    const querySnapshot = await getDocs(bookmarkedPostsQuerry);
-    setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error during fetching data: ", err);
+  }
+  setLoading(false);
 };
 
 const archivedPosts = async (
@@ -419,6 +366,7 @@ const archivedPosts = async (
   setLoading,
   setLastPost
 ) => {
+  setLoading(true);
   try {
     const postsRef = collection(db, "Posts");
     const archivedPostsQuery = query(
@@ -429,8 +377,9 @@ const archivedPosts = async (
     );
     const querySnapshot = await getDocs(archivedPostsQuery);
     setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
+    changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
+  setLoading(false);
 };
 
 const getMoreArchivedPosts = async (
@@ -450,8 +399,10 @@ const getMoreArchivedPosts = async (
       limit(4)
     );
     const querySnapshot = await getDocs(archivedPostsQuery);
-    setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
+    setPostsArray((prevState) => {
+      return [...prevState, ...documentArr(querySnapshot)];
+    });
+    changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
 };
 
@@ -461,12 +412,11 @@ const userPosts = async (userID, setPostsArray, setLoading, setLastPost) => {
     const userPostsQuery = query(
       postsRef,
       where("postByID", "==", userID),
-      where("archive", "==", false),
       limit(4)
     );
     const querySnapshot = await getDocs(userPostsQuery);
     setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
+    changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
 };
 
@@ -482,59 +432,63 @@ const getMoreUserPosts = async (
     const userPostsQuery = query(
       postsRef,
       where("postByID", "==", userID),
-      where("archive", "==", false),
       startAfter(lastPost),
       limit(4)
     );
     const querySnapshot = await getDocs(userPostsQuery);
-    setPostsArray(documentArr(querySnapshot));
-    changeLastDocument(documentSnapshots, setLastPost);
+    setPostsArray((prevState) => {
+      return [...prevState, ...documentArr(querySnapshot)];
+    });
+    changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
 };
 
 const explorePagePosts = async (
-  userID,
   setPaginatedPost,
   setLoading,
-  setLastPost
+  setLastPost,
+  sortBy
 ) => {
-  setLoading(true);
+  // setLoading(true);
   try {
     const postRef = collection(db, "Posts");
-    const postQuery = query(postRef, orderBy("time", "desc"), limit(4));
+    const postQuery = query(postRef, orderBy(sortBy, "desc"), limit(4));
     const querySnapshot = await getDocs(postQuery);
-    setPaginatedPost(documentArr(querySnapshot));
-    // changeLastDocument(querySnapshot, setLastPost);
-    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-    setLastPost(lastVisible);
+    setPaginatedPost((prevState) => {
+      return [...prevState, ...documentArr(querySnapshot)];
+    });
+    changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {
     console.error(error);
   }
-  setLoading(false);
+  // setLoading(false);
 };
 
 const getMoreExplorePosts = async (
-  userID,
   lastPost,
-  setPostsArray,
+  setPaginatedPost,
   setLoading,
-  setLastPost
+  setLastPost,
+  sortBy
 ) => {
   if (lastPost) {
     try {
       const postsRef = collection(db, "Posts");
       const explorePostsQuery = query(
         postsRef,
-        orderBy("time", "desc"),
+        orderBy(sortBy, "desc"),
         startAfter(lastPost),
         limit(4)
       );
       const querySnapshot = await getDocs(explorePostsQuery);
-      console.log(documentArr(querySnapshot));
-      setPostsArray((prevState) => {
-        return { ...prevState, ...documentArr(querySnapshot) };
-      });
-      changeLastDocument(querySnapshot, setLastPost);
+      if (querySnapshot.docs.length > 0) {
+        setPaginatedPost((prevState) => {
+          return [...prevState, ...documentArr(querySnapshot)];
+        });
+        changeLastDocument(querySnapshot, setLastPost);
+      } else {
+        explorePagePosts(setPaginatedPost, setLoading, setLastPost, sortBy);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -546,58 +500,11 @@ const changeLastDocument = (documentSnapshots, setLastPost) => {
 };
 
 const documentArr = (documentSnapshots) => {
-  const posts = {};
+  let posts = [];
   documentSnapshots.forEach((doc) => {
-    posts[doc.id] = doc.data();
+    posts = [...posts, { postID: doc.id, ...doc.data() }];
   });
   return posts;
-};
-
-const getLimitedPosts = async (
-  setLastPost,
-  setLimitedPosts,
-  setLoading,
-  sortBy
-) => {
-  const posts = {};
-  setLoading(true);
-  try {
-    const first = query(
-      collection(db, "Posts"),
-      orderBy(sortBy, "desc"),
-      limit(2)
-    );
-    const documentSnapshots = await getDocs(first);
-    documentSnapshots.forEach((doc) => {
-      posts[doc.id] = doc.data();
-    });
-    setLimitedPosts(posts);
-    const lastVisible =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1];
-    setLastPost(lastVisible);
-  } catch (error) {
-    console.log(error);
-  }
-  setLoading(false);
-};
-
-const nextPosts = async (lastPost, setLastPost, setLimitedPosts, sortBy) => {
-  const posts = {};
-  const next = query(
-    collection(db, "Posts"),
-    orderBy(sortBy, "desc"),
-    startAfter(lastPost),
-    limit(2)
-  );
-  const documentSnapshots = await getDocs(next);
-  documentSnapshots.forEach((doc) => {
-    posts[doc.id] = doc.data();
-  });
-  setLimitedPosts((prevState) => {
-    return { ...prevState, ...posts };
-  });
-  const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-  setLastPost(lastVisible);
 };
 
 export {
@@ -623,9 +530,12 @@ export {
   clearNotifications,
   archivePost,
   unArchivePost,
-  getTaggedPost,
-  getLimitedPosts,
-  nextPosts,
+  getTaggedPosts,
   explorePagePosts,
   getMoreExplorePosts,
+  userPosts,
+  getMoreUserPosts,
+  archivedPosts,
+  getMoreArchivedPosts,
+  getBookmarkedPosts,
 };

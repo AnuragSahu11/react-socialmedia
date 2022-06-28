@@ -15,7 +15,7 @@ const ExplorePage = () => {
       <div className="bookmark_header">
         <Title level={2}>Explore</Title>
       </div>
-      <PostContainer userID={token} mode="explore" />
+      <PostContainer userID={token} mode="explore" showSortPost={true} />
     </div>
   );
 };
