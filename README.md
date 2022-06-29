@@ -19,17 +19,23 @@ Checkout the live website [here](https://tradepeer.netlify.app/)
 
 ### Features
 - Authentication, using Firebase auth
+- Infinite scroll
 - Create, Delete and Edit post
+- Archive post
+- Draft Posts ( access using the save icon below the start a post button in home page )
 - Add image to post ( Using Cloudinary )
-- Like, add to bookmark, comment post
+- Like, add to bookmark, comment on post
+- Add Tags to post
+- View all post of a specific tag
 - Edit profile
 - Edit display picture of profile
 - Add and change background picture on a profile
 - Add emoji to Post, profile bio ( emoji-picker-react )
 - Follow/Unfollow Users
 - Recommendation sidebar
-- Search Users- Draft Posts ( access using the save icon below the start a post button in home page ) 
+- Search Users 
 - Notifications 
+
 
 ### Misc Features
 - Mobile responsive
