@@ -49,7 +49,6 @@ const PostContainer = ({
   const [lastPost, setLastPost] = useState({});
   const [loading, setLoading] = useState(false);
   const [infiniteLoader, setInfiniteLoading] = useState(false);
-
   const [postsArray, setPostsArray] = useState([]);
 
   const onScroll = () => {

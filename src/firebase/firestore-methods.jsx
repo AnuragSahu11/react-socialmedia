@@ -389,6 +389,7 @@ const getMoreArchivedPosts = async (
   setLoading,
   setLastPost
 ) => {
+  setLoading(true);
   try {
     const postsRef = collection(db, "Posts");
     const archivedPostsQuery = query(
@@ -404,6 +405,7 @@ const getMoreArchivedPosts = async (
     });
     changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
+  setLoading(false);
 };
 
 const userPosts = async (userID, setPostsArray, setLoading, setLastPost) => {

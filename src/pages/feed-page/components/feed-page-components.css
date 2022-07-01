@@ -1,11 +1,12 @@
 .site_card_border_less_wrapper {
-  padding: 40px;
+  padding: 10px;
+  padding-top: 40px;
   background: #ececec;
 }
 .card_post {
   margin-left: auto;
   margin-right: auto;
-  max-width: 400px;
+  width: 30vw;
 }
 .ant_card_head_title {
   font-weight: 600;
@@ -45,4 +46,20 @@
 }
 .ant_menu {
   font-size: 1.5rem;
+}
+@media only screen and (max-width: 1600px) {
+  .card_post {
+    width: 45vw;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .card_post {
+    width: 65vw;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .card_post {
+    width: 90vw;
+  }
 }
