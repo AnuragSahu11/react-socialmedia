@@ -407,6 +407,7 @@ const getMoreArchivedPosts = async (
 };
 
 const userPosts = async (userID, setPostsArray, setLoading, setLastPost) => {
+  setLoading(true);
   try {
     const postsRef = collection(db, "Posts");
     const userPostsQuery = query(
@@ -418,6 +419,7 @@ const userPosts = async (userID, setPostsArray, setLoading, setLastPost) => {
     setPostsArray(documentArr(querySnapshot));
     changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
+  setLoading(false);
 };
 
 const getMoreUserPosts = async (
@@ -427,6 +429,7 @@ const getMoreUserPosts = async (
   setLoading,
   setLastPost
 ) => {
+  setLoading(true);
   try {
     const postsRef = collection(db, "Posts");
     const userPostsQuery = query(
@@ -441,6 +444,7 @@ const getMoreUserPosts = async (
     });
     changeLastDocument(querySnapshot, setLastPost);
   } catch (error) {}
+  setLoading(false);
 };
 
 const explorePagePosts = async (
@@ -449,7 +453,7 @@ const explorePagePosts = async (
   setLastPost,
   sortBy
 ) => {
-  // setLoading(true);
+  setLoading(true);
   try {
     const postRef = collection(db, "Posts");
     const postQuery = query(postRef, orderBy(sortBy, "desc"), limit(4));
@@ -461,7 +465,7 @@ const explorePagePosts = async (
   } catch (error) {
     console.error(error);
   }
-  // setLoading(false);
+  setLoading(false);
 };
 
 const getMoreExplorePosts = async (
@@ -472,6 +476,7 @@ const getMoreExplorePosts = async (
   sortBy
 ) => {
   if (lastPost) {
+    setLoading(true);
     try {
       const postsRef = collection(db, "Posts");
       const explorePostsQuery = query(
@@ -492,6 +497,7 @@ const getMoreExplorePosts = async (
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   }
 };
 

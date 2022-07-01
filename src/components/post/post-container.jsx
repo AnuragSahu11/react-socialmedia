@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { LoadingOutlined } from "@ant-design/icons";
 import { Post } from "..";
 import "./post-container.css";
-import { Skeleton, Input, Select } from "antd";
+import { Skeleton, Input, Select, Spin } from "antd";
 import { changeSort } from "../../redux/slice/operation-slice";
 import { statusConstants } from "../../utils/constants";
 import { useRef } from "react";
@@ -31,19 +32,24 @@ const PostContainer = ({
   const dispatch = useDispatch();
   const postContainerRef = useRef();
 
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 24,
+      }}
+      spin
+    />
+  );
+
+  const { status: userDataStatus } = useSelector((store) => store.userData);
+  const { userListStatus } = useSelector((store) => store.operationData);
+  const { sortPost } = useSelector((store) => store.operationData);
+
   const [paginatedPosts, setPaginatedPosts] = useState([]);
   const [lastPost, setLastPost] = useState({});
   const [loading, setLoading] = useState(false);
+  const [infiniteLoader, setInfiniteLoading] = useState(false);
 
-  const { posts, status } = useSelector((store) => store.posts);
-  const { userList, userListStatus } = useSelector(
-    (store) => store.operationData
-  );
-
-  const { userData, status: userDataStatus } = useSelector(
-    (store) => store.userData
-  );
-  const { sortPost } = useSelector((store) => store.operationData);
   const [postsArray, setPostsArray] = useState([]);
 
   const onScroll = () => {
@@ -56,7 +62,7 @@ const PostContainer = ({
             getMoreExplorePosts(
               lastPost,
               setPaginatedPosts,
-              setLoading,
+              setInfiniteLoading,
               setLastPost,
               sortPost === "recent" ? "time" : "likes"
             );
@@ -65,7 +71,7 @@ const PostContainer = ({
             getMoreExplorePosts(
               lastPost,
               setPaginatedPosts,
-              setLoading,
+              setInfiniteLoading,
               setLastPost,
               sortPost === "recent" ? "time" : "likes"
             );
@@ -75,7 +81,7 @@ const PostContainer = ({
               userID,
               lastPost,
               setPaginatedPosts,
-              setLoading,
+              setInfiniteLoading,
               setLastPost
             );
             break;
@@ -84,7 +90,7 @@ const PostContainer = ({
               userID,
               lastPost,
               setPaginatedPosts,
-              setLoading,
+              setInfiniteLoading,
               setLastPost
             );
             break;
@@ -127,12 +133,6 @@ const PostContainer = ({
         break;
     }
   }, [userID, mode, sortPost]);
-
-  useEffect(() => {
-    if (paginatedPosts && userListStatus === statusConstants.fulfilled) {
-      getMorePosts(mode, feed);
-    }
-  }, [paginatedPosts, userDataStatus, userListStatus, tag]);
 
   const getMorePosts = (mode, feed = []) => {
     let postArray;
@@ -197,6 +197,12 @@ const PostContainer = ({
     }
   };
 
+  useEffect(() => {
+    if (paginatedPosts && userListStatus === statusConstants.fulfilled) {
+      getMorePosts(mode, feed);
+    }
+  }, [paginatedPosts, userDataStatus, userListStatus, tag]);
+
   return (
     <div className="post_container" ref={postContainerRef} onScroll={onScroll}>
       {!loading ? (
@@ -214,10 +220,13 @@ const PostContainer = ({
           )}
 
           {postsArray}
+          <div className="infinite_loader">
+            <Spin indicator={antIcon} spinning={infiniteLoader} />
+          </div>
         </>
       ) : (
         <>
-          <Skeleton active={true} /> <Skeleton active={true} />
+          <Skeleton active={true} />
         </>
       )}
     </div>
