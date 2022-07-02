@@ -7,3 +7,4 @@ export { NotificationPage } from "../pages/notification-page/notification-page";
 export { Post } from "./post/post";
 export { PostContainer } from "./post/post-container";
 export { UsersList } from "./list/users-list";
+export { TagList } from "./list/tag-list";

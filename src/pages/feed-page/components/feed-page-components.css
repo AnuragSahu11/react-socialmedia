@@ -1,11 +1,11 @@
 .site_card_border_less_wrapper {
-  padding: 10px;
+  padding: 40px;
   background: #ececec;
 }
 .card_post {
   margin-left: auto;
   margin-right: auto;
-  width: 400px;
+  max-width: 400px;
 }
 .ant_card_head_title {
   font-weight: 600;

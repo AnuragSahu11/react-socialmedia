@@ -29,6 +29,9 @@
 .post_wrapper {
   margin-top: 7px;
 }
+.post_tag_container {
+  margin-top: 30px;
+}
 
 @media only screen and (max-width: 1600px) {
   .post_container {

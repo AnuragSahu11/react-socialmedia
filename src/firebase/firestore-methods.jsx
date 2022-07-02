@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   doc,
@@ -14,6 +13,8 @@ import {
   arrayUnion,
   arrayRemove,
   deleteField,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 const short = require("short-uuid");
@@ -83,7 +84,7 @@ const getUserList = createAsyncThunk("get/userList", async () => {
   }
 });
 
-const newPost = async (postCaption, postContent, userID, postImg) => {
+const newPost = async (postCaption, postContent, userID, postImg, tags) => {
   try {
     const docRef = await addDoc(collection(db, "Posts"), {
       caption: postCaption,
@@ -93,6 +94,8 @@ const newPost = async (postCaption, postContent, userID, postImg) => {
       comments: [],
       likes: 0,
       postByID: userID,
+      archive: false,
+      tags,
     });
     const userPostRef = doc(db, userID, "posts");
     await updateDoc(userPostRef, { posts: arrayUnion(docRef.id) });
@@ -106,18 +109,23 @@ const deletePost = async (postID, userID) => {
     const userPostRef = doc(db, userID, "posts");
     updateDoc(userPostRef, { posts: arrayRemove(postID) });
     await deleteDoc(doc(db, "Posts", postID));
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
-const updatePost = async (postID,{ caption, content, img } ) => {
+const updatePost = async (postID, { caption, content, img, tags }) => {
   try {
     const postRef = doc(db, "Posts", postID);
     await updateDoc(postRef, {
       caption,
       content,
       img,
+      tags,
     });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const getPosts = createAsyncThunk("get/allPost", async () => {
@@ -181,7 +189,9 @@ const addComment = async (postID, commentText, commenterID) => {
         commentTime: serverTimestamp(),
       },
     });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const likePost = async (postID, userID) => {
@@ -195,7 +205,9 @@ const likePost = async (postID, userID) => {
     await updateDoc(commentDoc, {
       likes: increment(1),
     });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const dislikePost = async (postID, userID) => {
@@ -209,7 +221,9 @@ const dislikePost = async (postID, userID) => {
     await updateDoc(commentDoc, {
       likes: increment(-1),
     });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const follow = async (currentUserID, userToFollowID) => {
@@ -250,14 +264,18 @@ const bookmarkPost = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
     await updateDoc(bookmarkRef, { bookmarks: arrayUnion(postID) });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const removeBookmark = async (postID, userID) => {
   try {
     const bookmarkRef = doc(db, userID, "bookmarks");
     await updateDoc(bookmarkRef, { bookmarks: arrayRemove(postID) });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const addToDraft = async (userID, postData) => {
@@ -265,7 +283,9 @@ const addToDraft = async (userID, postData) => {
   try {
     const draftRef = doc(db, userID, "drafts");
     await updateDoc(draftRef, { [newID]: { ...postData } });
-  } catch (err) {}
+  } catch (err) {
+    throw err.message;
+  }
 };
 
 const deleteFromDraft = async (userID, draftID) => {
@@ -280,8 +300,50 @@ const deleteFromDraft = async (userID, draftID) => {
 };
 
 const clearNotifications = async (userID) => {
-  const notificationRef = doc(db, userID, "notifications");
-  updateDoc(notificationRef, { notifications: [] });
+  try {
+    const notificationRef = doc(db, userID, "notifications");
+    updateDoc(notificationRef, { notifications: [] });
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+const archivePost = async (postID) => {
+  try {
+    const archiveRef = doc(db, "Posts", postID);
+    updateDoc(archiveRef, {
+      archive: true,
+    });
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+const unArchivePost = async (postID) => {
+  try {
+    const archiveRef = doc(db, "Posts", postID);
+    updateDoc(archiveRef, {
+      archive: false,
+    });
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+const getTaggedPost = async (tag, setState) => {
+  const taggedPost = {};
+  try {
+    const postsRef = collection(db, "Posts");
+    const taggedPostsQuerry = query(
+      postsRef,
+      where("tags", "array-contains", tag)
+    );
+    const querySnapshot = await getDocs(taggedPostsQuerry);
+    querySnapshot.forEach((doc) => {
+      taggedPost[doc.id] = doc.data();
+    });
+    setState(taggedPost);
+  } catch (error) {}
 };
 
 export {
@@ -305,4 +367,7 @@ export {
   addToDraft,
   deleteFromDraft,
   clearNotifications,
+  archivePost,
+  unArchivePost,
+  getTaggedPost,
 };

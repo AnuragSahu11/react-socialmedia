@@ -11,6 +11,8 @@ import {
   NotificationPage,
   UserPage,
   DraftPage,
+  ArchivePage,
+  TagPage,
 } from "../pages";
 
 const Router = () => {
@@ -27,6 +29,8 @@ const Router = () => {
           <Route path="/user/notifications" element={<NotificationPage />} />
           <Route path="/user/:userID" element={<OtherUserPage />} />
           <Route path="/user/drafts" element={<DraftPage />} />
+          <Route path="/user/archive" element={<ArchivePage />} />
+          <Route path="/user/tags/:tag" element={<TagPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Route>

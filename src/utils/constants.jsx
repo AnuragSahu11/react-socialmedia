@@ -33,6 +33,12 @@ export const toastConstants = {
   logout: "You are logged out",
   commentSuccess: "Comment Added",
   commentFailed: "Comment not added",
+  archiveSuccess: "Post archived",
+  archiveFailed: "Post archive failed",
+  unArchiveSuccess: "Post un-archived",
+  addTag: "Tag added",
+  removeTag: "Tag removed",
+  commentWarn: "Empty comment could not be posted",
 };
 
 export const anuragLoginCredentials = {

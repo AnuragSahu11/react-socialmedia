@@ -32,7 +32,7 @@ const ProfilePage = () => {
           />
         </div>
       )}
-      <PostContainer userID={token} editPost={true} />
+      <PostContainer userID={token} mode="user" editPost={true} />
     </div>
   );
 };
