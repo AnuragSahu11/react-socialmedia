@@ -8,6 +8,7 @@ const BookmarkPage = () => {
   const { Title } = Typography;
 
   const { userData } = useSelector((store) => store.userData);
+  const { token } = useSelector((store) => store.token);
 
   changeTitle(titleConstants.bookmarkPage);
   return (
@@ -17,6 +18,7 @@ const BookmarkPage = () => {
       </div>
       <PostContainer
         bookmarks={userData?.bookmarks?.bookmarks}
+        userID={token}
         mode="bookmark"
       />
     </div>

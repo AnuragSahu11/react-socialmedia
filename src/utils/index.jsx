@@ -1,5 +1,5 @@
 export { filterConstants, statusConstants, cloudinaryLink } from "./constants";
-export { filterAndSort } from "./filter-sort-post";
+export { filterPost } from "./filter-sort-post";
 export {
   objectToArr,
   notificationDisc,

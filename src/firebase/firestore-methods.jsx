@@ -15,6 +15,10 @@ import {
   deleteField,
   query,
   where,
+  orderBy,
+  limit,
+  startAt,
+  startAfter,
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 const short = require("short-uuid");
@@ -330,28 +334,194 @@ const unArchivePost = async (postID) => {
   }
 };
 
-const getTaggedPost = async (tag, setState) => {
-  const taggedPost = {};
+const getTaggedPosts = async (tag, setPostsArray, setLoading) => {
+  setLoading(true);
   try {
     const postsRef = collection(db, "Posts");
     const taggedPostsQuerry = query(
       postsRef,
-      where("tags", "array-contains", tag)
+      where("tags", "array-contains", tag),
+      where("archive", "==", false)
     );
     const querySnapshot = await getDocs(taggedPostsQuerry);
-    querySnapshot.forEach((doc) => {
-      taggedPost[doc.id] = doc.data();
-    });
-    setState(taggedPost);
+    setPostsArray(documentArr(querySnapshot));
   } catch (error) {}
+  setLoading(false);
+};
+
+const getBookmarkedPosts = async (setPostsArray, setLoading) => {
+  setLoading(true);
+  try {
+    const querySnapshot = await getDocs(collection(db, "Posts"));
+    setPostsArray(documentArr(querySnapshot));
+  } catch (error) {
+    console.error("Error during fetching data: ", err);
+  }
+  setLoading(false);
+};
+
+const archivedPosts = async (
+  userID,
+  setPostsArray,
+  setLoading,
+  setLastPost
+) => {
+  setLoading(true);
+  try {
+    const postsRef = collection(db, "Posts");
+    const archivedPostsQuery = query(
+      postsRef,
+      where("archive", "==", true),
+      where("postByID", "==", userID),
+      limit(4)
+    );
+    const querySnapshot = await getDocs(archivedPostsQuery);
+    setPostsArray(documentArr(querySnapshot));
+    changeLastDocument(querySnapshot, setLastPost);
+  } catch (error) {}
+  setLoading(false);
+};
+
+const getMoreArchivedPosts = async (
+  userID,
+  lastPost,
+  setPostsArray,
+  setLoading,
+  setLastPost
+) => {
+  setLoading(true);
+  try {
+    const postsRef = collection(db, "Posts");
+    const archivedPostsQuery = query(
+      postsRef,
+      where("postByID", "==", userID),
+      where("archive", "==", true),
+      startAfter(lastPost),
+      limit(4)
+    );
+    const querySnapshot = await getDocs(archivedPostsQuery);
+    setPostsArray((prevState) => {
+      return [...prevState, ...documentArr(querySnapshot)];
+    });
+    changeLastDocument(querySnapshot, setLastPost);
+  } catch (error) {}
+  setLoading(false);
+};
+
+const userPosts = async (userID, setPostsArray, setLoading, setLastPost) => {
+  setLoading(true);
+  try {
+    const postsRef = collection(db, "Posts");
+    const userPostsQuery = query(
+      postsRef,
+      where("postByID", "==", userID),
+      limit(4)
+    );
+    const querySnapshot = await getDocs(userPostsQuery);
+    setPostsArray(documentArr(querySnapshot));
+    changeLastDocument(querySnapshot, setLastPost);
+  } catch (error) {}
+  setLoading(false);
+};
+
+const getMoreUserPosts = async (
+  userID,
+  lastPost,
+  setPostsArray,
+  setLoading,
+  setLastPost
+) => {
+  setLoading(true);
+  try {
+    const postsRef = collection(db, "Posts");
+    const userPostsQuery = query(
+      postsRef,
+      where("postByID", "==", userID),
+      startAfter(lastPost),
+      limit(4)
+    );
+    const querySnapshot = await getDocs(userPostsQuery);
+    setPostsArray((prevState) => {
+      return [...prevState, ...documentArr(querySnapshot)];
+    });
+    changeLastDocument(querySnapshot, setLastPost);
+  } catch (error) {}
+  setLoading(false);
+};
+
+const explorePagePosts = async (
+  setPaginatedPost,
+  setLoading,
+  setLastPost,
+  sortBy
+) => {
+  setLoading(true);
+  try {
+    const postRef = collection(db, "Posts");
+    const postQuery = query(postRef, orderBy(sortBy, "desc"), limit(4));
+    const querySnapshot = await getDocs(postQuery);
+    setPaginatedPost((prevState) => {
+      return [...prevState, ...documentArr(querySnapshot)];
+    });
+    changeLastDocument(querySnapshot, setLastPost);
+  } catch (error) {
+    console.error(error);
+  }
+  setLoading(false);
+};
+
+const getMoreExplorePosts = async (
+  lastPost,
+  setPaginatedPost,
+  setLoading,
+  setLastPost,
+  sortBy
+) => {
+  if (lastPost) {
+    setLoading(true);
+    try {
+      const postsRef = collection(db, "Posts");
+      const explorePostsQuery = query(
+        postsRef,
+        orderBy(sortBy, "desc"),
+        startAfter(lastPost),
+        limit(4)
+      );
+      const querySnapshot = await getDocs(explorePostsQuery);
+      if (querySnapshot.docs.length > 0) {
+        setPaginatedPost((prevState) => {
+          return [...prevState, ...documentArr(querySnapshot)];
+        });
+        changeLastDocument(querySnapshot, setLastPost);
+      } else {
+        explorePagePosts(setPaginatedPost, setLoading, setLastPost, sortBy);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  }
+};
+
+const changeLastDocument = (documentSnapshots, setLastPost) => {
+  setLastPost(documentSnapshots.docs[documentSnapshots.docs.length - 1]);
+};
+
+const documentArr = (documentSnapshots) => {
+  let posts = [];
+  documentSnapshots.forEach((doc) => {
+    posts = [...posts, { postID: doc.id, ...doc.data() }];
+  });
+  return posts;
 };
 
 export {
-  createUser,
-  newPost,
   getPosts,
   getUserPost,
   getUserData,
+  getUserList,
+  createUser,
+  newPost,
   addComment,
   likePost,
   dislikePost,
@@ -363,11 +533,17 @@ export {
   removeBookmark,
   getOtherUserData,
   updateUserData,
-  getUserList,
   addToDraft,
   deleteFromDraft,
   clearNotifications,
   archivePost,
   unArchivePost,
-  getTaggedPost,
+  getTaggedPosts,
+  explorePagePosts,
+  getMoreExplorePosts,
+  userPosts,
+  getMoreUserPosts,
+  archivedPosts,
+  getMoreArchivedPosts,
+  getBookmarkedPosts,
 };

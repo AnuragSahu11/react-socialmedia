@@ -19,7 +19,7 @@ function App() {
         <Navbar />
         <NewPostModal />
         <Router />
-        <FooterComponent />
+        {/* <FooterComponent /> */}
       </Layout>
     </div>
   );

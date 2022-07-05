@@ -58,6 +58,7 @@ const OtherUserPage = () => {
     setIsLoading(true);
     try {
       await getOtherUserData(userID, setUserInfo);
+      console.log(userInfo, "hello");
     } catch (err) {}
     setIsLoading(false);
   };
@@ -66,6 +67,17 @@ const OtherUserPage = () => {
     if (token === userID) navigate("/user/profile");
     else getData();
   }, [userID]);
+
+  const {
+    userData: {
+      dp = "",
+      fullName = "",
+      handle = "",
+      bio = "",
+      website = "",
+      background = "",
+    } = {},
+  } = userInfo || {};
 
   changeTitle(firstName || titleConstants.profilePage);
 
@@ -76,12 +88,17 @@ const OtherUserPage = () => {
           <Skeleton active={true} />
         ) : (
           <>
+            {background && (
+              <div className="user_profile_background_wrapper">
+                <img src={background} alt="" />
+              </div>
+            )}
             <div className="user_profile_avatar_wrapper">
-              <Avatar size={84} icon={<UserOutlined />} />
+              <Avatar src={dp} size={94} icon={<UserOutlined />} />
             </div>
             <div className="profile_name_id">
-              <p className="profile_name">{firstName}</p>
-              <p className="profile_id">{lastName}</p>
+              <p className="profile_name">{fullName}</p>
+              <p className="profile_id">@{handle}</p>
             </div>
 
             <FollowButton
@@ -92,12 +109,13 @@ const OtherUserPage = () => {
             />
 
             <div className="profile_disc">
-              <p className="">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque
-                vel saepe ut? Temporibus, qui quisquam.
-              </p>
+              <p className="">{bio}</p>
             </div>
-
+            <div className="profile_disc">
+              <a onClick={() => window.open(`https://${website}`, "_blank")}>
+                {website}
+              </a>
+            </div>
             <Card className="profile_card">
               <div className="profile_card_div">
                 <div className="profile_card_info">
