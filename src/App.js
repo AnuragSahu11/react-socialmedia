@@ -1,6 +1,6 @@
 import "./antd.css";
 
-import { FooterComponent, Navbar, NewPostModal } from "./components";
+import { Navbar, NewPostModal } from "./components";
 import { ToastContainer } from "react-toastify";
 import { toastProps } from "./utils/constants";
 import { Layout } from "antd";
@@ -19,7 +19,6 @@ function App() {
         <Navbar />
         <NewPostModal />
         <Router />
-        {/* <FooterComponent /> */}
       </Layout>
     </div>
   );

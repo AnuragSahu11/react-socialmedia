@@ -2,8 +2,8 @@ import { Modal, Input, Upload, Tooltip } from "antd";
 import "./modals.css";
 import { useState } from "react";
 import { SmileOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { getPosts, updatePost } from "../../firebase/firestore-methods";
+import { useDispatch } from "react-redux";
+import { updatePost } from "../../firebase/firestore-methods";
 import { cloudinaryLink } from "../../utils";
 import Picker from "emoji-picker-react";
 import { toast } from "react-toastify";
@@ -13,6 +13,7 @@ import {
 } from "../../utils/misc-operation-functions";
 import { toastConstants } from "../../utils/constants";
 import { TagList } from "../list/tag-list";
+import { changePostFlag } from "../../redux/slice/operation-slice";
 
 const EditPostModal = ({
   isVisible,
@@ -47,7 +48,7 @@ const EditPostModal = ({
     if (postFormValidation(inputField)) {
       try {
         await updatePost(postID, inputField);
-        dispatch(getPosts());
+        dispatch(changePostFlag());
         toggleModal();
         toast.success(toastConstants.editSuccess);
       } catch (err) {
