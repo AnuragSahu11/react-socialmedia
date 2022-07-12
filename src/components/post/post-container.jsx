@@ -133,7 +133,7 @@ const PostContainer = ({
         getBookmarkedPosts(setPaginatedPosts, setLoading);
         break;
     }
-  }, [userID, mode, sortPost, getPostFlag]);
+  }, [userID, mode, sortPost, getPostFlag, tag]);
 
   const getMorePosts = (mode, feed = []) => {
     let postArray;
@@ -202,7 +202,7 @@ const PostContainer = ({
     if (paginatedPosts && userListStatus === statusConstants.fulfilled) {
       getMorePosts(mode, feed);
     }
-  }, [paginatedPosts, userDataStatus, userListStatus, tag]);
+  }, [paginatedPosts, userDataStatus, userListStatus]);
 
   return (
     <div className="post_container" ref={postContainerRef} onScroll={onScroll}>
