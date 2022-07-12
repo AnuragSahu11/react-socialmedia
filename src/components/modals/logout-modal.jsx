@@ -1,6 +1,8 @@
 import { Modal, Button } from "antd";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { logout } from "../../redux/slice/auth-slice";
+import { toastConstants } from "../../utils/constants";
 import "./modals.css";
 
 const LogoutModal = ({ showLogoutModal, setShowLogoutModal }) => {
@@ -9,6 +11,7 @@ const LogoutModal = ({ showLogoutModal, setShowLogoutModal }) => {
   const handleOk = () => {
     dispatch(logout());
     setShowLogoutModal(false);
+    toast.info(toastConstants.logout);
   };
 
   const handleCancel = () => {

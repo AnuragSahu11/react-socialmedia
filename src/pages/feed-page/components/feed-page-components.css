@@ -1,11 +1,12 @@
 .site_card_border_less_wrapper {
   padding: 10px;
+  padding-top: 40px;
   background: #ececec;
 }
 .card_post {
   margin-left: auto;
   margin-right: auto;
-  width: 400px;
+  width: 30vw;
 }
 .ant_card_head_title {
   font-weight: 600;
@@ -20,7 +21,7 @@
   border: 1px solid #c6c6c6;
   color: #9e9e9e;
   font-weight: 600;
-  font-size: 1.6rem;
+  font-size: 1rem;
   padding: 10px 0px;
 }
 .button_new_post:hover {
@@ -37,7 +38,7 @@
 }
 .new_post_icon_wrapper {
   margin: 8px 0px;
-  font-size: 2.2rem;
+  font-size: 1.3rem;
   height: 15px;
 }
 .new_post_icon {
@@ -45,4 +46,20 @@
 }
 .ant_menu {
   font-size: 1.5rem;
+}
+@media only screen and (max-width: 1600px) {
+  .card_post {
+    width: 45vw;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .card_post {
+    width: 65vw;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .card_post {
+    width: 90vw;
+  }
 }

@@ -11,6 +11,7 @@ const initialState = {
   darkmode: false,
   sortPost: filterConstants.recent,
   userList: null,
+  getPostFlag: false,
 };
 
 const operationSlice = createSlice({
@@ -33,6 +34,9 @@ const operationSlice = createSlice({
     clearDraftData: (state) => {
       state.draftData = null;
     },
+    changePostFlag: (state) => {
+      state.getPostFlag = !state.getPostFlag;
+    },
   },
   extraReducers: {
     [getUserList.pending]: (state) => {
@@ -51,5 +55,6 @@ export const {
   changeSort,
   setDraftData,
   clearDraftData,
+  changePostFlag,
 } = operationSlice.actions;
 export default operationSlice.reducer;

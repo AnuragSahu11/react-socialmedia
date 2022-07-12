@@ -4,6 +4,7 @@ import {
   SmileTwoTone,
   EditTwoTone,
   SaveTwoTone,
+  UserOutlined,
 } from "@ant-design/icons";
 import "./feed-page-components.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +20,11 @@ const CreatePost = () => {
     <div className="site_card_border_less_wrapper">
       <Card className="card_post" title="New Post" bordered={false}>
         <div className="new_post_contents">
-          <Avatar size={65} src={userData?.userData?.dp} />
+          <Avatar
+            size={65}
+            src={userData?.userData?.dp}
+            icon={<UserOutlined />}
+          />
           <div className="button_new_post_wrapper">
             <button
               onClick={() => dispatch(showNewPostModal())}

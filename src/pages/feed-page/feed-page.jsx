@@ -13,7 +13,13 @@ const FeedPage = () => {
   return (
     <div>
       <CreatePost />
-      <PostContainer feed={userData?.follow?.following} userID={token} />
+      <PostContainer
+        feed={userData?.follow?.following}
+        mode="feed"
+        userID={token}
+        infiniteScroll={true}
+        showSortPost={true}
+      />
     </div>
   );
 };

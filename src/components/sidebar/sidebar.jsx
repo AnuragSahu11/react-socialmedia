@@ -1,10 +1,11 @@
 import { Layout, Menu, Button } from "antd";
 import {
   UserOutlined,
-  TagsOutlined,
-  HomeOutlined,
-  RocketOutlined,
-  NotificationOutlined,
+  TagsFilled,
+  HomeFilled,
+  RocketFilled,
+  NotificationFilled,
+  ImportOutlined,
 } from "@ant-design/icons";
 import "./sidebar.css";
 import { useState } from "react";
@@ -27,7 +28,7 @@ const Sidebar = () => {
   const siderItems = [
     {
       key: "1",
-      icon: <HomeOutlined />,
+      icon: <HomeFilled style={{ fontSize: "1.1rem" }} />,
       label: "Home",
       onClick: () => {
         navigate("/user/feed");
@@ -35,7 +36,7 @@ const Sidebar = () => {
     },
     {
       key: "2",
-      icon: <RocketOutlined />,
+      icon: <RocketFilled style={{ fontSize: "1.1rem" }} />,
       label: "Explore",
       onClick: () => {
         navigate("/user/explore");
@@ -43,7 +44,7 @@ const Sidebar = () => {
     },
     {
       key: "3",
-      icon: <TagsOutlined />,
+      icon: <TagsFilled style={{ fontSize: "1.1rem" }} />,
       label: "Bookmarks",
       onClick: () => {
         navigate("/user/bookmark");
@@ -51,7 +52,7 @@ const Sidebar = () => {
     },
     {
       key: "4",
-      icon: <NotificationOutlined />,
+      icon: <NotificationFilled style={{ fontSize: "1.1rem" }} />,
       label: "Notifications",
       onClick: () => {
         navigate("/user/notifications");
@@ -59,7 +60,15 @@ const Sidebar = () => {
     },
     {
       key: "5",
-      icon: <UserOutlined />,
+      icon: <ImportOutlined style={{ fontSize: "1.1rem" }} />,
+      label: "Archived",
+      onClick: () => {
+        navigate("/user/archive");
+      },
+    },
+    {
+      key: "6",
+      icon: <UserOutlined style={{ fontSize: "1.1rem" }} />,
       label: "Profile",
       onClick: () => {
         navigate("/user/profile");
@@ -78,7 +87,12 @@ const Sidebar = () => {
       className="sidebar_feed"
     >
       <div className="logo" />
-      <Menu mode="inline" defaultSelectedKeys={["1"]} items={siderItems} />
+      <Menu
+        mode="inline"
+        className="sidebar_menu"
+        defaultSelectedKeys={["1"]}
+        items={siderItems}
+      />
       <Button
         onClick={() => dispatch(showNewPostModal())}
         size={"large"}

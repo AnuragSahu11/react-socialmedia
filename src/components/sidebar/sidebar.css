@@ -12,8 +12,11 @@
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
+.ant-menu-item {
+  font-size: 1.1rem;
+}
 .sidebar_recommendation_text {
-  font-size: 1.7rem;
+  font-size: 1rem;
   margin-left: 10px;
 }
 .divider_recommendation {

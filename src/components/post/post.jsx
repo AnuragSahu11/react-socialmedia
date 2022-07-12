@@ -17,21 +17,27 @@ import {
   BookOutlined,
   BookTwoTone,
   UserOutlined,
+  ImportOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import {
+  archivePost,
   bookmarkPost,
   dislikePost,
   getUserData,
   likePost,
   removeBookmark,
+  unArchivePost,
 } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 import { EditPostModal } from "../modals/edit-post-modal";
 import { DeletePostModal } from "../modals";
 import { useNavigate } from "react-router-dom";
-import { changeSort } from "../../redux/slice/operation-slice";
+import { changePostFlag, changeSort } from "../../redux/slice/operation-slice";
 import { Comments } from "./comments";
+import { toast } from "react-toastify";
+import { toastConstants } from "../../utils/constants";
+import { TagList } from "../list/tag-list";
 
 const Post = ({ postData, postID, editPost }) => {
   const { Meta } = Card;
@@ -47,12 +53,21 @@ const Post = ({ postData, postID, editPost }) => {
   const [showComments, setShowComments] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
+  const [archiveLoading, setArchiveLoading] = useState(false);
   const [editPostModal, setEditPostModal] = useState(false);
   const [deletePostModal, setDeletePostModal] = useState(false);
   const [inBookmark, setInBookmark] = useState(false);
-  const [postInfo, setPostInfo] = useState({});
 
-  const { caption, content, comments, postByID } = postData;
+  const {
+    caption,
+    content,
+    comments,
+    postByID,
+    img,
+    archive,
+    tags = [],
+  } = postData || {};
+  const { handle, dp, fullName } = userList[postByID] || {};
 
   useEffect(() => {
     setIsLiked(userData?.likedPost?.likedPost?.includes(postID));
@@ -87,6 +102,23 @@ const Post = ({ postData, postID, editPost }) => {
     dispatch(changeSort("recent"));
   };
 
+  const clickArchive = async () => {
+    setArchiveLoading(true);
+    try {
+      if (archive) {
+        await unArchivePost(postID);
+        toast.success(toastConstants.unArchiveSuccess);
+      } else {
+        await archivePost(postID);
+        toast.success(toastConstants.archiveSuccess);
+      }
+      dispatch(changePostFlag());
+    } catch (error) {
+      toast.error(toastConstants.archiveFailed);
+    }
+    setArchiveLoading(false);
+  };
+
   const clickProfile = () => {
     postByID === token
       ? navigate("/user/profile")
@@ -109,11 +141,11 @@ const Post = ({ postData, postID, editPost }) => {
         <Meta
           className="hover"
           onClick={clickProfile}
-          title={userList[postByID]?.fullName}
-          description={`@${userList[postByID]?.handle}`}
+          title={fullName}
+          description={`@${handle}`}
           avatar={
-            userList[postByID]?.dp ? (
-              <Avatar size="large" src={userList[postByID]?.dp} />
+            dp ? (
+              <Avatar size="large" src={dp} />
             ) : (
               <Avatar size="large" icon={<UserOutlined />} />
             )
@@ -124,13 +156,14 @@ const Post = ({ postData, postID, editPost }) => {
           <Text>{caption}</Text>
           <div className="post_image_wrapper_outer">
             <div className="post_image_wrapper">
-              {postData?.img && (
-                <Image className="post_image" src={postData?.img} />
-              )}
+              {img && <Image className="post_image" src={img} />}
             </div>
           </div>
           <Text>{content}</Text>
         </Space>
+        <div className="post_tag_container">
+          <TagList tagArr={tags} />
+        </div>
         <Divider plain></Divider>
         <Space>
           {editPost ? (
@@ -149,6 +182,15 @@ const Post = ({ postData, postID, editPost }) => {
                   size="large"
                   shape="circle"
                   icon={<DeleteOutlined />}
+                />
+              </Tooltip>
+              <Tooltip title={archive ? "Unarchive Post" : "Archive Post"}>
+                <Button
+                  onClick={clickArchive}
+                  size="large"
+                  shape="circle"
+                  icon={<ImportOutlined />}
+                  loading={archiveLoading}
                 />
               </Tooltip>
             </>

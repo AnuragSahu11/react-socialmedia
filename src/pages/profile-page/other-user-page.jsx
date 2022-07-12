@@ -1,19 +1,20 @@
-import { Avatar, Button, Card, Skeleton } from "antd";
+import { Avatar, Card, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import "./profile-page.css";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { changeTitle } from "../../utils";
+import { PostContainer } from "../../components";
 import {
   follow,
   getOtherUserData,
   unFollow,
 } from "../../firebase/firestore-methods";
-import { useNavigate, useParams } from "react-router-dom";
-import { changeTitle } from "../../utils";
-import { PostContainer } from "../../components";
+import "./profile-page.css";
+import { titleConstants } from "../../utils/constants";
+import { FollowButton } from "./components/follow-button";
 
 const OtherUserPage = () => {
-  const dispatch = useDispatch();
   const { userID } = useParams();
   const navigate = useNavigate();
 
@@ -23,16 +24,22 @@ const OtherUserPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [following, setFollowing] = useState(
+  const [isFollowing, setIsFollowing] = useState(
     userData?.follow?.following?.includes(userID)
   );
+
+  const { firstName, lastName } = userInfo.userData || {};
+  const {
+    follow: { following = [], followers = [] } = {},
+    posts: { posts = [] } = {},
+  } = userInfo || {};
 
   const clickFollow = async () => {
     setButtonLoading(true);
     try {
       await follow(token, userID);
       await getOtherUserData(userID, setUserInfo);
-      setFollowing((prevState) => !prevState);
+      setIsFollowing((prevState) => !prevState);
     } catch (err) {}
     setButtonLoading(false);
   };
@@ -42,7 +49,7 @@ const OtherUserPage = () => {
     try {
       await unFollow(token, userID);
       await getOtherUserData(userID, setUserInfo);
-      setFollowing((prevState) => !prevState);
+      setIsFollowing((prevState) => !prevState);
     } catch (err) {}
     setButtonLoading(false);
   };
@@ -51,16 +58,28 @@ const OtherUserPage = () => {
     setIsLoading(true);
     try {
       await getOtherUserData(userID, setUserInfo);
+      console.log(userInfo, "hello");
     } catch (err) {}
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (token === userID) navigate("/user/profile");
-    getData();
+    else getData();
   }, [userID]);
 
-  changeTitle(userInfo?.userData?.firstName);
+  const {
+    userData: {
+      dp = "",
+      fullName = "",
+      handle = "",
+      bio = "",
+      website = "",
+      background = "",
+    } = {},
+  } = userInfo || {};
+
+  changeTitle(firstName || titleConstants.profilePage);
 
   return (
     <div className="user_profile_wrapper">
@@ -69,55 +88,46 @@ const OtherUserPage = () => {
           <Skeleton active={true} />
         ) : (
           <>
+            {background && (
+              <div className="user_profile_background_wrapper">
+                <img src={background} alt="" />
+              </div>
+            )}
             <div className="user_profile_avatar_wrapper">
-              <Avatar size={84} icon={<UserOutlined />} />
+              <Avatar src={dp} size={94} icon={<UserOutlined />} />
             </div>
             <div className="profile_name_id">
-              <p className="profile_name">{userInfo?.userData?.firstName}</p>
-              <p className="profile_id">{userInfo?.userData?.lastName}</p>
+              <p className="profile_name">{fullName}</p>
+              <p className="profile_id">@{handle}</p>
             </div>
-            {following ? (
-              <Button
-                loading={buttonLoading}
-                onClick={() => clickUnfollow()}
-                type="primary"
-              >
-                Unfollow
-              </Button>
-            ) : (
-              <Button
-                loading={buttonLoading}
-                onClick={() => clickFollow()}
-                type="primary"
-              >
-                Follow
-              </Button>
-            )}
+
+            <FollowButton
+              isFollowing={isFollowing}
+              buttonLoading={buttonLoading}
+              clickFollow={clickFollow}
+              clickUnfollow={clickUnfollow}
+            />
 
             <div className="profile_disc">
-              <p className="">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque
-                vel saepe ut? Temporibus, qui quisquam.
-              </p>
+              <p className="">{bio}</p>
+            </div>
+            <div className="profile_disc">
+              <a onClick={() => window.open(`https://${website}`, "_blank")}>
+                {website}
+              </a>
             </div>
             <Card className="profile_card">
               <div className="profile_card_div">
                 <div className="profile_card_info">
-                  <p className="profile_card_number">
-                    {userInfo?.follow?.following?.length}
-                  </p>
+                  <p className="profile_card_number">{following.length}</p>
                   <p className="profile_card_text">Following</p>
                 </div>
                 <div className="profile_card_info">
-                  <p className="profile_card_number">
-                    {userInfo?.posts?.posts?.length}
-                  </p>
+                  <p className="profile_card_number">{posts.length}</p>
                   <p className="profile_card_text">Posts</p>
                 </div>
                 <div className="profile_card_info">
-                  <p className="profile_card_number">
-                    {userInfo?.follow?.followers?.length}
-                  </p>
+                  <p className="profile_card_number">{followers.length}</p>
                   <p className="profile_card_text">Followers</p>
                 </div>
               </div>
@@ -125,7 +135,7 @@ const OtherUserPage = () => {
           </>
         )}
       </div>
-      <PostContainer userID={userID} />
+      <PostContainer userID={userID} mode="user" />
     </div>
   );
 };

@@ -8,9 +8,9 @@ import { UsersList } from "../list/users-list";
 import { objectToArr, statusConstants } from "../../utils";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const { Header } = Layout;
   const { Search } = Input;
+  const navigate = useNavigate();
 
   const { token } = useSelector((store) => store.token);
   const { userList, userListStatus } = useSelector(
@@ -62,7 +62,7 @@ const Navbar = () => {
               className="navbar_search"
               placeholder="Search people"
               onChange={onSearch}
-              disabled={userListStatus=== statusConstants.loading}
+              disabled={userListStatus === statusConstants.loading}
               enterButton
             />
           )}

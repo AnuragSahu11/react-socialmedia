@@ -3,18 +3,14 @@ import { Content } from "antd/lib/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
-import {
-  getPosts,
-  getUserData,
-  getUserList,
-} from "../../firebase/firestore-methods";
+import { getUserData, getUserList } from "../../firebase/firestore-methods";
 import { Sidebar, SidebarRecommendations } from "../../components";
 
 const UserPage = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.token);
   const { posts } = useSelector((store) => store.posts);
-  const { userList } = useSelector((store) => store.operationData);
+  const { userData } = useSelector((store) => store.userData);
 
   useEffect(() => {
     if (token) {
@@ -24,10 +20,8 @@ const UserPage = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (token) {
-      dispatch(getPosts());
-    }
-  }, []);
+    dispatch(getUserList());
+  }, [userData]);
 
   return (
     <Layout>

@@ -8,3 +8,5 @@ export { ProfilePage } from "./profile-page/profile-page";
 export { OtherUserPage } from "./profile-page/other-user-page";
 export { UserPage } from "./user-page/user-page";
 export { DraftPage } from "./draft-page/draft-page";
+export { ArchivePage } from "./archive-page/archive-page";
+export { TagPage } from "./tag-page/tag-page";

@@ -1,9 +1,20 @@
+.infinite_loader {
+  margin-top: 10px;
+  text-align: center;
+}
 .post_container {
-  width: 70vw;
+  width: 30vw;
   margin-left: auto;
   margin-right: auto;
   margin-top: 30px;
   padding-bottom: 6rem;
+  height: 90vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.post_container::-webkit-scrollbar {
+  display: none;
 }
 .ant-space-item .post_image_wrapper {
   width: fit-content;
@@ -29,20 +40,19 @@
 .post_wrapper {
   margin-top: 7px;
 }
+.post_tag_container {
+  margin-top: 30px;
+}
 
 @media only screen and (max-width: 1600px) {
   .post_container {
-    width: 55vw;
+    width: 45vw;
   }
 }
-@media only screen and (max-width: 1200px) {
-  .post_container {
-    width: 48vw;
-  }
-}
+
 @media only screen and (max-width: 992px) {
   .post_container {
-    width: 80vw;
+    width: 65vw;
   }
 }
 @media only screen and (max-width: 768px) {
