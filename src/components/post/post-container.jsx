@@ -57,7 +57,7 @@ const PostContainer = ({
     if (postContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } =
         postContainerRef.current;
-      if (scrollTop + clientHeight === scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 15 && !infiniteLoader) {
         switch (mode) {
           case "explore":
             getMoreExplorePosts(
