@@ -11,11 +11,12 @@ import {
 } from "antd";
 import { MessageTwoTone } from "@ant-design/icons";
 import { useState } from "react";
-import { addComment, getPosts } from "../../firebase/firestore-methods";
+import { addComment } from "../../firebase/firestore-methods";
 import { useDispatch, useSelector } from "react-redux";
 import { UserOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
+import { changePostFlag } from "../../redux/slice/operation-slice";
 
 const Comments = ({ commentData, postID }) => {
   const { token } = useSelector((store) => store.token);
@@ -54,7 +55,7 @@ const Comments = ({ commentData, postID }) => {
     } else {
       toast.warn(toastConstants.commentWarn);
     }
-    dispatch(getPosts());
+    dispatch(changePostFlag());
   };
   return (
     <>

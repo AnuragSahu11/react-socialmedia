@@ -1,11 +1,12 @@
 import { Modal, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import "./modals.css";
-import { deletePost, getPosts } from "../../firebase/firestore-methods";
+import { deletePost } from "../../firebase/firestore-methods";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
+import { changePostFlag } from "../../redux/slice/operation-slice";
 
 const DeletePostModal = ({ isVisible, toggleModal, postID }) => {
   const { token } = useSelector((store) => store.token);
@@ -16,7 +17,7 @@ const DeletePostModal = ({ isVisible, toggleModal, postID }) => {
     setIsLoading(true);
     try {
       await deletePost(postID, token);
-      dispatch(getPosts());
+      dispatch(changePostFlag());
       toggleModal();
       toast.success(toastConstants.deleteSuccess);
     } catch (err) {

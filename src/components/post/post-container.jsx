@@ -42,7 +42,9 @@ const PostContainer = ({
   );
 
   const { status: userDataStatus } = useSelector((store) => store.userData);
-  const { userListStatus } = useSelector((store) => store.operationData);
+  const { userListStatus, getPostFlag } = useSelector(
+    (store) => store.operationData
+  );
   const { sortPost } = useSelector((store) => store.operationData);
 
   const [paginatedPosts, setPaginatedPosts] = useState([]);
@@ -131,7 +133,7 @@ const PostContainer = ({
         getBookmarkedPosts(setPaginatedPosts, setLoading);
         break;
     }
-  }, [userID, mode, sortPost]);
+  }, [userID, mode, sortPost, getPostFlag]);
 
   const getMorePosts = (mode, feed = []) => {
     let postArray;

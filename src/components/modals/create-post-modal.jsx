@@ -2,11 +2,13 @@ import { Modal, Input, Upload, Tooltip, Button, Tag } from "antd";
 import "./modals.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hideNewPostModal } from "../../redux/slice/operation-slice";
+import {
+  changePostFlag,
+  hideNewPostModal,
+} from "../../redux/slice/operation-slice";
 import {
   addToDraft,
   deleteFromDraft,
-  getPosts,
   getUserData,
   newPost,
 } from "../../firebase/firestore-methods";
@@ -65,7 +67,7 @@ const NewPostModal = () => {
         if (draftData) {
           await deleteFromDraft(token, draftData.postID);
         }
-        dispatch(getPosts());
+        dispatch(changePostFlag());
         dispatch(hideNewPostModal());
         toast.success(toastConstants.postSuccess);
       } catch (err) {

@@ -23,12 +23,13 @@ const DraftPage = () => {
     if (status === statusConstants.fulfilled) {
       setDraftArr(
         objectToArr(userData.drafts, "postID").map(
-          ({ postID, caption, content, img }) => {
+          ({ postID, caption, content, img, tags }) => {
             return {
               postID: postID,
               caption: caption,
               content: content,
               img: img || null,
+              tags: tags || [],
             };
           }
         )

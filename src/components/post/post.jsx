@@ -7,7 +7,6 @@ import {
   Image,
   Button,
   Tooltip,
-  Tag,
 } from "antd";
 import {
   LikeTwoTone,
@@ -25,7 +24,6 @@ import {
   archivePost,
   bookmarkPost,
   dislikePost,
-  getPosts,
   getUserData,
   likePost,
   removeBookmark,
@@ -35,7 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EditPostModal } from "../modals/edit-post-modal";
 import { DeletePostModal } from "../modals";
 import { useNavigate } from "react-router-dom";
-import { changeSort } from "../../redux/slice/operation-slice";
+import { changePostFlag, changeSort } from "../../redux/slice/operation-slice";
 import { Comments } from "./comments";
 import { toast } from "react-toastify";
 import { toastConstants } from "../../utils/constants";
@@ -114,7 +112,7 @@ const Post = ({ postData, postID, editPost }) => {
         await archivePost(postID);
         toast.success(toastConstants.archiveSuccess);
       }
-      dispatch(getPosts());
+      dispatch(changePostFlag());
     } catch (error) {
       toast.error(toastConstants.archiveFailed);
     }
