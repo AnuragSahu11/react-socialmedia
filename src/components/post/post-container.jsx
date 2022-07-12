@@ -189,7 +189,7 @@ const PostContainer = ({
                 key={postData.postID}
                 postData={postData}
                 postID={postData.postID}
-                editPost={editPost || true}
+                editPost={editPost || false}
               />
             );
           }

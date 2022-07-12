@@ -17,7 +17,7 @@ const TagPage = () => {
       <div className="bookmark_header">
         <Title level={2}>#{tag}</Title>
       </div>
-      <PostContainer tag={tag} mode="tag" userID={token} />
+      <PostContainer tag={tag} mode="tag" userID={token} editPost={false} />
     </div>
   );
 };
