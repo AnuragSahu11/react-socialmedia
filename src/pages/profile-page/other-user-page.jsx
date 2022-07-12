@@ -58,7 +58,6 @@ const OtherUserPage = () => {
     setIsLoading(true);
     try {
       await getOtherUserData(userID, setUserInfo);
-      console.log(userInfo, "hello");
     } catch (err) {}
     setIsLoading(false);
   };
