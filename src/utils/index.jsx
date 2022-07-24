@@ -5,5 +5,6 @@ export {
   notificationDisc,
   loginFormValidation,
   signupFormValidation,
+  onScroll,
 } from "./misc-operation-functions";
 export { changeTitle } from "./change-title";

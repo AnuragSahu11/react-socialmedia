@@ -17,3 +17,12 @@
   margin-bottom: 2vh;
   text-align: center;
 }
+.page_wrapper {
+  overflow-y: scroll;
+  height: 100vh;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.page_wrapper::-webkit-scrollbar {
+  display: none;
+}
