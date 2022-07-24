@@ -1,9 +1,9 @@
 import { Avatar, Card, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { changeTitle } from "../../utils";
+import { changeTitle, onScroll } from "../../utils";
 import { PostContainer } from "../../components";
 import {
   follow,
@@ -20,6 +20,9 @@ const OtherUserPage = () => {
 
   const { token } = useSelector((store) => store.token);
   const { userData } = useSelector((store) => store.userData);
+
+  const pageRef = useRef();
+  const [pageEnd, setPageEnd] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -81,7 +84,11 @@ const OtherUserPage = () => {
   changeTitle(firstName || titleConstants.profilePage);
 
   return (
-    <div className="user_profile_wrapper">
+    <div
+      ref={pageRef}
+      className="user_profile_wrapper page_wrapper"
+      onScroll={() => onScroll(pageRef, setPageEnd)}
+    >
       <div className="user_profile">
         {isLoading ? (
           <Skeleton active={true} />
@@ -134,7 +141,7 @@ const OtherUserPage = () => {
           </>
         )}
       </div>
-      <PostContainer userID={userID} mode="user" />
+      <PostContainer userID={userID} mode="user" pageEnd={pageEnd} />
     </div>
   );
 };

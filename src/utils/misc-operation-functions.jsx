@@ -77,6 +77,18 @@ const tagValidation = (tag, tags) => {
   }
 };
 
+const onScroll = (pageRef, setPageEnd) => {
+  if (pageRef.current) {
+    const { scrollTop, scrollHeight, clientHeight } = pageRef.current;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+      setPageEnd(true);
+    }
+    if (scrollTop + clientHeight <= scrollHeight - 5) {
+      setPageEnd(false);
+    }
+  }
+};
+
 export {
   objectToArr,
   notificationDisc,
@@ -85,4 +97,5 @@ export {
   postFormValidation,
   profileFormValidation,
   tagValidation,
+  onScroll,
 };

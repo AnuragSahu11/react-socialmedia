@@ -6,7 +6,6 @@ import "./post-container.css";
 import { Skeleton, Input, Select, Spin } from "antd";
 import { changeSort } from "../../redux/slice/operation-slice";
 import { statusConstants } from "../../utils/constants";
-import { useRef } from "react";
 import {
   archivedPosts,
   explorePagePosts,
@@ -27,10 +26,10 @@ const PostContainer = ({
   feed,
   bookmarks,
   showSortPost,
+  pageEnd,
 }) => {
   const Option = Select.Option;
   const dispatch = useDispatch();
-  const postContainerRef = useRef();
 
   const antIcon = (
     <LoadingOutlined
@@ -53,52 +52,52 @@ const PostContainer = ({
   const [infiniteLoader, setInfiniteLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
 
-  const onScroll = () => {
-    if (postContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } =
-        postContainerRef.current;
-      if (scrollTop + clientHeight >= scrollHeight - 15 && !infiniteLoader) {
-        switch (mode) {
-          case "explore":
-            getMoreExplorePosts(
-              lastPost,
-              setPaginatedPosts,
-              setInfiniteLoading,
-              setLastPost,
-              sortPost === "recent" ? "time" : "likes"
-            );
-            break;
-          case "feed":
-            getMoreExplorePosts(
-              lastPost,
-              setPaginatedPosts,
-              setInfiniteLoading,
-              setLastPost,
-              sortPost === "recent" ? "time" : "likes"
-            );
-            break;
-          case "user":
-            getMoreUserPosts(
-              userID,
-              lastPost,
-              setPaginatedPosts,
-              setInfiniteLoading,
-              setLastPost
-            );
-            break;
-          case "archive":
-            getMoreArchivedPosts(
-              userID,
-              lastPost,
-              setPaginatedPosts,
-              setInfiniteLoading,
-              setLastPost
-            );
-            break;
-        }
-      }
+  const getNextPosts = () => {
+    switch (mode) {
+      case "explore":
+        getMoreExplorePosts(
+          lastPost,
+          setPaginatedPosts,
+          setInfiniteLoading,
+          setLastPost,
+          sortPost === "recent" ? "time" : "likes"
+        );
+        break;
+      case "feed":
+        getMoreExplorePosts(
+          lastPost,
+          setPaginatedPosts,
+          setInfiniteLoading,
+          setLastPost,
+          sortPost === "recent" ? "time" : "likes"
+        );
+        break;
+      case "user":
+        getMoreUserPosts(
+          userID,
+          lastPost,
+          setPaginatedPosts,
+          setInfiniteLoading,
+          setLastPost
+        );
+        break;
+      case "archive":
+        getMoreArchivedPosts(
+          userID,
+          lastPost,
+          setPaginatedPosts,
+          setInfiniteLoading,
+          setLastPost
+        );
+        break;
     }
   };
+
+  useEffect(() => {
+    if (pageEnd && !infiniteLoader) {
+      getNextPosts();
+    }
+  }, [pageEnd]);
 
   useEffect(() => {
     setPaginatedPosts([]);
@@ -205,7 +204,7 @@ const PostContainer = ({
   }, [paginatedPosts, userDataStatus, userListStatus]);
 
   return (
-    <div className="post_container" ref={postContainerRef} onScroll={onScroll}>
+    <div className="post_container">
       {!loading ? (
         <>
           {showSortPost && (
